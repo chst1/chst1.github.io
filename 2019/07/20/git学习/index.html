@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="git 是互联网公司必备工具, 更是it工作者必备技能, 这里主要讲解涉及如下内容.创建版本库, 版本回退, 工作区与暂存区, github使用, 分支管理, 远程仓库, 冲突合并. &amp;lt; !– more –&amp;gt; git序找实习两个月, 终于有公司肯要我这个菜鸡了. 似乎对于互联网公司来说第一个要学的就是git的版本控制了, 当然进去肯定会被要求赶快看一下,知道基本使用. leader发了">
+<meta name="description" content="git 是互联网公司必备工具, 更是it工作者必备技能, 这里主要讲解涉及如下内容.创建版本库, 版本回退, 工作区与暂存区, github使用, 分支管理, 远程仓库, 冲突合并. &amp;lt; !-- more --&amp;gt; git序找实习两个月, 终于有公司肯要我这个菜鸡了. 似乎对于互联网公司来说第一个要学的就是git的版本控制了, 当然进去肯定会被要求赶快看一下,知道基本使用. leader">
 <meta name="keywords" content="git">
 <meta property="og:type" content="article">
 <meta property="og:title" content="git学习">
 <meta property="og:url" content="http://yoursite.com/2019/07/20/git学习/index.html">
 <meta property="og:site_name" content="chst&#39;s Blog">
-<meta property="og:description" content="git 是互联网公司必备工具, 更是it工作者必备技能, 这里主要讲解涉及如下内容.创建版本库, 版本回退, 工作区与暂存区, github使用, 分支管理, 远程仓库, 冲突合并. &amp;lt; !– more –&amp;gt; git序找实习两个月, 终于有公司肯要我这个菜鸡了. 似乎对于互联网公司来说第一个要学的就是git的版本控制了, 当然进去肯定会被要求赶快看一下,知道基本使用. leader发了">
+<meta property="og:description" content="git 是互联网公司必备工具, 更是it工作者必备技能, 这里主要讲解涉及如下内容.创建版本库, 版本回退, 工作区与暂存区, github使用, 分支管理, 远程仓库, 冲突合并. &amp;lt; !-- more --&amp;gt; git序找实习两个月, 终于有公司肯要我这个菜鸡了. 似乎对于互联网公司来说第一个要学的就是git的版本控制了, 当然进去肯定会被要求赶快看一下,知道基本使用. leader">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://s2.ax1x.com/2019/07/03/ZYKxYV.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/07/16/ZqSlvV.png">
@@ -93,10 +93,10 @@
 <meta property="og:image" content="https://s2.ax1x.com/2019/07/16/ZqSKCn.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/07/16/ZqSn4s.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/07/16/ZqSQg0.png">
-<meta property="og:updated_time" content="2019-07-20T12:13:11.842Z">
+<meta property="og:updated_time" content="2019-07-20T15:37:22.048Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git学习">
-<meta name="twitter:description" content="git 是互联网公司必备工具, 更是it工作者必备技能, 这里主要讲解涉及如下内容.创建版本库, 版本回退, 工作区与暂存区, github使用, 分支管理, 远程仓库, 冲突合并. &amp;lt; !– more –&amp;gt; git序找实习两个月, 终于有公司肯要我这个菜鸡了. 似乎对于互联网公司来说第一个要学的就是git的版本控制了, 当然进去肯定会被要求赶快看一下,知道基本使用. leader发了">
+<meta name="twitter:description" content="git 是互联网公司必备工具, 更是it工作者必备技能, 这里主要讲解涉及如下内容.创建版本库, 版本回退, 工作区与暂存区, github使用, 分支管理, 远程仓库, 冲突合并. &amp;lt; !-- more --&amp;gt; git序找实习两个月, 终于有公司肯要我这个菜鸡了. 似乎对于互联网公司来说第一个要学的就是git的版本控制了, 当然进去肯定会被要求赶快看一下,知道基本使用. leader">
 <meta name="twitter:image" content="https://s2.ax1x.com/2019/07/03/ZYKxYV.png">
 
 
@@ -360,7 +360,7 @@
 
       
         <p>git 是互联网公司必备工具, 更是it工作者必备技能, 这里主要讲解涉及如下内容.创建版本库, 版本回退, 工作区与暂存区, github使用, 分支管理, 远程仓库, 冲突合并.</p>
-<p>&lt; !– more –&gt;</p>
+<p>&lt; !-- more --&gt;</p>
 <h1 id="git"><a href="#git" class="headerlink" title="git"></a><center>git</center></h1><h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><p>找实习两个月, 终于有公司肯要我这个菜鸡了. 似乎对于互联网公司来说第一个要学的就是git的版本控制了, 当然进去肯定会被要求赶快看一下,知道基本使用. leader发了份<a href="https://www.liaoxuefeng.com/wiki/896043488029600" target="_blank" rel="noopener">廖雪峰的git</a>. 于是在了解基本指令后又自己按照网站学习了一下,包含一部分自己的理解.</p>
 <h2 id="创建版本库-repository"><a href="#创建版本库-repository" class="headerlink" title="创建版本库(repository)"></a>创建版本库(<strong>repository</strong>)</h2><ol>
 <li>创建一个空目录 mkdir dir_name</li>
