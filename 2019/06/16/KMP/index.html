@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="字符串匹配,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="KMP算法序字符串匹配是个十分经典而又十分有意义的一个问题, 在搜索信息时被广泛使用, 例如浏览器筛选信息, 编辑文本时的全局查找, DNA序列搜索等等. 对于应用如此广泛的问题当然要有十分快速的解决方法才好, 这里介绍的是复杂度最低的算法(应该没有比这个更好了吧.). 即KMP算法(Knuth-Morris-Pratt算法, 由此三人发明). 其时间复杂度为线性复杂度即O(n+m).(n和m分别">
+<meta name="keywords" content="字符串匹配">
+<meta property="og:type" content="article">
+<meta property="og:title" content="KMP">
+<meta property="og:url" content="http://yoursite.com/2019/06/16/KMP/index.html">
+<meta property="og:site_name" content="chst&#39;s Blob">
+<meta property="og:description" content="KMP算法序字符串匹配是个十分经典而又十分有意义的一个问题, 在搜索信息时被广泛使用, 例如浏览器筛选信息, 编辑文本时的全局查找, DNA序列搜索等等. 对于应用如此广泛的问题当然要有十分快速的解决方法才好, 这里介绍的是复杂度最低的算法(应该没有比这个更好了吧.). 即KMP算法(Knuth-Morris-Pratt算法, 由此三人发明). 其时间复杂度为线性复杂度即O(n+m).(n和m分别">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://s2.ax1x.com/2019/06/16/V7EjV1.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/06/16/V7EvUx.png">
+<meta property="og:updated_time" content="2019-06-16T18:16:36.532Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="KMP">
+<meta name="twitter:description" content="KMP算法序字符串匹配是个十分经典而又十分有意义的一个问题, 在搜索信息时被广泛使用, 例如浏览器筛选信息, 编辑文本时的全局查找, DNA序列搜索等等. 对于应用如此广泛的问题当然要有十分快速的解决方法才好, 这里介绍的是复杂度最低的算法(应该没有比这个更好了吧.). 即KMP算法(Knuth-Morris-Pratt算法, 由此三人发明). 其时间复杂度为线性复杂度即O(n+m).(n和m分别">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/06/16/V7EjV1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/06/16/KMP/">
+
+
+
+
+
+  <title>KMP | chst's Blob</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">chst's Blob</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">个人网站</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/16/KMP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="chst">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chst's Blob">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">KMP</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-16T16:31:59+08:00">
+                2019-06-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="KMP算法"><a href="#KMP算法" class="headerlink" title="KMP算法"></a><center><font size="12">KMP算法</font></center></h1><h2 id="序"><a href="#序" class="headerlink" title="序"></a><center><font size="10">序</font></center></h2><p>字符串匹配是个十分经典而又十分有意义的一个问题, 在搜索信息时被广泛使用, 例如浏览器筛选信息, 编辑文本时的全局查找, DNA序列搜索等等. 对于应用如此广泛的问题当然要有十分快速的解决方法才好, 这里介绍的是复杂度最低的算法(应该没有比这个更好了吧.). 即KMP算法(Knuth-Morris-Pratt算法, 由此三人发明). 其时间复杂度为线性复杂度即O(n+m).(n和m分别为文本长度和匹配模式长度).</p>
+<h2 id="思想"><a href="#思想" class="headerlink" title="思想"></a><center><font size="10">思想</font></center></h2><p>与最简单的字符串匹配算法(每次比较完成后平移一个位置)相比, KMP主要利用了匹配过程中模式串本身的信息, 使得每次平移不是一个而是与之前匹配结果有关的一个值. 为了实现上述目的, 我们要对模式串进行分析处理, 生成一个前缀函数, 用以记录模式串内心信息与联系. 下图可以形象解释这一问题:</p>
+<p><img src="https://s2.ax1x.com/2019/06/16/V7EjV1.png" alt="例"></p>
+<p>对于上图中, 当匹配到模式中第六个元素与文本中不对应时, 简单方法是平移1后继续从第一个开始匹配, 而KMP借助于前主函数, 知道平移一个接着匹配是一定不会匹配成功的, 因此可以直接平移两个并且再接着匹配时也不用从第一个开始匹配, 直接从第四个进行匹配即可.</p>
+<h2 id="前缀函数"><a href="#前缀函数" class="headerlink" title="前缀函数"></a><center><font size="10">前缀函数</font></center></h2><p>模式的前缀函数包含模式与其子身的偏移进行匹配的信息. 简单来说, 前缀函数就是一个数组, 用来对应模式对于位置可以与模式本身前缀匹配长度. 例如: p为模式串, a[7] = 2, a是前缀函数, a[7]表示对应于模式的第8个元素, 前匹配函数为2表示, p[7] == p[2], 并且p[0-2]与p[5-7]是一致的. 一般的, 对于a[i] = n表示, p[0-n]=p[(i-n) - i], 即在第i个节点(对于模式串来说)匹配失败时将模式串索引为a[i-1]对应的元素与当前匹配到的文本前一个位置对齐即可以继续接着匹配. 以上图为例, a[4]=2; 在匹配第5个元素是(c)时出错, 此时只需要将模式串索引为a[4] = 2与文本中当前匹配到的元素(a)前一个(a)对齐, 然后接着从原来匹配出错的位置继续匹配即可.</p>
+<p><img src="https://s2.ax1x.com/2019/06/16/V7EvUx.png" alt="前缀函数"></p>
+<p>前缀函数的获取其实本身就是一个字符串匹配问题, 是自己的后面的部分与前面进行匹配. 也就是对于任意的一个索引i, 我们要找到最大的n使得p[0-n] =p[(i-n) - i], 这其实与文本与模式串匹配是一样的, 不过文本与模式串匹配时是要找到满足p[0-n] = T[(i-n) - i](此处n与前面不一样, 前面n是一个变量,这里n指代模式串长度)的所有的i.  需要注意一点, 空字符串与所有字符串都可以匹配. 此时的操作有点类似与DP, 但又不一样. 其思想为: 始终存在一个数值k用于记录当前匹配到的最长前缀, 即满足p[0-n] = p[(i-n)-i]的最大的n. 随后考察索引i+1位置的情况. 此时, 如果p[k+1] = p[i+1], 则k应该增加1, 并且索引i+1的前缀函数为增加后的k值. 因为此时满足p[0-(k+1)] = p[(i-k)-(i+1)]; 当p[k+1] != p[i+1]时, 我们应该注意到, p[k] = p[a[k]], 这是由于当考察到第i+1时, 其前i个的前缀函数已经获得了. 此时对于前i个元素, 即有p[0-n] = p[(m-n)-m],(m=0,1,…i). n即为a[m].所以p[a[m]] = p[m]. 而在这里k = a[i](由前面所述k的定义可知). 所以, 我们可以令k = a[k]来获得索引i所对应的前缀串的最后一个元素的前缀函数.此时利用前缀的传递性, 即p[i] = p[a[i]] = p[a[a[i]]] = … 可以得到, 此时新获得的k依然满足k的定义, 即满足p[0-k] = p[(i-k), i]. 于是我们可以以该k值继续进行判断p[k+1] = p[i+1]?, 对应于出现的不同情况处理与先前所述一致. 令k = a[k]可以看成一个回溯, 其终止条件为要么查找到头依然没有找到满足条件的p[k+1] = p[i+1], 此时应该将模式串前一个位置(假想的空字符)平移到第i的位置, 即对应的a[i+1] = -1, 或者出现p[k+1] = p[i+1]. 这里前面突然出现的-1可能有写不好理解, 其实就是我们假想模式串前面有一个空字符, 这是为了方便我们处理而进行的一个假想的构造, 其索引就应该是-1, 空字符串与所以字符均匹配. 当a[i] = -1时表示, 将模式串空字符与当前i对齐, 即将模式串第一个元素与i+1对齐.</p>
+<h2 id="匹配"><a href="#匹配" class="headerlink" title="匹配"></a><center><font size="10">匹配</font></center></h2><p>就像之前所述, 前缀函数相当与一个字符串匹配, 此时进行匹配的操作与计算前缀函数基本一致, 不过前缀函数匹配的是同一字符串进行匹配, 文本与模式串的匹配则是两个不同串进行匹配, 且此时前缀函数已经获得可以直接使用. 整体操作与前缀串差不多, 就增加了一个判断是否查找到完整子串这一步. 具体看代码即可.</p>
+<h2 id="code"><a href="#code" class="headerlink" title="code"></a><center><font size="10">code</font></center></h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取前缀函数</span></span><br><span class="line"><span class="function"><span class="keyword">int</span>* <span class="title">COMPUTE_PREFIX_FUNCTION</span><span class="params">(<span class="keyword">char</span> a[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> num = <span class="built_in">strlen</span>(a);</span><br><span class="line">    <span class="keyword">int</span> *w = <span class="keyword">new</span> <span class="keyword">int</span>[num];</span><br><span class="line">    w[<span class="number">0</span>] = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">int</span> k = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;num; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span>(k &gt;= <span class="number">0</span> &amp;&amp; a[k+<span class="number">1</span>] != a[i])</span><br><span class="line">            k = a[k];</span><br><span class="line">        <span class="keyword">if</span>(a[k+<span class="number">1</span>] == a[i])</span><br><span class="line">            k++;</span><br><span class="line">        w[i] = k;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> w;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 匹配</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">KMP_MATCHER</span><span class="params">(<span class="keyword">char</span> T[], <span class="keyword">char</span> p[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> T_NUM = <span class="built_in">strlen</span>(T);</span><br><span class="line">    <span class="keyword">int</span> p_NUM = <span class="built_in">strlen</span>(p);</span><br><span class="line">    <span class="keyword">int</span> *PREFIX_FUNCTION = COMPUTE_PREFIX_FUNCTION(p);</span><br><span class="line">    <span class="keyword">int</span> k=<span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;T_NUM; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span>(k &gt;= <span class="number">0</span> &amp;&amp; p[k+<span class="number">1</span>] != T[i])</span><br><span class="line">        &#123;</span><br><span class="line">            k = PREFIX_FUNCTION[k];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(p[k+<span class="number">1</span>] == T[i])</span><br><span class="line">            k++;</span><br><span class="line">        <span class="keyword">if</span>(k == p_NUM<span class="number">-1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;i-p_NUM+<span class="number">2</span>&lt;&lt;<span class="string">" pattern occurs!!!"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">            k = PREFIX_FUNCTION[k];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/字符串匹配/" rel="tag"># 字符串匹配</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/13/红黑树/" rel="next" title="红黑树">
+                <i class="fa fa-chevron-left"></i> 红黑树
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/17/计算几何学/" rel="prev" title="计算几何学">
+                计算几何学 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">chst</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#KMP算法"><span class="nav-number">1.</span> <span class="nav-text">KMP算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#序"><span class="nav-number">1.1.</span> <span class="nav-text">序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思想"><span class="nav-number">1.2.</span> <span class="nav-text">思想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前缀函数"><span class="nav-number">1.3.</span> <span class="nav-text">前缀函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#匹配"><span class="nav-number">1.4.</span> <span class="nav-text">匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code"><span class="nav-number">1.5.</span> <span class="nav-text">code</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">chst</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
