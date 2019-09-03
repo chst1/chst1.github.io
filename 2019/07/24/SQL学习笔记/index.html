@@ -88,7 +88,7 @@
 <meta property="og:description" content="数据库作为搭建服务器的重要环节可谓是至关重要. 这里记录了典型关系型数据库管理系统SQL的学习过程,主要以MySQL为例. 方便回来查找以及与大家交流分享.">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://www.runoob.com/wp-content/uploads/2019/01/sql-join.png">
-<meta property="og:updated_time" content="2019-07-30T16:07:52.176Z">
+<meta property="og:updated_time" content="2019-08-15T15:20:39.278Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SQL学习笔记">
 <meta name="twitter:description" content="数据库作为搭建服务器的重要环节可谓是至关重要. 这里记录了典型关系型数据库管理系统SQL的学习过程,主要以MySQL为例. 方便回来查找以及与大家交流分享.">
@@ -573,7 +573,7 @@
 
 <h3 id="删除列"><a href="#删除列" class="headerlink" title="删除列"></a>删除列</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alter table table_name drop column column_name;</span><br><span class="line">ex:</span><br><span class="line">alter table students drop column classify;</span><br></pre></td></tr></table></figure>
 
-<h3 id="更改列-数据类型"><a href="#更改列-数据类型" class="headerlink" title="更改列(数据类型)"></a>更改列(数据类型)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alter table table_name modify column column_name datatype;</span><br><span class="line">ex:</span><br><span class="line">alter table students modify column dataofbirth date;</span><br></pre></td></tr></table></figure>
+<h3 id="更改列-数据类型"><a href="#更改列-数据类型" class="headerlink" title="更改列(数据类型)"></a>更改列(数据类型)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alter table table_name modify column column_name datatype default value;</span><br><span class="line">ex:</span><br><span class="line">alter table students modify column dataofbirth date not null default ’2019-08-13‘;</span><br></pre></td></tr></table></figure>
 
 <h2 id="select-top"><a href="#select-top" class="headerlink" title="select top"></a>select top</h2><p>用于返回按照一点规则排序后的前一定数量个.</p>
 <p>mysql语法:</p>
@@ -653,9 +653,9 @@
 <p>上图中A, B分别表示一个表(将两个表的<code>where</code>限制部分的列抽出). 相交部分表示满足<code>where</code>限制的交集部分. 而在最终展示时,是从图中满足条件部分所属的行中选取出要展示的元素. 具体实现可以理解为: 对A, B分别建立一个<code>class</code>, 其中包含<code>where</code>后面的限制元素以及对于的行索引. 对两个列表的每一行实例化这样一个类. 之后按照选取规则筛选出符合条件的A,B中实例, 而后按照实例中的索引和要求展示的元素对满足规则的行进行两个表格的合并,输出即可. 因此应该尽量要求两个表无相同的表头.(合并冲突)</p>
 <h2 id="UNION操作符"><a href="#UNION操作符" class="headerlink" title="UNION操作符"></a>UNION操作符</h2><p><code>UNION</code>操作符合并两个或者多个<code>select</code>语句结果. 要求<code>selec</code>t语句拥有相同数量的列, 列也必须拥有相同的数据类型. 每个<code>select</code>语句列的顺序必须相同.</p>
 <p>语法:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT *column_name(s)* FROM *table1*</span><br><span class="line">UNION</span><br><span class="line">SELECT *column_name(s)* FROM *table2*;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s) FROM table1</span><br><span class="line">UNION [all | distinct]</span><br><span class="line">SELECT column_name(s) FROM table2;</span><br></pre></td></tr></table></figure>
 
-<p>union只会列出不同的元素, 要想列出所以元素则应该使用<code>union all</code>.</p>
+<p><code>[all | distinct]</code>表示可选的。union默认只会列出不同的元素（distinct）, 要想列出所以元素则应该使用<code>union all</code>.</p>
 <p>可以理解为<code>union</code>为取两个或多个<code>select</code>语句组成的集合的<code>unique</code>, 而<code>union all</code>为整个集合.</p>
 <h2 id="SELECT-INTO"><a href="#SELECT-INTO" class="headerlink" title="SELECT INTO"></a>SELECT INTO</h2><p>复制一个表的信息到另一个表中. </p>
 <p>语法:</p>
@@ -782,7 +782,164 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT ProductName,UnitPrice*(UnitsInStock+IFNULL(UnitsOnOrder,0))</span><br><span class="line">FROM Products</span><br></pre></td></tr></table></figure>
 
 <p>此时,当UnitsOnOrder为空, 我们就用0代替.</p>
+<h1 id="SQL函数"><a href="#SQL函数" class="headerlink" title="SQL函数"></a>SQL函数</h1><table>
+<thead>
+<tr>
+<th align="center">函数</th>
+<th align="center">作用</th>
+<th align="center">语法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">AVG()</td>
+<td align="center">返回数值例的评价值</td>
+<td align="center"><code>select avg(column_name) from table_name</code></td>
+</tr>
+<tr>
+<td align="center">COUNT()</td>
+<td align="center">返回匹配指定条件的行数</td>
+<td align="center"><code>select count(column_name) from table_name</code>(返回指定列的数目,null不计).  <code>select count(*) from table_name</code>(返回表中记录数目).  <code>select count(distinct column_name) from table_name</code>(返回指定列不同值的数目).</td>
+</tr>
+<tr>
+<td align="center">MAX()</td>
+<td align="center">返回指定列最大值</td>
+<td align="center"><code>select max(column_name) from table_name</code></td>
+</tr>
+<tr>
+<td align="center">MIN()</td>
+<td align="center">返回指定列最大值</td>
+<td align="center"><code>select min(column_name) from table_name</code></td>
+</tr>
+<tr>
+<td align="center">SUM()</td>
+<td align="center">返回指定列之和</td>
+<td align="center"><code>select sum(column_name) from table</code></td>
+</tr>
+<tr>
+<td align="center">GROUP BY</td>
+<td align="center">句用于结合聚合函数,根据一个或多个列结果进行分组.</td>
+<td align="center"><code>select column_name, aggregate_function(column_name) from table_name where column_name operator valus group bu column_name</code></td>
+</tr>
+<tr>
+<td align="center">UCASE()</td>
+<td align="center">把字段的大写转换成小写</td>
+<td align="center"><code>select UCASE(column_name) from table_name</code></td>
+</tr>
+<tr>
+<td align="center">LCASE()</td>
+<td align="center">把字段的小写转换成大写</td>
+<td align="center"><code>select LCASE(column_name) from table_name</code></td>
+</tr>
+<tr>
+<td align="center">MID()</td>
+<td align="center">从文本字段中提取字符</td>
+<td align="center"><code>select MID(column_name, start[, length]) from table_name</code></td>
+</tr>
+<tr>
+<td align="center">LEN()</td>
+<td align="center">返回文本字段值的长度</td>
+<td align="center"><code>select LEN(column_name) from table_name</code></td>
+</tr>
+<tr>
+<td align="center">ROUND()</td>
+<td align="center">把数值字段舍入为指定的小数位数</td>
+<td align="center"><code>select  ROUND(column_name, decimals) from table_name</code></td>
+</tr>
+<tr>
+<td align="center">NOW()</td>
+<td align="center">返回当前系统的日期和时间</td>
+<td align="center"><code>SELECT NOW() FROM table_name</code></td>
+</tr>
+<tr>
+<td align="center">FORMAT()</td>
+<td align="center">对字段的显示进行格式化</td>
+<td align="center"><code>SELECT FORMAT(column_name,format) FROM table_name</code> 例: <code>SELECT name, url, DATE_FORMAT(Now(),&#39;%Y-%m-%d&#39;) AS date FROM Websites;</code></td>
+</tr>
+</tbody></table>
+<h1 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h1><h2 id="RDBMS术语"><a href="#RDBMS术语" class="headerlink" title="RDBMS术语"></a>RDBMS术语</h2><table>
+<thead>
+<tr>
+<th>数据库</th>
+<th>数据库是一些关联表的集合。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>数据表</strong></td>
+<td>表是数据的矩阵。在一个数据库中的表看起来像一个简单的电子表格。</td>
+</tr>
+<tr>
+<td>列</td>
+<td>一列(数据元素) 包含了相同类型的数据。</td>
+</tr>
+<tr>
+<td>行</td>
+<td>一行（=元组，或记录）是一组相关的数据。</td>
+</tr>
+<tr>
+<td>冗余</td>
+<td>存储两倍数据，冗余降低了性能，但提高了数据的安全性。</td>
+</tr>
+<tr>
+<td>主键</td>
+<td>主键是唯一的。一个数据表中只能包含一个主键。你可以使用主键来查询数据。</td>
+</tr>
+<tr>
+<td>外键</td>
+<td>外键用于关联两个表。</td>
+</tr>
+<tr>
+<td>复合键</td>
+<td>复合键（组合键）将多个列作为一个索引键，一般用于复合索引。</td>
+</tr>
+<tr>
+<td>索引</td>
+<td>使用索引可快速访问数据库表中的特定信息。索引是对数据库表中一列或多列的值进行排序的一种结构</td>
+</tr>
+<tr>
+<td>参照完整性</td>
+<td>参照的完整性要求关系中不允许引用不存在的实体。与实体完整性是关系模型必须满足的完整性约束条件，目的是保证数据的一致性。</td>
+</tr>
+<tr>
+<td>表头</td>
+<td>每一列的名字。</td>
+</tr>
+</tbody></table>
+<h2 id="MySQL用户设置"><a href="#MySQL用户设置" class="headerlink" title="MySQL用户设置"></a>MySQL用户设置</h2><h3 id="添加用户"><a href="#添加用户" class="headerlink" title="添加用户"></a>添加用户</h3><p>添加mysql用户，可以在mysql数据库（use mysql）中的user表中添加新用户即可。可以通过<code>show columns from user</code>中查看需要那些内容，而后通过<code>insert into user （columns）value（columns_value）</code>对用户赋予响应配置。而后使用<code>FLUSH PRIVILEGES</code>重新载入授权表。</p>
+<p>第二种添加用户方式为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grant select,insert,update,delete,create,drop on database.* to &apos;name@localhost&apos; identified by &apos;password&apos;</span><br></pre></td></tr></table></figure>
 
+<p>授权相应权限给新加的用户。</p>
+<h2 id="MySQL分组"><a href="#MySQL分组" class="headerlink" title="MySQL分组"></a>MySQL分组</h2><p><code>group by</code>语句更具一个或多个列对结果进行分组。在分组的列上，我们可以使用<code>count</code>，<code>sum</code>，<code>avg</code>等函数。</p>
+<p>语法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name, function(column_name)</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE column_name operator value</span><br><span class="line">GROUP BY column_name;</span><br></pre></td></tr></table></figure>
+
+<p>举例：</p>
+<p>通过如下操作导入数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">SET NAMES utf8;</span><br><span class="line">SET FOREIGN_KEY_CHECKS = 0;</span><br><span class="line">CREATE TABLE `employee_tbl` (</span><br><span class="line">  `id` int(11) NOT NULL,</span><br><span class="line">  `name` char(10) NOT NULL DEFAULT &apos;&apos;,</span><br><span class="line">  `date` datetime NOT NULL,</span><br><span class="line">  `singin` tinyint(4) NOT NULL DEFAULT &apos;0&apos; COMMENT &apos;登录次数&apos;,</span><br><span class="line">  PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8;</span><br><span class="line">BEGIN;</span><br><span class="line">INSERT INTO `employee_tbl` VALUES (&apos;1&apos;, &apos;小明&apos;, &apos;2016-04-22 15:25:33&apos;, &apos;1&apos;), (&apos;2&apos;, &apos;小王&apos;, &apos;2016-04-20 15:25:47&apos;, &apos;3&apos;), (&apos;3&apos;, &apos;小丽&apos;, &apos;2016-04-19 15:26:02&apos;, &apos;2&apos;), (&apos;4&apos;, &apos;小王&apos;, &apos;2016-04-07 15:26:14&apos;, &apos;4&apos;), (&apos;5&apos;, &apos;小明&apos;, &apos;2016-04-11 15:26:40&apos;, &apos;4&apos;), (&apos;6&apos;, &apos;小明&apos;, &apos;2016-04-04 15:26:54&apos;, &apos;2&apos;);</span><br><span class="line">COMMIT;</span><br><span class="line">SET FOREIGN_KEY_CHECKS = 1;</span><br></pre></td></tr></table></figure>
+
+<p>此时使用<code>select</code>得到数据库为：</p>
+<p>![Screenshot from 2019-08-14 22-49-49](/home/chst/Pictures/Screenshot from 2019-08-14 22-49-49.png)</p>
+<p>使用<code>group by</code>语句进行按名字分组，并统计没人的记录数量。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT name, COUNT(*) FROM   employee_tbl GROUP BY name;</span><br></pre></td></tr></table></figure>
+
+<p>结果为：</p>
+<p>![Screenshot from 2019-08-14 22-52-18](/home/chst/Pictures/Screenshot from 2019-08-14 22-52-18.png)</p>
+<p><code>with rollup</code>可实现在分组统计基础上再进行相同的统计。如在按名字分组后统计每个人登录次数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT name, SUM(singin) as singin_count FROM  employee_tbl GROUP BY name WITH ROLLUP;</span><br></pre></td></tr></table></figure>
+
+<p>![Screenshot from 2019-08-14 22-57-02](/home/chst/Pictures/Screenshot from 2019-08-14 22-57-02.png)</p>
+<p>使用<code>select coalesce(a,b,c)</code>来设置取代<code>null</code>的值。该语句表示，如果<code>a==null</code>则取<code>b</code>， 如果<code>b==null</code>则取<code>c</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT coalesce(name, &apos;总数&apos;), SUM(singin) as singin_count FROM  employee_tbl GROUP BY name WITH ROLLUP;</span><br></pre></td></tr></table></figure>
+
+<p>![Screenshot from 2019-08-14 23-01-25](/home/chst/Pictures/Screenshot from 2019-08-14 23-01-25.png)</p>
+<h2 id="MySQL事务"><a href="#MySQL事务" class="headerlink" title="MySQL事务"></a>MySQL事务</h2><p><a href="https://www.runoob.com/mysql/mysql-transaction.html" target="_blank" rel="noopener">菜鸟教程</a></p>
+<h2 id="MySQL临时表"><a href="#MySQL临时表" class="headerlink" title="MySQL临时表"></a>MySQL临时表</h2><p><a href="https://www.runoob.com/mysql/mysql-temporary-tables.html" target="_blank" rel="noopener">菜鸟教程</a></p>
+<h2 id="MySQL复制表"><a href="#MySQL复制表" class="headerlink" title="MySQL复制表"></a>MySQL复制表</h2><p><a href="https://www.runoob.com/mysql/mysql-clone-tables.html" target="_blank" rel="noopener">菜鸟教程</a></p>
+<h2 id="MySQL元数据"><a href="#MySQL元数据" class="headerlink" title="MySQL元数据"></a>MySQL元数据</h2><p><a href="https://www.runoob.com/mysql/mysql-database-info.html" target="_blank" rel="noopener">菜鸟教程</a></p>
+<h2 id="MySQL处理重复数据"><a href="#MySQL处理重复数据" class="headerlink" title="MySQL处理重复数据"></a>MySQL处理重复数据</h2><p><a href="https://www.runoob.com/mysql/mysql-handling-duplicates.html" target="_blank" rel="noopener">菜鸟教程</a></p>
+<h2 id="MySQL导出数据"><a href="#MySQL导出数据" class="headerlink" title="MySQL导出数据"></a>MySQL导出数据</h2><p><a href="https://www.runoob.com/mysql/mysql-database-export.html" target="_blank" rel="noopener">菜鸟教程</a></p>
+<h2 id="MySQL导入数据"><a href="#MySQL导入数据" class="headerlink" title="MySQL导入数据"></a>MySQL导入数据</h2><p><a href="https://www.runoob.com/mysql/mysql-database-import.html" target="_blank" rel="noopener">菜鸟教程</a></p>
+<h1 id="C-操作MySQL数据库"><a href="#C-操作MySQL数据库" class="headerlink" title="C++操作MySQL数据库"></a>C++操作MySQL数据库</h1>
       
     </div>
     
@@ -821,6 +978,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/03/C-操作MySQL/" rel="prev" title="C++操作MySQL">
+                C++操作MySQL <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -897,7 +1058,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -908,7 +1069,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -919,7 +1080,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -952,7 +1113,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux下安装配置MySQL"><span class="nav-number">1.</span> <span class="nav-text">Linux下安装配置MySQL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#查看系统是否自带MySQL"><span class="nav-number">1.1.</span> <span class="nav-text">查看系统是否自带MySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卸载MySQL"><span class="nav-number">1.2.</span> <span class="nav-text">卸载MySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装MySQL"><span class="nav-number">1.3.</span> <span class="nav-text">安装MySQL</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SQL常用指令"><span class="nav-number">2.</span> <span class="nav-text">SQL常用指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#展示并选择数据库"><span class="nav-number">2.1.</span> <span class="nav-text">展示并选择数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL数据类型"><span class="nav-number">2.2.</span> <span class="nav-text">MySQL数据类型:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Text-类型："><span class="nav-number">2.2.1.</span> <span class="nav-text">Text 类型：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Number-类型："><span class="nav-number">2.2.2.</span> <span class="nav-text">Number 类型：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Date-类型："><span class="nav-number">2.2.3.</span> <span class="nav-text">Date 类型：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#create-table语句"><span class="nav-number">2.3.</span> <span class="nav-text">create table语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#select语句"><span class="nav-number">2.4.</span> <span class="nav-text">select语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#where语句"><span class="nav-number">2.5.</span> <span class="nav-text">where语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#order-by语句"><span class="nav-number">2.6.</span> <span class="nav-text">order by语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#insert-into语句"><span class="nav-number">2.7.</span> <span class="nav-text">insert into语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#update语句"><span class="nav-number">2.8.</span> <span class="nav-text">update语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#delete语句"><span class="nav-number">2.9.</span> <span class="nav-text">delete语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#alter-table"><span class="nav-number">2.10.</span> <span class="nav-text">alter table</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加列"><span class="nav-number">2.10.1.</span> <span class="nav-text">添加列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除列"><span class="nav-number">2.10.2.</span> <span class="nav-text">删除列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更改列-数据类型"><span class="nav-number">2.10.3.</span> <span class="nav-text">更改列(数据类型)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#select-top"><span class="nav-number">2.11.</span> <span class="nav-text">select top</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通配符"><span class="nav-number">2.12.</span> <span class="nav-text">通配符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL正则表达式"><span class="nav-number">2.12.1.</span> <span class="nav-text">MySQL正则表达式:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#in"><span class="nav-number">2.13.</span> <span class="nav-text">in</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#between"><span class="nav-number">2.14.</span> <span class="nav-text">between</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#别名"><span class="nav-number">2.15.</span> <span class="nav-text">别名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#join"><span class="nav-number">2.16.</span> <span class="nav-text">join</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UNION操作符"><span class="nav-number">2.17.</span> <span class="nav-text">UNION操作符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SELECT-INTO"><span class="nav-number">2.18.</span> <span class="nav-text">SELECT INTO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#INSERT-INTO-SELECT"><span class="nav-number">2.19.</span> <span class="nav-text">INSERT INTO SELECT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL约束"><span class="nav-number">2.20.</span> <span class="nav-text">SQL约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UNIQUE约束"><span class="nav-number">2.21.</span> <span class="nav-text">UNIQUE约束</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建表时添加unique约束"><span class="nav-number">2.21.1.</span> <span class="nav-text">创建表时添加unique约束:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义多个列的约束并命名unique约束"><span class="nav-number">2.21.2.</span> <span class="nav-text">定义多个列的约束并命名unique约束:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#alter-table时的unique约束"><span class="nav-number">2.21.3.</span> <span class="nav-text">alter table时的unique约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#撤销unique约束"><span class="nav-number">2.21.4.</span> <span class="nav-text">撤销unique约束</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PRIMARY-KEY约束"><span class="nav-number">2.22.</span> <span class="nav-text">PRIMARY KEY约束</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CREATE-TABLE时的PRIMARY-KEY约束"><span class="nav-number">2.22.1.</span> <span class="nav-text">CREATE TABLE时的PRIMARY KEY约束:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ALTER-TABLE时的PRIMARY-KEY约束"><span class="nav-number">2.22.2.</span> <span class="nav-text">ALTER TABLE时的PRIMARY KEY约束</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FOREIGN-KEY约束"><span class="nav-number">2.23.</span> <span class="nav-text">FOREIGN KEY约束</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CREATE-TABLE时的FOREIGN-KEY"><span class="nav-number">2.23.1.</span> <span class="nav-text">CREATE TABLE时的FOREIGN KEY</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#alter-table时的FOREIGN-KEY"><span class="nav-number">2.23.2.</span> <span class="nav-text">alter table时的FOREIGN KEY</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CHECK约束"><span class="nav-number">2.24.</span> <span class="nav-text">CHECK约束</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CREATETABLE时CHECK约束"><span class="nav-number">2.24.1.</span> <span class="nav-text">CREATETABLE时CHECK约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#alter-table时约束"><span class="nav-number">2.24.2.</span> <span class="nav-text">alter table时约束</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AUTO-INCREMENT字段"><span class="nav-number">2.25.</span> <span class="nav-text">AUTO_INCREMENT字段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL-default约束"><span class="nav-number">2.26.</span> <span class="nav-text">SQL default约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CREATE-INDEX语句"><span class="nav-number">2.27.</span> <span class="nav-text">CREATE INDEX语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DROP语句"><span class="nav-number">2.28.</span> <span class="nav-text">DROP语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL-视图"><span class="nav-number">2.29.</span> <span class="nav-text">SQL 视图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL-CREATEVIEW语句"><span class="nav-number">2.29.1.</span> <span class="nav-text">SQL CREATEVIEW语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新视图"><span class="nav-number">2.29.2.</span> <span class="nav-text">更新视图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#撤销视图"><span class="nav-number">2.29.3.</span> <span class="nav-text">撤销视图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NULL"><span class="nav-number">2.30.</span> <span class="nav-text">NULL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IFNULL函数"><span class="nav-number">2.31.</span> <span class="nav-text">IFNULL函数</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux下安装配置MySQL"><span class="nav-number">1.</span> <span class="nav-text">Linux下安装配置MySQL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#查看系统是否自带MySQL"><span class="nav-number">1.1.</span> <span class="nav-text">查看系统是否自带MySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卸载MySQL"><span class="nav-number">1.2.</span> <span class="nav-text">卸载MySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装MySQL"><span class="nav-number">1.3.</span> <span class="nav-text">安装MySQL</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SQL常用指令"><span class="nav-number">2.</span> <span class="nav-text">SQL常用指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#展示并选择数据库"><span class="nav-number">2.1.</span> <span class="nav-text">展示并选择数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL数据类型"><span class="nav-number">2.2.</span> <span class="nav-text">MySQL数据类型:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Text-类型："><span class="nav-number">2.2.1.</span> <span class="nav-text">Text 类型：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Number-类型："><span class="nav-number">2.2.2.</span> <span class="nav-text">Number 类型：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Date-类型："><span class="nav-number">2.2.3.</span> <span class="nav-text">Date 类型：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#create-table语句"><span class="nav-number">2.3.</span> <span class="nav-text">create table语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#select语句"><span class="nav-number">2.4.</span> <span class="nav-text">select语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#where语句"><span class="nav-number">2.5.</span> <span class="nav-text">where语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#order-by语句"><span class="nav-number">2.6.</span> <span class="nav-text">order by语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#insert-into语句"><span class="nav-number">2.7.</span> <span class="nav-text">insert into语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#update语句"><span class="nav-number">2.8.</span> <span class="nav-text">update语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#delete语句"><span class="nav-number">2.9.</span> <span class="nav-text">delete语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#alter-table"><span class="nav-number">2.10.</span> <span class="nav-text">alter table</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加列"><span class="nav-number">2.10.1.</span> <span class="nav-text">添加列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除列"><span class="nav-number">2.10.2.</span> <span class="nav-text">删除列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更改列-数据类型"><span class="nav-number">2.10.3.</span> <span class="nav-text">更改列(数据类型)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#select-top"><span class="nav-number">2.11.</span> <span class="nav-text">select top</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通配符"><span class="nav-number">2.12.</span> <span class="nav-text">通配符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL正则表达式"><span class="nav-number">2.12.1.</span> <span class="nav-text">MySQL正则表达式:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#in"><span class="nav-number">2.13.</span> <span class="nav-text">in</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#between"><span class="nav-number">2.14.</span> <span class="nav-text">between</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#别名"><span class="nav-number">2.15.</span> <span class="nav-text">别名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#join"><span class="nav-number">2.16.</span> <span class="nav-text">join</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UNION操作符"><span class="nav-number">2.17.</span> <span class="nav-text">UNION操作符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SELECT-INTO"><span class="nav-number">2.18.</span> <span class="nav-text">SELECT INTO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#INSERT-INTO-SELECT"><span class="nav-number">2.19.</span> <span class="nav-text">INSERT INTO SELECT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL约束"><span class="nav-number">2.20.</span> <span class="nav-text">SQL约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UNIQUE约束"><span class="nav-number">2.21.</span> <span class="nav-text">UNIQUE约束</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建表时添加unique约束"><span class="nav-number">2.21.1.</span> <span class="nav-text">创建表时添加unique约束:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义多个列的约束并命名unique约束"><span class="nav-number">2.21.2.</span> <span class="nav-text">定义多个列的约束并命名unique约束:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#alter-table时的unique约束"><span class="nav-number">2.21.3.</span> <span class="nav-text">alter table时的unique约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#撤销unique约束"><span class="nav-number">2.21.4.</span> <span class="nav-text">撤销unique约束</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PRIMARY-KEY约束"><span class="nav-number">2.22.</span> <span class="nav-text">PRIMARY KEY约束</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CREATE-TABLE时的PRIMARY-KEY约束"><span class="nav-number">2.22.1.</span> <span class="nav-text">CREATE TABLE时的PRIMARY KEY约束:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ALTER-TABLE时的PRIMARY-KEY约束"><span class="nav-number">2.22.2.</span> <span class="nav-text">ALTER TABLE时的PRIMARY KEY约束</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FOREIGN-KEY约束"><span class="nav-number">2.23.</span> <span class="nav-text">FOREIGN KEY约束</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CREATE-TABLE时的FOREIGN-KEY"><span class="nav-number">2.23.1.</span> <span class="nav-text">CREATE TABLE时的FOREIGN KEY</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#alter-table时的FOREIGN-KEY"><span class="nav-number">2.23.2.</span> <span class="nav-text">alter table时的FOREIGN KEY</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CHECK约束"><span class="nav-number">2.24.</span> <span class="nav-text">CHECK约束</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CREATETABLE时CHECK约束"><span class="nav-number">2.24.1.</span> <span class="nav-text">CREATETABLE时CHECK约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#alter-table时约束"><span class="nav-number">2.24.2.</span> <span class="nav-text">alter table时约束</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AUTO-INCREMENT字段"><span class="nav-number">2.25.</span> <span class="nav-text">AUTO_INCREMENT字段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL-default约束"><span class="nav-number">2.26.</span> <span class="nav-text">SQL default约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CREATE-INDEX语句"><span class="nav-number">2.27.</span> <span class="nav-text">CREATE INDEX语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DROP语句"><span class="nav-number">2.28.</span> <span class="nav-text">DROP语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL-视图"><span class="nav-number">2.29.</span> <span class="nav-text">SQL 视图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL-CREATEVIEW语句"><span class="nav-number">2.29.1.</span> <span class="nav-text">SQL CREATEVIEW语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新视图"><span class="nav-number">2.29.2.</span> <span class="nav-text">更新视图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#撤销视图"><span class="nav-number">2.29.3.</span> <span class="nav-text">撤销视图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NULL"><span class="nav-number">2.30.</span> <span class="nav-text">NULL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IFNULL函数"><span class="nav-number">2.31.</span> <span class="nav-text">IFNULL函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SQL函数"><span class="nav-number">3.</span> <span class="nav-text">SQL函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MySQL"><span class="nav-number">4.</span> <span class="nav-text">MySQL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RDBMS术语"><span class="nav-number">4.1.</span> <span class="nav-text">RDBMS术语</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL用户设置"><span class="nav-number">4.2.</span> <span class="nav-text">MySQL用户设置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加用户"><span class="nav-number">4.2.1.</span> <span class="nav-text">添加用户</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL分组"><span class="nav-number">4.3.</span> <span class="nav-text">MySQL分组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL事务"><span class="nav-number">4.4.</span> <span class="nav-text">MySQL事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL临时表"><span class="nav-number">4.5.</span> <span class="nav-text">MySQL临时表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL复制表"><span class="nav-number">4.6.</span> <span class="nav-text">MySQL复制表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL元数据"><span class="nav-number">4.7.</span> <span class="nav-text">MySQL元数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL处理重复数据"><span class="nav-number">4.8.</span> <span class="nav-text">MySQL处理重复数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL导出数据"><span class="nav-number">4.9.</span> <span class="nav-text">MySQL导出数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL导入数据"><span class="nav-number">4.10.</span> <span class="nav-text">MySQL导入数据</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-操作MySQL数据库"><span class="nav-number">5.</span> <span class="nav-text">C++操作MySQL数据库</span></a></li></ol></div>
             
 
           </div>
