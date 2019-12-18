@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="-计算机网络,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="终于秋招上岸，怎奈何自己太采，在去实习前被布置了一堆任务，其中就用我面试最怕的计算机网络。恰巧UNIX高级编程看到了套接字，发现没有计算机网络的知识直接看好像看不太明白，于是就把能个先放一放，等看完这本再回去接着看UNIX高级编程。当然，目前这个也在不断更新中。">
+<meta name="keywords" content="-计算机网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络-自顶向下方法">
+<meta property="og:url" content="http://yoursite.com/2019/12/18/计算机网络-自顶向下方法/index.html">
+<meta property="og:site_name" content="chst&#39;s Blog">
+<meta property="og:description" content="终于秋招上岸，怎奈何自己太采，在去实习前被布置了一堆任务，其中就用我面试最怕的计算机网络。恰巧UNIX高级编程看到了套接字，发现没有计算机网络的知识直接看好像看不太明白，于是就把能个先放一放，等看完这本再回去接着看UNIX高级编程。当然，目前这个也在不断更新中。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/13/QgUHg0.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/13/QgvUYT.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/13/Q2pA9f.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/14/Q2bQvn.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/14/Q2LEtS.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/17/Qox10K.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/17/Qox3TO.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/18/QT2s6s.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/18/QTWdzQ.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/18/QT7TPI.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/18/QTqQbD.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/18/Q7rZDK.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/18/Q7Rpss.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/18/QHl9js.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/18/QHatoj.png">
+<meta property="og:updated_time" content="2019-12-18T13:50:07.624Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="计算机网络-自顶向下方法">
+<meta name="twitter:description" content="终于秋招上岸，怎奈何自己太采，在去实习前被布置了一堆任务，其中就用我面试最怕的计算机网络。恰巧UNIX高级编程看到了套接字，发现没有计算机网络的知识直接看好像看不太明白，于是就把能个先放一放，等看完这本再回去接着看UNIX高级编程。当然，目前这个也在不断更新中。">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/12/13/QgUHg0.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/12/18/计算机网络-自顶向下方法/">
+
+
+
+
+
+  <title>计算机网络-自顶向下方法 | chst's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">chst's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">个人网站</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/18/计算机网络-自顶向下方法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="chst">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chst's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">计算机网络-自顶向下方法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-18T21:45:11+08:00">
+                2019-12-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/操作系统/" itemprop="url" rel="index">
+                    <span itemprop="name">操作系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  终于秋招上岸，怎奈何自己太采，在去实习前被布置了一堆任务，其中就用我面试最怕的计算机网络。恰巧UNIX高级编程看到了套接字，发现没有计算机网络的知识直接看好像看不太明白，于是就把能个先放一放，等看完这本再回去接着看UNIX高级编程。当然，目前这个也在不断更新中。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <center><font size="12">计算机网络－自顶向下方法</font></center>
+
+<h1 id="第一章-计算机网络和因特网"><a href="#第一章-计算机网络和因特网" class="headerlink" title="第一章　计算机网络和因特网"></a>第一章　计算机网络和因特网</h1><h2 id="什么是因特网"><a href="#什么是因特网" class="headerlink" title="什么是因特网"></a>什么是因特网</h2><p>因特网描述方式有两种：</p>
+<ol>
+<li>描述因特网具体构成：构成因特网的硬件和软件。</li>
+<li>分布式应用提供服务的网络基础设施。</li>
+</ol>
+<h3 id="具体构成描述"><a href="#具体构成描述" class="headerlink" title="具体构成描述"></a>具体构成描述</h3><p><img src="https://s2.ax1x.com/2019/12/13/QgUHg0.png" alt="组成"></p>
+<p>主机（host）：与因特网相连的计算机等设备，也称为端系统（end system）。</p>
+<p>端系统通过通信链路（communication link）和分组交换机（packet switch）连接到一起。</p>
+<p>通信链路由不同类型的物理媒介组成，链路传播速度以bps度量。</p>
+<p>分组：当一个端系统向另一个端系统发送时发送端系统将数据进行分段，并为每段加上首部字节，由此形成的信息包被称为分组，这些分组通过网络发送到目的端系统，在那里被装成初始数据。</p>
+<p>分组交换机从它的一条入通信链路接收达到的分组，并从它的一条出通信链路转发该分组。当前最主要的两种分组交换机是路由器（router）和链路层交换机（link-layer switch）。</p>
+<p>路径：从发送端到接收端，一个分组所经历的一系列通信链路和分组交换机称为通过该网络的路径。</p>
+<p>端系统通过因特网服务提供商（Internet Service Provider，ISP）接入因特网。每个ISP是一个由多个分组交换机和多段通信链路组成的网络。不同的ISP为端系统提供了各种不同类型的网络接入（各种调制解调器、高速局域网接入和无线接入）。底层ISP通过高层ISP互联。每个ISP独立管理，运行IP协议。</p>
+<p>端系统、分组交换机和其他因特网部件都要运行控制中接收和发送信息的一系列协议。TCP（Transmission Control Protocol，传输控制协议）和IP（Internet Protocol，网际协议）是因特网中最重要的两个协议。IP协议定义了在路由器和端系统中发送和接受的分组的格式。因特网主要协议统称为TCP/IP。</p>
+<p>公共因特网：特定网络，因特网。网络的网络，即将网络连接起来的网络。</p>
+<p>内联网：专用网络，这些网络内的主机不能与专用网络外部的主机交换信息（除非这些信息通过了所谓的防火墙，否则防火墙一般会限制报文进入和流出网络）。</p>
+<h3 id="服务描述"><a href="#服务描述" class="headerlink" title="服务描述"></a>服务描述</h3><p>分布式应用程序：涉及多台相互交换数据的端系统的程序。因特网应用程序运行在端系统上，即它们并不在网路核心的分组交换机上。</p>
+<p>与因特网相连的端系统提供了一个应用编程接口（Application Programming Interface，API），API规定了运行在一个端系统上的软件请求因特网基础设施向另一个端系统上的特定目的地软件交付数据的方式。因特网是一种基础设施，新应用程序正在其上不断地被发明和设置。</p>
+<h3 id="什么是协议"><a href="#什么是协议" class="headerlink" title="什么是协议"></a>什么是协议</h3><p>网路协议类似于人类协议，不过交换报文和采取行动的是某些设备的硬件或软件组件。因特网的所有活动，凡是涉及两个或多个通信的远程实体都受协议限制。</p>
+<p>一个协议定义了两个或多个通信实体之间交换的报文格式和次序，以及在报文传输或接收或其他事件方面所采取的动作。</p>
+<h2 id="网络边缘"><a href="#网络边缘" class="headerlink" title="网络边缘"></a>网络边缘</h2><p>端系统位于网络的边缘。端系统包括桌面计算机、服务器和移动计算机，还包括越来越多的其他类型设备。主机=端系统。主机又被分为客户机和服务器。</p>
+<h3 id="客户机和服务器程序"><a href="#客户机和服务器程序" class="headerlink" title="客户机和服务器程序"></a>客户机和服务器程序</h3><p>客户程序运行在一个端系统上，它发出请求，并从运行在另一个端系统的服务器程序接收服务。客户机-服务器应用程序是分布式应用程序，客户机和服务器通过因特网护发报文以交互。</p>
+<p>对等（P2P）应用程序：用户端程序起着客户机程序和服务器程序的双重作用。当它向一个对等方请求文件时，起着客户机的作用，向另一个对等方发送文件时起着服务器的作用。</p>
+<h3 id="接入网"><a href="#接入网" class="headerlink" title="接入网"></a>接入网</h3><p>接入网：端系统连接到其边缘路由器的物理链路。边缘路由器是端系统到任何其他远程端系统的路径上第一个路由器。</p>
+<p>住宅接入：拨号调制解调器。</p>
+<p>公司接入：局域网（LAN）。</p>
+<p>无线接入：无线局域网（wireless LAN），广域无线网（wide-area wireless access network）。</p>
+<h3 id="物理媒介"><a href="#物理媒介" class="headerlink" title="物理媒介"></a>物理媒介</h3><p>导引型媒体：电波沿着固体媒体被传导：</p>
+<ol>
+<li>双绞铜线</li>
+<li>同轴电缆</li>
+<li>光钎</li>
+</ol>
+<p>非导引型媒体：电波在空气或外层空间中传播：</p>
+<ol>
+<li>陆地无线电信道</li>
+<li>卫星无线电信道</li>
+</ol>
+<h2 id="网络核心"><a href="#网络核心" class="headerlink" title="网络核心"></a>网络核心</h2><p>网路核心：因特网端系统的分组交换机和链路的网状结构。</p>
+<h3 id="电路交换和分组交换"><a href="#电路交换和分组交换" class="headerlink" title="电路交换和分组交换"></a>电路交换和分组交换</h3><p>通过网络链路和交换机移动数据有两种基本方法：电路交换和分组交换。</p>
+<p>电路交换中，沿着端系统通信路径，为端系统之间通信所提供的资源（缓存、链路传输速率）在通信会话期间会被预留。代表为电话网络。</p>
+<p>分组交换网络中，这些资源不会被预留；会话的报文按需使用这些资源，这将导致可能不得不等待（排队）接入通信线路。代表为互联网。</p>
+<h4 id="电路交换网络中的多路复用"><a href="#电路交换网络中的多路复用" class="headerlink" title="电路交换网络中的多路复用"></a>电路交换网络中的多路复用</h4><p>链路中的网络要实现多路复用（使得一条线路可以有多条连接）有两种方式：</p>
+<ol>
+<li>频分多路复用（Frequency-Division Multiplexing，FDM）：链路的频谱由跨越链路创建的所有连接所共享。特别是，该链路在连续期间为每条连接专用一个频段。在电话网络中，这个频段通常是4kHz，该频段被称为带宽。调频无线电台也使用FDM来共享88~108MHZ的频谱，其中为每一个电台被分配一个特定的频带。</li>
+<li>时分多路复用（Time-Division Multiplexing，TDM）：时间被划分为固定区间的帧，每帧又被划分为固定数量的时隙。当网络跨越一条链路创建一条连接时，该网络在每个帧中为该连接指定一个时隙。这些时隙专门由该连接单独使用，一个时隙可用于传输该连接（在每个帧内）的数据。</li>
+</ol>
+<p>电路交换缺点：</p>
+<ol>
+<li>效率低，因为在静默期专用电路空闲，不能被其他进行中的连接所使用。</li>
+<li>创建端到端电路和预留端到端带宽是很复杂的，需要复杂的信令软件来协调沿端到端路径的交换机的操作。</li>
+</ol>
+<h4 id="分组交换"><a href="#分组交换" class="headerlink" title="分组交换"></a>分组交换</h4><p>源主机将长报文划分为较小的数据块，并称之为分组。在源和目的之间，这些分组中的每个都通过通信链路的分组交换机（路由器和链路层交换机）传送。</p>
+<p><strong>存储转发机制</strong>（store-and-forward transmission）：交换机能够开始向输出链路传输该分组的第一个比特之前，必须接收到整个分组。因此，存储转发式分组交换机沿着该分组的路径在每条链路的输入端引入存储转发时延。</p>
+<p><strong>输出缓存</strong>（output buffer）（也称输出队列（output queue））：每个分组交换机有多条链路与之相连，对于每一条相连的链路，该分组交换机具有一个输出缓存，它用于存储路由器准备发往那条链路的分组。如果到达的分组需要跨越链路传输，但发现该链路忙于其他分组，该到达分组必须在输出缓存中等待。因此除了存储转发时延以外，分组还要承受输出缓存的<strong>排队时延</strong>（queue delay）。由于缓存区大小有限，因此一个到达的分组可能发现该缓存被等待传输的分组完全占满了，此时将出现<strong>分组丢失</strong>或<strong>丢包</strong>（packet lost）——可能是到达的该分组也可能是已经排队的分组之一将被丢弃。</p>
+<p><img src="https://s2.ax1x.com/2019/12/13/QgvUYT.png" alt="store-and-forward"></p>
+<p>分组交换的缺点：其端到端时延是变动的和不可预测的（主要是因为排队时延的变动和不可预测），因此不适合实时服务（如电话）。</p>
+<p>分组交换的优点：</p>
+<ol>
+<li>提供了比电路交换更好的带宽。</li>
+<li>以电路交换更简单、更有效，实现成本更低。</li>
+</ol>
+<p>统计多路复用：按需共享资源。</p>
+<h3 id="分组如何通过分组交换形成其通路"><a href="#分组如何通过分组交换形成其通路" class="headerlink" title="分组如何通过分组交换形成其通路"></a>分组如何通过分组交换形成其通路</h3><p>在因特网中，每个通过该网络传输的分组在它的首部包含了其目的地地址，该地址是一种层次结构。当分组到达网络中的一台路由器时，该路由器检查分组的目的地地址的一部分，并向相邻路由器转发该分组。更特别的，每台路由器具有一个转发表，用于将目的地地址（或其中一部分）映射到输出链路。当分组到达一台路由器时，该路由器检查目的的地址，并用这个目的的地址搜索转发表，以找到合适的输出链路。然后路由器将该分组导向输出链路。</p>
+<h3 id="ISP和因特网主干道"><a href="#ISP和因特网主干道" class="headerlink" title="ISP和因特网主干道"></a>ISP和因特网主干道</h3><p>第一层ISP的特性：</p>
+<ol>
+<li>直接与其他每个第一层ISP相连。</li>
+<li>与大量的第二层ISP和其他客户网络相连。</li>
+<li>覆盖国际区域。</li>
+</ol>
+<p>第一层ISP也被称为因特网主干道。第二层ISP通常具有区域性或国家线覆盖规模，并且非常重要的只与少数第一层ISP相连接。第二层ISP需要引导流量通过它所连接的第一层ISP。第二层ISP被他所连接的第一层ISP称为客户，第一层ISP是第二层ISP的供应商。第二层之下是较低层ISP，层次结构的底层是接入ISP。当两个ISP直接相连时，他们被称为是对等的。</p>
+<p>一个ISP网络中，某ISP与其他ISP的连接点被称为汇集点（Point of Presence，POP）。POP就是某ISP中的一台或多台路由器组，通过他们能够与其他ISP的路由器连接。</p>
+<h2 id="分组交换网中的时延、丢包和吞吐量"><a href="#分组交换网中的时延、丢包和吞吐量" class="headerlink" title="分组交换网中的时延、丢包和吞吐量"></a>分组交换网中的时延、丢包和吞吐量</h2><h3 id="时延概述"><a href="#时延概述" class="headerlink" title="时延概述"></a>时延概述</h3><p>分组从一个节点（主机或路由器）沿着路径到后继节点（主机或路由器）时，该节点在沿途的每个节点都经受了几种不同的时延。主要包括：<strong>节点处理时延</strong>（nodal processing delay）、<strong>排队时延</strong>（queuing delay）、<strong>传输时延</strong>（Transmission delay）和<strong>传播时延</strong>（propagation delay），这些时延总体累加起来是<strong>节点总时延</strong>（total delay）。</p>
+<p><img src="https://s2.ax1x.com/2019/12/13/Q2pA9f.png" alt="delay"></p>
+<p>处理时延：检测分组首部和决定将该分组导向何处所需时间是处理时延的主要部分。一般处理时延较短（微秒级或者更低）。</p>
+<p>排队时延：在队列中，当分组在链路上等待传输时，经受排队时延。队列很空且没有其他分组在传输时，排队时延是0。流量很大时，排队时延就会比较大。实际排队时延在毫秒到微秒级。</p>
+<p>传输时延：仅当分组的整体全部导到时，才能传输我们的分组。L表示分组的比特长度，R bps表示从路由器A到路由器B的传输速率。传输时延是L/R，即将所以比特推（传输）向链路所需要的时间。实际传输时延在好秒到微妙级。</p>
+<p>传播时延：从该链路的起点到路由器B传播所需要的时间是传播时延。比特以该链路的传播速率传播。其速率范围是2*10^8 ~ 3*10^8，传播时延等于路由器间的距离除以传播速度。</p>
+<p>传输时延是路由器将分组推出所需要的时间，它是分组长度和链路传输速度的函数，而于传输距离无关。传播时延是一个比特从一台路由器向另一台路由器传播所需要的时间，是距离的函数，与分组长度或链路的传输速度无关。<br>$$<br>d_{nodal} = d_{proc}+d_{queue}+d_{trans}+d_{prop}<br>$$</p>
+<h3 id="排队时延和丢包"><a href="#排队时延和丢包" class="headerlink" title="排队时延和丢包"></a>排队时延和丢包</h3><p>节点时延最复杂的就是排队时延。其取决于流量到达该队列的速率、链路的传输速率和流量到达性质。</p>
+<p><strong>流量强度</strong>：令a表示分组到达的平均速率（a的单位是每秒分组，即packet/s）；R是传输速率，即比特从队列中推出的速率，单位是bps；为了简化起见，假定所以分组是由L比特组成的，则比特到达队列的平均速率是La bps。此时La/R被称为流量强度。</p>
+<p>如果流量强度大于1，则比特到达队列的平均速度超过该队列传输出去的速度，此时队列的增加趋于无界，且排队时延无限大。当流量强度小于1时，到达流量的性质影响排队时延，如果分组以突发形式到达而不是周期形式到达，则可能有很大的平均排队时延。</p>
+<p>丢包的数量随着流量强度的增加而增加。</p>
+<h3 id="端到端时延"><a href="#端到端时延" class="headerlink" title="端到端时延"></a>端到端时延</h3><p>Traceroute程序：其能够在任何因特网主机上运行。当用户指定一个目的主机名字时，源主机中的该程序朝着该目的地发送多个特殊的分组（默认30个）。当这些分组向着目的地传送时，他们通过一系列路由器。当路由器接收到这些特殊分组时，它向源回送一个短报文，该报文包括路由器名字和地址。</p>
+<p>处理流程：假定在源与目的地之间有N-1台路由器，则源将向网络发送N个特殊的分组，其中每个分组地址指向最终的目的地。这N个特殊分组标识从1到N，第一个分组标识为1，最后的分组标识为N。当第n台路由器接收到第n个标识为n的分组时，该路由器不是向目的地转发，而是向源回送一个报文。当目的的主机接到第N个分组时，也会向源返回一个报文。该源记录了从它发送一个分组到它接收到对应返回报文所经受时间，也记录了返回该报文的路由器（或目的地主机）的名字和地址。以这种方式，源能够重建分组从源到目的地所采用的路由，并且能够获得到所有中间路由器的往返时延。Traceroute实际上对上述实验重复了三次，因此实际发送了3*N组数据。</p>
+<p>traceroute输出有6列：第一列是前面描述的n值，即沿着路径上的路由器号码；第二列是路由器名字；第三列是路由器地址；最后三列是3次往返时延。如果源从任何给定的路由器接收少于三条报文（由于网络中丢包），则traceroute在该路由器号码后面放一个星号，并向那台路由器报告少于3次往返时间。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">$ traceroute www.yinkuiwang.cn</span><br><span class="line">traceroute to www.yinkuiwang.cn (185.199.110.153), 30 hops max, 60 byte packets</span><br><span class="line"> 1  _gateway (10.136.0.1)  2.857 ms  3.053 ms  3.157 ms</span><br><span class="line"> 2  202.113.18.229 (202.113.18.229)  3.281 ms  3.390 ms  3.742 ms</span><br><span class="line"> 3  202.113.18.102 (202.113.18.102)  2.748 ms  3.839 ms  3.804 ms</span><br><span class="line"> 4  111.33.78.1 (111.33.78.1)  4.961 ms  4.929 ms  5.200 ms</span><br><span class="line"> 5  117.131.131.13 (117.131.131.13)  4.239 ms  4.442 ms 117.131.131.9 (117.131.131.9)  4.587 ms</span><br><span class="line"> 6  221.183.38.49 (221.183.38.49)  5.822 ms  2.652 ms  2.647 ms</span><br><span class="line"> 7  * 221.183.8.150 (221.183.8.150)  15.551 ms *</span><br><span class="line"> 8  221.176.21.146 (221.176.21.146)  10.094 ms  10.091 ms 221.176.21.186 (221.176.21.186)  25.060 ms</span><br><span class="line"> 9  221.183.46.253 (221.183.46.253)  16.063 ms  16.178 ms *</span><br><span class="line">10  221.183.30.234 (221.183.30.234)  207.610 ms 221.183.30.230 (221.183.30.230)  198.938 ms 221.183.30.246 (221.183.30.246)  195.548 ms</span><br><span class="line">11  223.120.6.97 (223.120.6.97)  252.070 ms * 223.118.12.5 (223.118.12.5)  218.268 ms</span><br><span class="line">12  223.120.6.113 (223.120.6.113)  239.274 ms 223.120.6.26 (223.120.6.26)  237.843 ms *</span><br><span class="line">13  * * *</span><br><span class="line">14  lag-10.ear1.Madrid2.Level3.net (4.68.111.45)  238.222 ms  236.624 ms  243.475 ms</span><br><span class="line">15  * * *</span><br><span class="line">16  * * *</span><br><span class="line">17  * * *</span><br><span class="line">18  * * *</span><br><span class="line">19  * * *</span><br><span class="line">20  * * *</span><br><span class="line">21  * * *</span><br><span class="line">22  * * *</span><br><span class="line">23  * * *</span><br><span class="line">24  * * *</span><br><span class="line">25  * * *</span><br><span class="line">26  * * *</span><br><span class="line">27  * * *</span><br><span class="line">28  * * *</span><br><span class="line">29  * * *</span><br><span class="line">30  * * *</span><br></pre></td></tr></table></figure>
+
+<p>由于排队时延随时间变化，所以分组n发送到路由器n的往返时延可能大于分组n+1发送到路由器n+1的往返时延。比如上面2和3的第一个时延。</p>
+<h3 id="计算机网络中的吞吐量"><a href="#计算机网络中的吞吐量" class="headerlink" title="计算机网络中的吞吐量"></a>计算机网络中的吞吐量</h3><p>瞬时吞吐量：从主机A向主机B传输一个大文件，B接收该文件的速率（单位bps）。</p>
+<p>平均吞吐量：该文件由F比特组成，而主机B接收到所以F比特使用了T秒，则平均吞吐量为F/T bps。</p>
+<p>从端系统到另一个端系统的吞吐量取决于拼劲链路，即路径中链路速度最慢的那个链路。</p>
+<h2 id="协议层次和它们的服务模型"><a href="#协议层次和它们的服务模型" class="headerlink" title="协议层次和它们的服务模型"></a>协议层次和它们的服务模型</h2><h3 id="分层的体系结构"><a href="#分层的体系结构" class="headerlink" title="分层的体系结构"></a>分层的体系结构</h3><p>网络设计者以分层的方式组织协议以及实现这些协议的网络硬件和软件。每个协议属于一层，某层向其上一层提供服务（service），即所谓的层的服务模型，某层通过在该层中执行某些动作或者使用其直接下层的服务来提供它的服务。</p>
+<p>一个协议层能够通过软件和硬件或两者的结合实现。应用层在端系统的软件中实现，运输层也是这样。物理层和链路层负责处理跨特定链路的通信，通常在与给定链路相关的网络接口卡中实现。网络层经常是软件和硬件的结合。层n协议的不同部分常常位于这些网络组件的各部分。</p>
+<p>协议分层的优点是：概念化结构化；模块化使得更新系统组件更加容易。</p>
+<p>缺点：某层可能重复其较低层的功能；某层的功能可能需要仅在其他某层才出现的信息，这违反了层次分离的目标。</p>
+<p><img src="https://s2.ax1x.com/2019/12/14/Q2bQvn.png" alt="分层"></p>
+<p><strong>应用层</strong></p>
+<p>应用层是网络应用程序及其应用层协议存留的地方。应用层包含很多协议：HTTP（web文档请求和传送）；SMTP（电子邮件报文传输）；FTP（两个端系统之间文件传送）。还有某些网络功能，如DNS（域名系统）将网址转换为32比特网络地址。</p>
+<p>应用层协议分别在多个端系统中，一个端系统中的应用程序使用协议与另一个端系统中的应用程序交换信息分组。位于应用层的信息分组称为报文（message）。</p>
+<p><strong>运输层</strong></p>
+<p>运输层提供了在应用程序端点之间传送应用层报文的服务。因特网存在两个运输协议TCP和UDP。TCP向它的应用程序提供了面向连接的服务，这种服务包括了应用层报文向目的地的确保确保传递和流量控制。TCP将长报文换分为短报文，并提供阻塞控制机制，当网络阻塞时，源抑制其传输速率。UDP协议提供无连接服务，其不提供不必要的服务，不提供可靠性，没有流量控制，也没有拥塞控制。运输层分组称为报文段（segment）。</p>
+<p><strong>网络层</strong></p>
+<p>网络层负责将数据报的网络层分组从一台主机移动到另一台主机源主机的因特网运输层协议向网络层递交运输层报文段和目的地地址。</p>
+<p>因特网网络层包括著名的IP协议，该协议定义了数据中各个字段以及端系统和路由器如何作用于这些字段。所有网络层的因特网组件都必须运行IP协议。因特网的网络层也包含决定路由的选路协议。IP是将因特网连接在一起的粘合剂。</p>
+<p><strong>链路层</strong></p>
+<p>为了将分组从一个节点移动到路径的下一个节点，网络层必须使用链路层服务。在每一个节点，网络层将数据报下传给链路层，链路层沿着路径将数据传输给下一个节点，在下一个节点，链路层将数据报上传给网络层。</p>
+<p>链路层提供的服务取决于应用于该链路的特定链路协议。主要有以太网、WIFI和点对点协议（PPP）。链路层分组称为帧。</p>
+<p><strong>物理层</strong></p>
+<p>链路层是将帧从一个网路元素移动到临近的网络元素。物理层任务是将该帧中的一个一个比特从一个节点移动到下一个节点。</p>
+<p><strong>ISO</strong>模型</p>
+<p>ISO多加了两层，表示层和会话层。表示层是使通信的应用程序能够解释交换数据的含义，提供的服务包括数据压缩、数据加密以及数据描述。会话层提供了数据交换的定界和同步功能，包括建立检查点和恢复方案的方法。</p>
+<h3 id="报文、报文段、数据报和帧"><a href="#报文、报文段、数据报和帧" class="headerlink" title="报文、报文段、数据报和帧"></a>报文、报文段、数据报和帧</h3><p><img src="https://s2.ax1x.com/2019/12/14/Q2LEtS.png" alt="传输"></p>
+<p>上图显示了一条物理路径：数据从发送端系统的协议向下，上下中间的链路层交换机和路由器的协议栈，进而向上到达接收端系统的协议栈。</p>
+<p>上图也说明了封装这一重要概念。在发送主机，应用层报文（M）被传送给运输层；运输层收取报文并附上附加信息（运输层首部Ht），该首部将被被接收的运输层使用。应用层报文和运输层首部信息共同构成了运输层报文段。运输层报文段因此封装了应用层报文。运输层则向网络层传递该报文段，网络层增加了如源和目的地端系统地址等网络首部信息形成网络层数据报。该数据报接下来被传递给链路层，链路层添加自己的链路首部信息并创建链路帧。于是，在每一层，分组具有两种类型的字段：首部字段和有效荷载字段，有效荷载字段来自于上一层。</p>
+<h2 id="攻击威胁下的网络"><a href="#攻击威胁下的网络" class="headerlink" title="攻击威胁下的网络"></a>攻击威胁下的网络</h2><h3 id="坏家伙能够经因特网将恶意软件放入你的计算机"><a href="#坏家伙能够经因特网将恶意软件放入你的计算机" class="headerlink" title="坏家伙能够经因特网将恶意软件放入你的计算机"></a>坏家伙能够经因特网将恶意软件放入你的计算机</h3><p>僵尸网络：被恶意软件感染的设备，受害主机还能征招网络上数以千计的类似受害设备。</p>
+<p>自我复制：一旦恶意软件感染了一台主机，就会从那台主机进入到更多主机。</p>
+<p>病毒：一种需要某种形式的用户交互来感染用户设备的恶意软件。</p>
+<p>特洛伊木马：隐藏在有用软件的恶意软件。</p>
+<h3 id="坏家伙能够攻击服务器和网络基础设施"><a href="#坏家伙能够攻击服务器和网络基础设施" class="headerlink" title="坏家伙能够攻击服务器和网络基础设施"></a>坏家伙能够攻击服务器和网络基础设施</h3><p>拒绝服务攻击（Denial-of-Service，DoS）是一种宽泛的安全性攻击，其使得合法用户不能使用网络、主机或其他基础设施部分。DoS攻击主要分为三种：</p>
+<ol>
+<li>弱点攻击：向目标主机上运行的易受攻击的应用程序或操作系统发送制作精细的报文。如果多个分组以适当的顺序发送给一个易受攻击的应用程序或操作系统，该服务可能停止运行，甚至导致主机奔溃。</li>
+<li>带宽泛洪：攻击者向目标主机发送大量的分组，导致目标的接入链路变得拥塞，从而使合法的分组无法到达服务器。</li>
+<li>连接泛洪：攻击者在目标主机中创建大量的半开或全开TCP连接。目标主机因这些伪造的连接而显然困境，从而停止合法的连接。</li>
+</ol>
+<p>对于带宽泛洪，单一源可能无法产生足够大的流量来危害服务器，同时单一攻击可能被上游路由器检测出该攻击并在该流量靠近服务器前就将其阻挡下来。分布式DoS（distributed Dos，DDos）中，攻击者控制多个源并让每个源向目标猛烈发送流量。</p>
+<h3 id="坏家伙能嗅探分组"><a href="#坏家伙能嗅探分组" class="headerlink" title="坏家伙能嗅探分组"></a>坏家伙能嗅探分组</h3><p>在无线传输设备的附加放置一台被动接收机，该接收机就能得到传输的每个分组的拷贝。记录每个流经分组拷贝的被动接收机被称为分组嗅探器。</p>
+<p>嗅探器也可用于有线环境，如在有线广播中。嗅探器是被动接收设备，很难被发现，因此最后的防御手段是密码学方式。</p>
+<h3 id="坏家伙能够伪装成你信任的人"><a href="#坏家伙能够伪装成你信任的人" class="headerlink" title="坏家伙能够伪装成你信任的人"></a>坏家伙能够伪装成你信任的人</h3><p>生成具有任意原地址、分组内容和目的地址的分组，然后将这个人工制作的分组传输到因特网中是十分容易的。将虚假源地址的分组注入因特网的能力被称为IP哄骗（IP spoofing），这只是一个用户能够冒充另一个用户的多种形式之一。</p>
+<p>为解决这个问题，需要采用端点鉴别（end-point authentication）机制，即确保报文源自我们认为应该来自的地方的机制。</p>
+<h3 id="坏家伙能够修改或删除报文"><a href="#坏家伙能够修改或删除报文" class="headerlink" title="坏家伙能够修改或删除报文"></a>坏家伙能够修改或删除报文</h3><p>坏家伙插入到两个通信实体之间，危及发送信息的完整性。</p>
+<h1 id="第二章-应用层"><a href="#第二章-应用层" class="headerlink" title="第二章 应用层"></a>第二章 应用层</h1><h2 id="应用层协议原理"><a href="#应用层协议原理" class="headerlink" title="应用层协议原理"></a>应用层协议原理</h2><h3 id="网络应用程序体系结构"><a href="#网络应用程序体系结构" class="headerlink" title="网络应用程序体系结构"></a>网络应用程序体系结构</h3><p>从应用程序研发者角度来看，网络体系结构是固定的，并为应用程序提供了特定的服务集合。现代网络应用程序所使用的两种主流体系结构：客户机/服务器体系结构或对等（P2P）体系结构。</p>
+<p>在客户机/服务器体系结构中，有一个总是打开的主机被称为服务器，它服务来自许多客户机的主机请求。典型例子为Web应用程序。在这个结构中，客户机之间不之间相互通信，服务器有固定的、周知的地址，称为IP地址。</p>
+<p>在P2P体系结构中，对总是打开的基础设施服务器有最小的（或者没有）依赖。任意间断连接的主机对——称为对等方，直接通信。P2P协议最突出的特性之一是它的自扩展性。</p>
+<p>某些应用具有混合的体系结构，由客户机/服务器和P2P元素结合而成，往往服务器场用于跟踪用户的IP地址，但用户到用户的报文在用户主机之间直接发送。</p>
+<h3 id="进程通信"><a href="#进程通信" class="headerlink" title="进程通信"></a>进程通信</h3><p>网络应用程序是由成对的进程组成，这些进程通过网络相互发送报文。在给定的一对进程中之间的通信会话中，发起通信（即在该回话开始时与其他进程联系）的进程被标示为客户机，在会话开始时等待联系的进程是服务器。</p>
+<p>进程通过套接字软件接口在网络上发送和接收报文。应用程序开发者可以控制套接字在应用层端的所以东西，但是对套接字的运输层端几乎没有控制。应用程序开发者对于应用层端的控制仅限于：</p>
+<ol>
+<li>选择运输协议。</li>
+<li>设定部分运输层参数，如最大缓存、最大报文长度等。</li>
+</ol>
+<h3 id="可供应用程序使用的传输协议"><a href="#可供应用程序使用的传输协议" class="headerlink" title="可供应用程序使用的传输协议"></a>可供应用程序使用的传输协议</h3><p><strong>可靠传输数据</strong></p>
+<p>第一章讨论过，分组可能会存在丢包，部分程序要保证数据完整性。如果一个协议提供了确保数据交付服务，就提供了<strong>可靠数据传输</strong>。运输层协议能够潜在的向应用程序提供的一个重要服务是进程到进程的可靠数据传输。此时，发送进程只要将数据传递给套接字，就可以相信数据被无差错到达接收进程。</p>
+<p>部分程序运行存在部分丢包，即为容忍丢失的应用。</p>
+<p><strong>吞吐量</strong></p>
+<p>具有吞吐量要求的应用程序，被称为带宽敏感应用。弹性应用根据需要充分利用可供使用的吞吐量。</p>
+<p><strong>定时</strong></p>
+<p>部分应用为了有效性而对数据交付有严格的时间限制。</p>
+<p><strong>安全性</strong></p>
+<p>运输层协议能够为应用程序提供一种或多种安全性服务。</p>
+<h3 id="因特网的运输服务"><a href="#因特网的运输服务" class="headerlink" title="因特网的运输服务"></a>因特网的运输服务</h3><p>因特网（TCP/IP网络）上的应用使用了两个运输层协议：UDP和TCP。创建应用时首先要决定使用哪一个。</p>
+<h4 id="TCP服务"><a href="#TCP服务" class="headerlink" title="TCP服务"></a>TCP服务</h4><p>TCP服务模型包括面向连接服务和可靠数据传输服务。</p>
+<p>（1）面向连接服务：使用TCP协议时，在应用层数据报文开始流动之前，其客户机程序和服务器程序之间互相交换运输层控制信息。即为握手过程，此过程提示客户机和服务器之间建立了一个<strong>TCP连接</strong>。这个连接是双全工的，即两个进程可以同时进行报文的收发。当应用程序结束报文发送时，必须拆除该连接。</p>
+<p>（2）可靠数据服务：进程通信的进程依靠TCP协议，无差错、按适当顺序交付发送的数据。没有子节的丢失和冗余。</p>
+<p>（3）拥塞控制机制：这种机制不为通信进程带来直接好处。但能够为因特网带来整体好处。当发送方和接收方之间网络发生拥塞时，TCP协议的拥塞控制机制会抑制发送进程。此机制对带宽敏感的应用有害。</p>
+<h4 id="UDP服务"><a href="#UDP服务" class="headerlink" title="UDP服务"></a>UDP服务</h4><p>UDP是一种不提供不必要服务的轻量级运输层协议，它仅提供最小服务。UDP是无连接的，因此两个进程之间没有握手的过程。UDP协议提供的是不可靠数据传输服务，即不保证一定能收到，也不保证顺序。</p>
+<p>UDP没有拥塞控制机制。</p>
+<h4 id="因特网运输层不提供的服务"><a href="#因特网运输层不提供的服务" class="headerlink" title="因特网运输层不提供的服务"></a>因特网运输层不提供的服务</h4><p>目前因特网不提供吞吐量和定时的保证。下面列出了一些流行因特网应用使用的运输层协议：</p>
+<table>
+<thead>
+<tr>
+<th>应用</th>
+<th>应用层协议</th>
+<th>运输层协议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>电子邮件</td>
+<td>SMTP</td>
+<td>TCP</td>
+</tr>
+<tr>
+<td>远程终端访问</td>
+<td>Telnet</td>
+<td>TCP</td>
+</tr>
+<tr>
+<td>Web</td>
+<td>HTTP</td>
+<td>TCP</td>
+</tr>
+<tr>
+<td>文件传输</td>
+<td>FTP</td>
+<td>TCP</td>
+</tr>
+<tr>
+<td>流媒体</td>
+<td>HTTP、RTP</td>
+<td>TCP或UDP</td>
+</tr>
+<tr>
+<td>因特网电话</td>
+<td>SIP、RTP或专用（如Skype）</td>
+<td>通常用UDP</td>
+</tr>
+</tbody></table>
+<h4 id="进程寻址"><a href="#进程寻址" class="headerlink" title="进程寻址"></a>进程寻址</h4><p>为了识别接收进程，需要定义两种信息：（1）该主机的名称或地址，（2）用来指定目的主机上接收进程的标识。</p>
+<p>在因特网中，主机使用IP地址进行标识（第四章深入探究）。此时，我们只要知道IP地址是用来<strong>唯一</strong>标识主机的32比特数就足够了。</p>
+<p>发送程序也必须识别运行在主机上的接收进程，目的地端口服务于此目的。已经给流行的应用程序分配了特定的端口号。如Web是80号。这是为了特定应用程序开发时大家统一，可以直接进行通信。</p>
+<h3 id="应用层协议"><a href="#应用层协议" class="headerlink" title="应用层协议"></a>应用层协议</h3><p>应用层协议定义了运行在不同端系统上的应用程序进程如何相互传递报文。其主要定义了如下内容：</p>
+<ol>
+<li>交换的报文类型，如请求报文和响应报文。</li>
+<li>各种类型的语法，如报文中的各个字段及其详细描述。</li>
+<li>字段的语义，即包含在字段中的信息含义。</li>
+<li>进程何时、如何发送报文以及对报文响应的规则。</li>
+</ol>
+<p>网络应用和应用层协议的区别：应用层协议只是网络应用的一部分，只是定义了应用程序之间沟通的协议。</p>
+<h2 id="Web应用与HTTP协议"><a href="#Web应用与HTTP协议" class="headerlink" title="Web应用与HTTP协议"></a>Web应用与HTTP协议</h2><h3 id="HTTP概况"><a href="#HTTP概况" class="headerlink" title="HTTP概况"></a>HTTP概况</h3><p>Web应用层协议是超文本传输协议（HyperText Transfer Protocol，HTTP）。HTTP协议有两部分程序实现：客户机程序和服务器程序，它们运行在不同的端系统中，通过交换HTTP报文进行会话。HTTP定义了这些报文的格式以及客户机和服务器是如何进行报文交换的。</p>
+<p>Web页面（Web page，也叫文档）是由对象组成的。对象简单来说就是文件，如HTML文件，JPEG图片文件、Java小程序或视频文件，这些文件可以通过一个URL地址寻址。多数Web页面含义一个基本的HTML文件以及几个引用对象。如一个Web页面包括一个HTML文件和5个JPEG图形文件，那这个Web页面有六个对象。每个URL地址由两部分组成：存放对象的服务器主机名和对象的路径名。如：<code>http://www.someschool.edu/someDepartment/picture.gif</code>中的<code>www.someschool.edu</code>即为主机名，<code>/someDepartment/picture.gif</code>即为路径。</p>
+<p>HTTP定义了Web客户端如何向Web服务器请求Web页面，以及服务器如何将Web页面传送给客户端。</p>
+<p>HTTP使用TCP作为支撑运输层协议。HTTP客户机发送一个与服务器的TCP连接，建立连接后，客户端和服务器就可以进行通信了。</p>
+<p>服务器向客户机发送请求的文件时，并不存储任何关于该客户机的状态信息。由于HTTP服务器不存储关于客户机状态的信息，使用说HTTP是一个无状态协议。</p>
+<h3 id="非持久连接和持久连接"><a href="#非持久连接和持久连接" class="headerlink" title="非持久连接和持久连接"></a>非持久连接和持久连接</h3><p>当客户机/服务器的交互运行于TCP之上时，应用程序开发者需要确定每个请求/响应是经过单独的TCP连接发送还是所以请求及响应经相同的TCP连接发送。前者称为非持久连接，后者称为持久连接。HTTP两者都支持，默认使用持久连接。非持久连接每个TCP连接只传输一个请求报文和一个响应报文。</p>
+<p><strong>往返时间</strong>（Round-Trip Time，RTT）：即一个小分组从客户机到服务器再回到客户机所花费的时间。一个RTT等于三次握手中前两个部分所消耗的时间。</p>
+<p>非持久连接缺点：</p>
+<ol>
+<li>必须为每一个请求的对象建立和维护一个全新的连接，对于每个这样的连接，在客户机和服务器都要分配TCP的缓冲区和变量，这给服务器带来严重负载。</li>
+<li>每个对象的传输时延为两个RTT（三次握手前两部分为一个，第三次握手（确认）同时发送请求，因此只有两个RTT）。</li>
+</ol>
+<h3 id="HTTP报文格式"><a href="#HTTP报文格式" class="headerlink" title="HTTP报文格式"></a>HTTP报文格式</h3><p>HTTP有两种报文：请求报文和响应报文</p>
+<h4 id="请求报文"><a href="#请求报文" class="headerlink" title="请求报文"></a>请求报文</h4><p>下面是一个典型的请求报文：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GET /somedir/page.html HTTP/1.1</span><br><span class="line">Host: www.someschool.edu</span><br><span class="line">Connection: close</span><br><span class="line">User-agent: Mozilla/4.0</span><br><span class="line">Accept-language: fr</span><br></pre></td></tr></table></figure>
+
+<p>HTTP请求第一行叫做请求行，其后继的行叫做首部行。请求行有三个字段：方法字段、URL字段和HTTP协议版本字段。方法字段可以取值GET、POST、HEAD、PUT和DELETE。</p>
+<p>首部行<code>Host:www.someschool.edu</code>定义了目标所在主机。<code>Connection:close</code>首部行，告诉服务器不希望麻烦的使用持久连接，要求服务器发送完请求的对象后就关闭连接。<code>User-agent:</code>首部行用来定义用户代理，即向服务器发送请求的浏览器类型。<code>Accept-language</code>表示用户想要得到该对象的语法版本。<code>Accept-language:</code>是可选内容协商首部之一。</p>
+<p>下图展示了请求报文的通用格式：</p>
+<p><img src="https://s2.ax1x.com/2019/12/17/Qox10K.png" alt="http requer"></p>
+<p>在首部行和附加回车换行后有一个实体主体（Entity body）。使用GET方法时实体主体为空，使用POST方法时才使用。使用POST方法的报文中，用户依然可以请求一个Web页面，但Web返回的内容依赖于POST方法的报文中。当方法字段值为POST时，实体主题中包含的就是用户在表单字段中输入的内容。</p>
+<p>HTML表单经常使用GET将输入数据（在表单字段中）传送到正确的URL。如，一个表单使用GET方式，它有两个字段，分别填写的是monkey和bananas，那么得到的URL结构为：<code>www.somesite.com/animalsearch?monkey&amp;bananas</code>。</p>
+<p>HEAD方法类似于GET。当服务器收到使用HEAD方法的请求时，会用一个HTTP的报文进行响应，但是并不返回请求对象（用于调试）。PUT方法用来向Web服务器上传对象。DELETE方法，用来删除Web服务器上的对象。</p>
+<h4 id="HTTP响应报文"><a href="#HTTP响应报文" class="headerlink" title="HTTP响应报文"></a>HTTP响应报文</h4><p>典型响应报文格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Connection: close</span><br><span class="line">Date: THu,03 Jul 2003 12:00:15 GMT</span><br><span class="line">Server: Apache/1.3.0(Unix)</span><br><span class="line">Last-Modified: Sun,6 May 2007 09:23:24 GMT</span><br><span class="line">Connect-Length: 6821</span><br><span class="line">Content-Type: text/html</span><br><span class="line"></span><br><span class="line">(data data ...)</span><br></pre></td></tr></table></figure>
+
+<p>响应分三部分：一个初始状态行，首部行和实体主体。实体主体是报文的主体，它包含一个所请求对象本身。状态行有三个字段：协议版本、状态码和相应状态信息。</p>
+<p><code>Connection:close</code>首部行告诉客户机发送完毕后关闭连接。<code>Date</code>首部行指示服务器产生并发送该响应报文的日期和时间。时间是指服务器从它的文件系统中检索到该对象，插入到响应报文的时间。<code>Server</code>报文指示服务器类型，类似与请求报文中<code>User-agent</code>首部行。<code>Last_Modified</code>首部行指示了对象穿件或最后修改的日期和时间。<code>Content_Length</code>表明被发送对象的字节数。<code>Content_Type</code>指示了实体主体原本的类型（HTML还是图片等）。</p>
+<p>下图展示了响应报文的通用格式：</p>
+<p><img src="https://s2.ax1x.com/2019/12/17/Qox3TO.png" alt="http return"></p>
+<p>一些常见的状态码：</p>
+<table>
+<thead>
+<tr>
+<th>200</th>
+<th>OK</th>
+<th>请求成功</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>301</td>
+<td>Moved Permanently</td>
+<td>请求的对象已经被永久转移了，新的URL定义在响应报文的Location：首部行中。客户机软件自动用新的URL获取该对象。</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Bad REquest</td>
+<td>一个通过错误代码，指示请求不能被服务器理解。</td>
+</tr>
+<tr>
+<td>404</td>
+<td>NOT Found</td>
+<td>请求的文档不在服务器上。</td>
+</tr>
+<tr>
+<td>505</td>
+<td>HTTP version not supported</td>
+<td>服务器不支持请求报文使用的HTTP协议版本。</td>
+</tr>
+</tbody></table>
+<p>可以使用<code>telnet</code>来观察真实的HTTP响应报文。使用<code>telnet site 80</code>即建立了一个本地到指定Web服务器的TCP连接，之后输入请求即可，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">$ telnet www.yinkuiwang.cn 80</span><br><span class="line">Trying 185.199.111.153...</span><br><span class="line">Connected to chst1.github.io.</span><br><span class="line">Escape character is &apos;^]&apos;.</span><br><span class="line">GET /2019/06/16/KMP/ HTTP/1.1</span><br><span class="line">Host:www.yinkuiwang.cn</span><br><span class="line"></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Content-Type: text/html; charset=utf-8</span><br><span class="line">Server: GitHub.com</span><br><span class="line">Last-Modified: Mon, 02 Dec 2019 08:16:22 GMT</span><br><span class="line">ETag: &quot;5de4c856-67bd&quot;</span><br><span class="line">Access-Control-Allow-Origin: *</span><br><span class="line">Expires: Wed, 18 Dec 2019 01:39:45 GMT</span><br><span class="line">Cache-Control: max-age=600</span><br><span class="line">X-Proxy-Cache: MISS</span><br><span class="line">X-GitHub-Request-Id: B9A8:56A3:1F39F4:214343:5DF98109</span><br><span class="line">Content-Length: 26557</span><br><span class="line">Accept-Ranges: bytes</span><br><span class="line">Date: Wed, 18 Dec 2019 01:29:45 GMT</span><br><span class="line">Via: 1.1 varnish</span><br><span class="line">Age: 0</span><br><span class="line">Connection: keep-alive</span><br><span class="line">X-Served-By: cache-hnd18746-HND</span><br><span class="line">X-Cache: MISS</span><br><span class="line">X-Cache-Hits: 0</span><br><span class="line">X-Timer: S1576632586.764452,VS0,VE186</span><br><span class="line">Vary: Accept-Encoding</span><br><span class="line">X-Fastly-Request-ID: cf573b3feb014acb04fd481fecf2de696fde337e</span><br><span class="line"></span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>后面的实体主体没有全部展示。注意，在敲下Host首部行之后要连击两下回车，表示输入请求完成。</p>
+<h3 id="用于与服务器的交互：cookie"><a href="#用于与服务器的交互：cookie" class="headerlink" title="用于与服务器的交互：cookie"></a>用于与服务器的交互：cookie</h3><p>前面提到，HTTP是无状态的，然而一个Web站点通常希望能够识别用户，即可能是为了服务器限制用户访问，也可能是它想把内容与用户身份联系起来。为此，HTTP使用了cookie，它允许站点跟踪用户。</p>
+<p><img src="https://s2.ax1x.com/2019/12/18/QT2s6s.png" alt="cookie"></p>
+<p>如上图所示，cookie由四部分组成：</p>
+<ol>
+<li>在HTTP响应报文中有一个cookie首部行；</li>
+<li>在HTTP请求报文中有一个cookie首部行；</li>
+<li>在用户端系统保留一个cookie文件，由用户的浏览器管理；</li>
+<li>在Web站点有一个后端数据库。</li>
+</ol>
+<p>cookie可以在无状态的HTTP上建立一个用户层会话。例如，基于Web的电子邮件系统，浏览器向服务器发送一个cookie信息，运行该服务器通过用户与应用程序之间的会话对用户进行验证。</p>
+<h3 id="Web缓存"><a href="#Web缓存" class="headerlink" title="Web缓存"></a>Web缓存</h3><p>Web缓存器（Web cache）也叫代理服务器（proxy server），它是能够初始Web服务器来满足HTTP请求的网络实体。Web缓冲器有自己的磁盘存储空间，并在该存储空间中保存最近请求的对象的拷贝。</p>
+<p><img src="https://s2.ax1x.com/2019/12/18/QTWdzQ.png" alt="web cache"></p>
+<p>一旦配置了浏览器，每个浏览器对对象的请求首先被定向到Web缓存器。其请求所经历流程大致如下：</p>
+<ol>
+<li>浏览器建立一个到Web缓存器的TCP连接，并发送请求。</li>
+<li>Web缓存器检测本地是否存储了该对象的拷贝。如果有，Web缓存器就用HTTP响应报文回复。</li>
+<li>如果Web缓存器没有该对象，它就与该对象的初始服务器打开一个TCP连接，并发送请求。</li>
+<li>当Web缓存器接收到该对象时，在本地存储一份拷贝，并用HTTP响应报文向客户端发送报文。</li>
+</ol>
+<p>Web缓存器的好处：</p>
+<ol>
+<li>大大减少客户机请求响应时间，尤其在客户机与初始服务器之间的瓶颈带宽远低于客户机与Web服务器瓶颈带宽时。</li>
+<li>可以大大减少一个机构内部网与因特网接入链路上的通信量，降低费用。</li>
+<li>整体上大大降低因特网上的Web流量，从而改善所以应用的性能。</li>
+</ol>
+<h3 id="条件GET方法"><a href="#条件GET方法" class="headerlink" title="条件GET方法"></a>条件GET方法</h3><p>条件GET方法是一种机制，允许缓存器证实它的对象是最新的。如果（1）请求报文使用GET方法；（2）请求报文包含一个<code>if-modified-since</code>首部行，那么这个HTTP请求报文就是一个条件GET请求报文。</p>
+<p>缓存器发送一个条件GET，执行最新检查，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GET /fruit/kiwi.gif HTTP/1.1</span><br><span class="line">Host: www.somesite.com</span><br><span class="line">If-modified-since: Wed,4 Jul 2007 09:23:24</span><br></pre></td></tr></table></figure>
+
+<p>该条件GET报文告诉服务器，仅当自指定日期之后修改过该对象才发送该对象。如果未改动过该对象，初始服务器响应报文可能是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 304 Not Modified</span><br><span class="line">Date: Sat,14 Jul 2007 15:39:29</span><br><span class="line">Server: Apache/1.3.0(Unix)</span><br><span class="line">(实体主体为空)</span><br></pre></td></tr></table></figure>
+
+<h2 id="文件传输协议：FTP"><a href="#文件传输协议：FTP" class="headerlink" title="文件传输协议：FTP"></a>文件传输协议：FTP</h2><p><img src="https://s2.ax1x.com/2019/12/18/QT7TPI.png" alt="FTP"></p>
+<p>FTP用于向一台远程主机上传或下载其文件。为了使用户能够访问远程主机，用户必须提供一个用户标识和口令。</p>
+<p>HTTP和FTP都是文件传输协议，存在很多异同。相同点都是使用TCP作为运输层协议。主要区别是FTP使用两个并行的TCP连接来传输文件，一个是控制连接，一个是数据连接。控制连接用于在两个主机之间传输控制信息，如用户标识、口令、改变远程目录的命令以及“put”和“get”命令。数据连接用于实际传输一个文件。FTP使用一个分离的控制连接，所以我们称其控制信息是<strong>外带</strong>传送的。HTTP是<strong>内带</strong>的。</p>
+<p>下图展示了FTP控制连接和数据连接：</p>
+<p><img src="https://s2.ax1x.com/2019/12/18/QTqQbD.png" alt="FTP"></p>
+<p>当用户主机与远程主机开始一个会话前，FTP的客户机首先在21号端口上发起一个用于控制的与服务器的TCP连接。FTP客户机通过该控制连接发送用户标识与口令，也改变远程目录的命令。当FTP服务器端从该连接上收到一个文件传输的目录后，就发起一个客户端的数据连接。FTP在该连接上准确地传送一个文件并关闭该连接。如果还要传输别的文件，FTP则另打开一个连接。FTP控制连接贯彻了整个用户会话期间，但文件传输连接只在每次需要时才建立。</p>
+<p>FTP服务器必须在整个会话期间保存用户的状态。服务器必须把特定用户账户与控制连接联系起来，随着用户在远程目录树上移动，服务器必须追踪用户在目录树上的当前位置。而HTTP是无状态的，不必对用户行为进行追踪。</p>
+<p>一些常用FTP命令有：</p>
+<p>USER username：用于向服务器传送用户标识。</p>
+<p>PASS password：用于向服务器传送用户口令。</p>
+<p>LIST：用于请求服务器返回远程主机当前目录的所有文件列表。文件列表将在数据连接上传送。</p>
+<p>RETR filename：用于从远程主机的当前目录检索文件。该命令触发远程主机发起一个数据连接，并发送文件。</p>
+<p>STOR filename：用于向远程主机的当前目录存放文件。</p>
+<p>常见回答为：</p>
+<p>331 Username OK，password required</p>
+<p>125 Data connection already open；transfer starting</p>
+<p>425 Can’t open data connection</p>
+<p>452 Error writing file</p>
+<h2 id="因特网中的电子邮件"><a href="#因特网中的电子邮件" class="headerlink" title="因特网中的电子邮件"></a>因特网中的电子邮件</h2><p><img src="https://s2.ax1x.com/2019/12/18/Q7rZDK.png" alt="mail"></p>
+<p>上图展示了因特网电子邮件的总体情况，其主要由三部分组成：用户代理（user agent）、邮件服务器（mail server）和简单邮件传输协议（Smiple Mail Transfer Protocol，SMTP）。</p>
+<p>用户代理允许用户阅读、回复、转发、保存和撰写报文（用户代理也叫邮件阅读器）。邮件代理向其邮件服务器发送邮件，并且该邮件被放在邮件服务器发送报文列中。当用户想要获取邮件时，其邮件代理从他的位于邮件服务器的邮箱中获取该报文。</p>
+<p>邮件服务器组成了电子邮件系统的核心。每个接收方在其中的某个服务器上有一个邮箱。</p>
+<p>邮件发送过程为：从发送方的用户代理开始，传输到发送方的邮件服务器，再传输到接收方的邮件服务器，然后在这里被分发到接收方的邮箱中。在传递到接收方的邮件服务器时，发送方邮件服务器还要处理接收方服务器故障的问题：当发送方发送失败时，发送方邮件服务器在一个报文列表中保持该报文并在以后尝试再次发送，一般半个小时尝试一次，如果几天依然不能成功，会删除该报文并通知发送方。在接收方查看邮件时，接收方服务器会首先鉴别其身份。</p>
+<p>SMTP是因特网电子邮件中主要的应用层协议。它使用TCP可靠传输服务。</p>
+<h3 id="SMTP"><a href="#SMTP" class="headerlink" title="SMTP"></a>SMTP</h3><p>SMTP用于从发送方的邮件服务器发送报文到接收方的邮件服务器。SMTP邮件的主体部分（不止其首部）只能采用简单的7位ASCII码表示。</p>
+<p>当A给B发送一封简单的ASCII报文时，其流程如下：</p>
+<p>1）A调用他的邮件代理程序并提供B的邮件地址，撰写邮件，然后通过用户代理发送该邮件。</p>
+<p>2）A的用户代理把报文发送给A的邮件服务器，在那里该报文被放在报文发送队列中。</p>
+<p>3）运行在A邮件服务器上的SMTP客户机端发现报文队列中这个报文，就创建一个到运行在B的邮件服务器上的STMP服务器的TCP连接。</p>
+<p>4）在经过一些初始SMTP握手后，SMTP客户机通过该TCP连接发送A的报文。</p>
+<p>5）在B的邮件服务器上，SMTP的服务器端接收该报文，B的邮件服务器然后将该报文放入B的邮箱中。</p>
+<p>6）在B方便的时候，调用用户代理阅读报文。</p>
+<p>下图展示了该过程：</p>
+<p><img src="https://s2.ax1x.com/2019/12/18/Q7Rpss.png" alt="过程"></p>
+<p>SMTP一般不使用中间邮件服务器发送邮件。</p>
+<p>SMTP客户机（运行在发送方邮件服务器上）在25号端口建立一个到SMTP服务器的TCP连接。一但建立连接，服务器和客户机就执行一些应用层的握手，在握手阶段，，SMTP客户机指定发送方的邮件地址和接收方的邮件地址。之后发送报文。</p>
+<p>下面是SMTP服务器（S,主机名是server）和SMTP客户机（C，主机名是client）之间交换报文脚本的例子，一旦创建了TCP连接，就开始下列过程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">S: 220 server</span><br><span class="line">C: HELO client</span><br><span class="line">S: 250 Hello client pleased to meet you</span><br><span class="line">C: MALL FROM: &lt;alice@crepes.fr&gt;</span><br><span class="line">S: 250 alice@crepes.fr ... Sender ok</span><br><span class="line">C: RCPR TO: &lt;bob@hamburger.edu&gt;</span><br><span class="line">S: 250 bob@hamburger.edu ... Recipient ok</span><br><span class="line">C: DATA</span><br><span class="line">S: 345 Enter mail, end with &quot;.&quot; on a line by itself</span><br><span class="line">C: Do you like ketchup?</span><br><span class="line">C: How about pickles?</span><br><span class="line">C: .</span><br><span class="line">S: 250 Messgae accepted for delivery</span><br><span class="line">C: QUIT</span><br><span class="line">S: 221 server closing conncetion</span><br></pre></td></tr></table></figure>
+
+<p>上例中，客户机程序从邮箱服务器client向邮箱服务器server发送了一个报文（Do you like ketchup？How about pickles？）。客户机发送了五条命令：HELO（hello的缩写）、MALL FROM、RCPT TO、DATA以及QUIT。这些命令是自解释的。客户机通过发送一个只包含句点的行，告诉服务器该报文结束了。（按照ASCII码，每个报文以<code>CRLF.CRLF</code>结束，其中<code>CR</code>和<code>LF</code>分别表示回车和换行）。应达250表示正常。SMTP使用持久连接：如果发送邮件服务器有几个报文发往同一个接收服务器，可以通过一个TCP连接发送所有这些报文。对每个报文，客户机都用一个新的MALL FROM开始，仅当所以邮件全部发送完全才发送QUIT。</p>
+<h3 id="与HTTP的对比"><a href="#与HTTP的对比" class="headerlink" title="与HTTP的对比"></a>与HTTP的对比</h3><p>相同点：都是使用了持久连接。</p>
+<p>不同点：</p>
+<ol>
+<li>HTTP是一个拉协议，即人们可以在方便的时候装载Web信息，即用户使用HTTP从该服务器拉取信息。TCP连接是由想获取文件的机器发起的。</li>
+<li>SMTP是一个推协议，即发送邮件服务器把文件推到接收邮件服务器，TCP连接是由要发送的机器发起的。</li>
+<li>SMTP要求每个报文使用7位ASCII格式。如果某报文包含了非7位ASCII字符或二进制数据，则该报文必须按照7位ASCII进行编码。</li>
+</ol>
+<h3 id="邮件报文格式和MIME"><a href="#邮件报文格式和MIME" class="headerlink" title="邮件报文格式和MIME"></a>邮件报文格式和MIME</h3><p>邮件报文要包含环境信息，这些环境信息包含在首部行中。每个首部行包含一个From首部行和一个To首部行，可以包含一个Subject首部行或其他可选的首部行。这些首部行不同于在之前所学的SMTP命令，之前的命令是SMTP握手协议的一部分，而首部行是邮件报文的一部分。但是邮件发给谁和从哪里来不是由首部行决定的，而是由SMTP命令决定的。下面展示了一个典型的报文首部：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">From: a</span><br><span class="line">To: b</span><br><span class="line">Subject: Searching for the meaning oof file</span><br></pre></td></tr></table></figure>
+
+<p>在报文首部之后，紧接着是空白行，然后是以ACSII格式表示的报文主体。</p>
+<h4 id="非ASCII码数据的MIME扩展"><a href="#非ASCII码数据的MIME扩展" class="headerlink" title="非ASCII码数据的MIME扩展"></a>非ASCII码数据的MIME扩展</h4><p>为发送非ASCII文本的内容，发送方必须在报文中使用附加的首部行。多用途因特网邮件扩展（Multipurpose Internet Mail Extension，MIME）。支持多媒体的量关键字MIME首部为Content-Type:和Content-Transfer-Encoding：。前者允许接收用户代理采取适当的动作，后者提示接收用户代理该报文已经使用了ASCII编码，并指出了使用的编码类型。当用户代理接收到包含这两个首部行的报文时，会根据Content-Transfer-Encoding的值将报文编码为非ASCII格式，然后根据Content-Type首部行决定它应该采取何种动作来处理报文。</p>
+<h4 id="接收的报文"><a href="#接收的报文" class="headerlink" title="接收的报文"></a>接收的报文</h4><p>接收器一旦接收到具有RFC 822和MIME的首部行，就在该报文的顶端添加一个Received:首部行。该首部行定义了发送该报文的SMTP服务器的名称，接收该报文的SMTP服务器名称和接收时间。例如：<code>Received: from server by client; 12 Oct 98</code>。</p>
+<h3 id="邮件访问协议"><a href="#邮件访问协议" class="headerlink" title="邮件访问协议"></a>邮件访问协议</h3><p>之前我们只考虑了邮件服务器之间使用SMTP进行传输报文，现在考虑用户代理与邮箱服务器之间如何传递报文。在发件方来看，从用户代理到邮箱服务器是一个推过程，需要推协议，SMTP刚好可以按照，因此，在发送方这两者使用SMTP协议。在来看接收方，接收方是在有时间的时候去读邮件，因此是一个拉过程，需要拉协议来支持，因此不能使用SMTP。与之对应的，可以使用的协议有三种：第三版邮局协议（Post Office Protocol-Version 3，POP3）、因特网邮件访问协议（Internet Mail Access Protocol，IMAP）以及HTTP。</p>
+<p><img src="https://s2.ax1x.com/2019/12/18/QHl9js.png" alt="整体过程"></p>
+<h4 id="POP3"><a href="#POP3" class="headerlink" title="POP3"></a>POP3</h4><p>当用户代理（客户机）打开一个到邮件服务器（服务器）端口110上的TCP连接后，POP3就开始工作了。POP3按照三个阶段进行工作：特许（authorization）、事物处理以及更新。</p>
+<p>第一阶段（特许）：用户代理发送（以明文形式）用户名和口令以鉴别用户。</p>
+<p>第二阶段（事务处理）：用户代理取回报文。同时还可以进行：对报文做删除标记，取消报文删除标记，以及获取邮件的统计信息。</p>
+<p>第三阶段（更新）：出现在客户机发出了quit命令后，目的是结束该POP3会话，这时，邮件服务器删除那些被标记为删除的报文。</p>
+<p>在POP3事物处理阶段，用户代理发送一些命令，服务器对每个命令做出回答。回答有两种：+OK（有时后面会有说明文字），服务器用它来指示前面的命令是正常的；-ERR，服务器用它来指示前面的命令出现错误。</p>
+<p>特许阶段主要有两个命令：user username和pass password。下面展示了这个的使用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ telnet pop.qq.com 110</span><br><span class="line">Trying 59.37.97.57...</span><br><span class="line">Connected to pop.qq.com.</span><br><span class="line">Escape character is &apos;^]&apos;.</span><br><span class="line">+OK QQMail POP3 Server v1.0 Service Ready(QQMail v2.0)</span><br><span class="line">user 2322253097</span><br><span class="line">+OK</span><br><span class="line">pass ********</span><br><span class="line">-ERR Please using authorized code to login. More information at http://service.mail.qq.com/cgi-bin/help?subtype=1&amp;&amp;id=28&amp;&amp;no=1001256</span><br><span class="line">Connection closed by foreign host.</span><br></pre></td></tr></table></figure>
+
+<p>这里使用的是qq邮箱的POP3服务器。但是由于腾讯做了一个优化，输入密码时，不是之间输入qq密码，而是输入一个授权码，所以这里就报错了。</p>
+<p>事物处理过程中。POP3用户代理发出的命令通常由用户配置为“下载并删除”或者“下载并保留”。主要有四个命令list、retr、delete和quit。命令的语法在RFC 1939中定义。大概使用如下图：</p>
+<p><img src="https://s2.ax1x.com/2019/12/18/QHatoj.png" alt="POP"></p>
+<h4 id="IMAP"><a href="#IMAP" class="headerlink" title="IMAP"></a>IMAP</h4><p>IMAP服务器把每个报文与一个文件夹联系起来，当报文第一次到达服务器时，它被放到收件箱文件夹中。收件人可以把邮件移到一个新的、用户创建的文件夹中，或阅读邮件、删除邮件等。IMAP为用户提供了创建文件夹以及在文件夹中移动邮件的命令。IMAP还为用户提供了在远程文件夹中查询邮件的命令，按指定条件去查询匹配的邮件。IMAP服务器维护了IMAP会话的用户状态信息。</p>
+<p>IMAP运行用户代理获取报文组件的命令。</p>
+<h2 id="DNS，因特网的目录服务"><a href="#DNS，因特网的目录服务" class="headerlink" title="DNS，因特网的目录服务"></a>DNS，因特网的目录服务</h2><p>主机使用IP地址进行标识。一个IP地址由4个字节组成，并有着严格的层次结构。如想127.7.106.83这样，每个字节都被句点分隔开，表示了0~255的二进制数。IP地址具有层次结构是因为我们从左向右扫描时，会得到越来越细的关于主机位于因特网何处的信息。</p>
+<p>主机也可以使用主机名进行标识。不过主机名只有在DNS中注册才有用，别人才能通过DNS获得主机名，因此在DNS中，主机名一定是互异的。</p>
+<h3 id="DNS提供的服务"><a href="#DNS提供的服务" class="headerlink" title="DNS提供的服务"></a>DNS提供的服务</h3><p>域名系统（Domain Name System，DNS）提供进行主机名到IP地址转换的目录服务。</p>
+<p>DNS是：1）一个由分层的DNS服务器实现的分布式数据库；2）一个运行主机查询分布式数据库的应用层协议。DNS协议运行在UDP之上。</p>
+<p>DNS通常由其他应用层协议（如HTTP、SMTP和FTP）所使用，用于将用户提供的主机名解析为IP地址。例如，当请求URL <code>www.someschool.edu/index.html</code>页面时，为了使用户的主机能够将一个HTTP请求发送到Web服务器<code>www.someschool.ed</code>，该用户主机必须获得<code>www.someschool.edu</code>的IP地址。其做法为：</p>
+<ol>
+<li>同一台用户主机上运行着DNS应用的客户机端。</li>
+<li>该浏览器从上述URL中抽取出主机名<code>www.someschool.edu</code>，并将这个主机名传给DNS应用的客户机端。</li>
+<li>该DNS客户机向DNS服务器发送一个包含主机名的请求。</li>
+<li>该DNS客户机最终会收到一份回答报文，包含对于主机名的IP地址。</li>
+<li>一旦浏览器接收到来自DNS的IP地址，它就可以向该IP地址定位的HTTP服务器发起一个TCP连接。</li>
+</ol>
+<p>除了进行主机名到IP地址的转换外，DNS还提供了一些重要服务：</p>
+<ol>
+<li>主机别名（host aliasing）：有着复杂主机名的主机可以用于一个或者多个别名。原始主机名叫做<strong>规范主机名</strong>（canonical hostname）。应用程序可以调用DNS来获得主机别名对于的规范主机名已经主机的IP地址。</li>
+<li>邮件服务器别名（mail server aliasing）：电子邮件应用程序调用DNS，对提供的邮件服务器别名进行解析，以获得该主机的规范主机名以及IP地址。事实上，MX记录允许一个公司的邮件服务器和Web服务器使用相同的（别名化的）主机名。</li>
+<li>负载分配（load distribution）：DNS也用于在冗余的服务器之间进行负载分配。繁忙的站点被冗余分别在多台服务器上，每台服务器均运行在不同的端系统上，有着不同的IP地址。对于这些冗余的服务器，一个IP地址集合对应于同一个规范主机名。DNS数据库存储着这些IP地址集合。当客户机为映射到这个IP地址集合的名字发出一个DNS请求时，该服务器用包含全部这些地址的报文进行回答，但每个回答中旋转这些地址的顺序。客户机通常总是向IP地址排在最前面的服务器发送请求，所以DNS就在所有冗余的服务器之间旋转分配负载。</li>
+</ol>
+<h3 id="DNS工作机理"><a href="#DNS工作机理" class="headerlink" title="DNS工作机理"></a>DNS工作机理</h3>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/计算机网络/" rel="tag"># -计算机网络</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/11/unix高级编程/" rel="next" title>
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">chst</p>
+              <p class="site-description motion-element" itemprop="description">人生苦酒,自酿自品</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第一章-计算机网络和因特网"><span class="nav-number">1.</span> <span class="nav-text">第一章　计算机网络和因特网</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是因特网"><span class="nav-number">1.1.</span> <span class="nav-text">什么是因特网</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#具体构成描述"><span class="nav-number">1.1.1.</span> <span class="nav-text">具体构成描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务描述"><span class="nav-number">1.1.2.</span> <span class="nav-text">服务描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是协议"><span class="nav-number">1.1.3.</span> <span class="nav-text">什么是协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络边缘"><span class="nav-number">1.2.</span> <span class="nav-text">网络边缘</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#客户机和服务器程序"><span class="nav-number">1.2.1.</span> <span class="nav-text">客户机和服务器程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接入网"><span class="nav-number">1.2.2.</span> <span class="nav-text">接入网</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#物理媒介"><span class="nav-number">1.2.3.</span> <span class="nav-text">物理媒介</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络核心"><span class="nav-number">1.3.</span> <span class="nav-text">网络核心</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#电路交换和分组交换"><span class="nav-number">1.3.1.</span> <span class="nav-text">电路交换和分组交换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#电路交换网络中的多路复用"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">电路交换网络中的多路复用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分组交换"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">分组交换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分组如何通过分组交换形成其通路"><span class="nav-number">1.3.2.</span> <span class="nav-text">分组如何通过分组交换形成其通路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ISP和因特网主干道"><span class="nav-number">1.3.3.</span> <span class="nav-text">ISP和因特网主干道</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分组交换网中的时延、丢包和吞吐量"><span class="nav-number">1.4.</span> <span class="nav-text">分组交换网中的时延、丢包和吞吐量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#时延概述"><span class="nav-number">1.4.1.</span> <span class="nav-text">时延概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#排队时延和丢包"><span class="nav-number">1.4.2.</span> <span class="nav-text">排队时延和丢包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#端到端时延"><span class="nav-number">1.4.3.</span> <span class="nav-text">端到端时延</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算机网络中的吞吐量"><span class="nav-number">1.4.4.</span> <span class="nav-text">计算机网络中的吞吐量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#协议层次和它们的服务模型"><span class="nav-number">1.5.</span> <span class="nav-text">协议层次和它们的服务模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分层的体系结构"><span class="nav-number">1.5.1.</span> <span class="nav-text">分层的体系结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#报文、报文段、数据报和帧"><span class="nav-number">1.5.2.</span> <span class="nav-text">报文、报文段、数据报和帧</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#攻击威胁下的网络"><span class="nav-number">1.6.</span> <span class="nav-text">攻击威胁下的网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#坏家伙能够经因特网将恶意软件放入你的计算机"><span class="nav-number">1.6.1.</span> <span class="nav-text">坏家伙能够经因特网将恶意软件放入你的计算机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#坏家伙能够攻击服务器和网络基础设施"><span class="nav-number">1.6.2.</span> <span class="nav-text">坏家伙能够攻击服务器和网络基础设施</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#坏家伙能嗅探分组"><span class="nav-number">1.6.3.</span> <span class="nav-text">坏家伙能嗅探分组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#坏家伙能够伪装成你信任的人"><span class="nav-number">1.6.4.</span> <span class="nav-text">坏家伙能够伪装成你信任的人</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#坏家伙能够修改或删除报文"><span class="nav-number">1.6.5.</span> <span class="nav-text">坏家伙能够修改或删除报文</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第二章-应用层"><span class="nav-number">2.</span> <span class="nav-text">第二章 应用层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#应用层协议原理"><span class="nav-number">2.1.</span> <span class="nav-text">应用层协议原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网络应用程序体系结构"><span class="nav-number">2.1.1.</span> <span class="nav-text">网络应用程序体系结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程通信"><span class="nav-number">2.1.2.</span> <span class="nav-text">进程通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可供应用程序使用的传输协议"><span class="nav-number">2.1.3.</span> <span class="nav-text">可供应用程序使用的传输协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#因特网的运输服务"><span class="nav-number">2.1.4.</span> <span class="nav-text">因特网的运输服务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP服务"><span class="nav-number">2.1.4.1.</span> <span class="nav-text">TCP服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UDP服务"><span class="nav-number">2.1.4.2.</span> <span class="nav-text">UDP服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#因特网运输层不提供的服务"><span class="nav-number">2.1.4.3.</span> <span class="nav-text">因特网运输层不提供的服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程寻址"><span class="nav-number">2.1.4.4.</span> <span class="nav-text">进程寻址</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用层协议"><span class="nav-number">2.1.5.</span> <span class="nav-text">应用层协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web应用与HTTP协议"><span class="nav-number">2.2.</span> <span class="nav-text">Web应用与HTTP协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP概况"><span class="nav-number">2.2.1.</span> <span class="nav-text">HTTP概况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非持久连接和持久连接"><span class="nav-number">2.2.2.</span> <span class="nav-text">非持久连接和持久连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP报文格式"><span class="nav-number">2.2.3.</span> <span class="nav-text">HTTP报文格式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#请求报文"><span class="nav-number">2.2.3.1.</span> <span class="nav-text">请求报文</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP响应报文"><span class="nav-number">2.2.3.2.</span> <span class="nav-text">HTTP响应报文</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用于与服务器的交互：cookie"><span class="nav-number">2.2.4.</span> <span class="nav-text">用于与服务器的交互：cookie</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web缓存"><span class="nav-number">2.2.5.</span> <span class="nav-text">Web缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条件GET方法"><span class="nav-number">2.2.6.</span> <span class="nav-text">条件GET方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件传输协议：FTP"><span class="nav-number">2.3.</span> <span class="nav-text">文件传输协议：FTP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#因特网中的电子邮件"><span class="nav-number">2.4.</span> <span class="nav-text">因特网中的电子邮件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SMTP"><span class="nav-number">2.4.1.</span> <span class="nav-text">SMTP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#与HTTP的对比"><span class="nav-number">2.4.2.</span> <span class="nav-text">与HTTP的对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#邮件报文格式和MIME"><span class="nav-number">2.4.3.</span> <span class="nav-text">邮件报文格式和MIME</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#非ASCII码数据的MIME扩展"><span class="nav-number">2.4.3.1.</span> <span class="nav-text">非ASCII码数据的MIME扩展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#接收的报文"><span class="nav-number">2.4.3.2.</span> <span class="nav-text">接收的报文</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#邮件访问协议"><span class="nav-number">2.4.4.</span> <span class="nav-text">邮件访问协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#POP3"><span class="nav-number">2.4.4.1.</span> <span class="nav-text">POP3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IMAP"><span class="nav-number">2.4.4.2.</span> <span class="nav-text">IMAP</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNS，因特网的目录服务"><span class="nav-number">2.5.</span> <span class="nav-text">DNS，因特网的目录服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS提供的服务"><span class="nav-number">2.5.1.</span> <span class="nav-text">DNS提供的服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS工作机理"><span class="nav-number">2.5.2.</span> <span class="nav-text">DNS工作机理</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">chst</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
