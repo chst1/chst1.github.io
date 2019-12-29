@@ -109,7 +109,33 @@
 <meta property="og:image" content="https://s2.ax1x.com/2019/12/19/QLP6Qf.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/12/19/QLeTqx.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/12/20/QXZncd.png">
-<meta property="og:updated_time" content="2019-12-20T12:11:38.279Z">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/24/lCcy9g.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/24/lCIr4I.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/24/lCbn0S.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/24/lPVAaQ.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/24/lPepB8.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/24/lPMAOI.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/24/lPMk6A.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/24/lP39HI.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/24/lP8HfK.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/24/lPJ2qJ.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/24/lPJqqH.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/24/lPNWZQ.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/24/lPafCn.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/24/lPB0Ig.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/24/lPrqUO.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/24/lPrbVK.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/25/lilwDA.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/25/liJI9P.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/25/liOh9g.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/25/lF9o79.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/25/lFPQVH.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/25/lFPfZ4.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/25/lFitYR.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/26/lkhPNd.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/26/lkbHEV.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/26/lkO0c4.png">
+<meta property="og:updated_time" content="2019-12-26T09:22:20.545Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="计算机网络-自顶向下方法">
 <meta name="twitter:description" content="终于秋招上岸，怎奈何自己太菜，在去实习前被布置了一堆任务，其中就有我面试最怕的计算机网络。恰巧UNIX高级编程看到了套接字，发现没有计算机网络的知识直接看好像看不太明白，于是就把那个先放一放，等看完这本再回去接着看UNIX高级编程。当然，目前这个也在不断更新中。">
@@ -881,6 +907,275 @@
 <p>研究表明，DHT能够被设计成每个对等方的邻居数量以及每个请求报文数量均为O(logN)。这是一种比较令人满意的折中。<font color="red">问题2：哪些对等方被选则为捷径的目标节点，以及如何获取这些对等方的IP）</font></p>
 <h4 id="对等方的扰动"><a href="#对等方的扰动" class="headerlink" title="对等方的扰动"></a>对等方的扰动</h4><p>在DHT中，对等方可以不加警示的到来和离开，为了处理这个问题，我们要求对等方要知道其第一个和第二个后继，以及要周期性的证实它的两个后继是否存活（如周期性发送ping报文并寻求响应）。现在假设上图a中5突然离开，此时,5将不在响应ping报文，在离开之前的对等方3和4知道了5离开，此时4和3将更新其后继信息。(4先更新，再更新3）<font color="red">问题3：离开的对等方里面存储的键值对如何再被重新分配，还有以该对等方为捷径的对等方如何更新捷径</font></p>
 <p>下面讨论一个对等方加入时发送的事情，新的对等方加入时，会知道编号最小的已经存在的对等方的IP，这里是1（应该是有一个服务器来维护这个信息，每个对等方进入DHT时，首先联系该服务器）。然后向该对等方发送查询信息，获得其前驱和后继（可能这个时候也可以创建捷径，但具体操作呢）。而后插入进去，即可。</p>
+<p>更多关于DHT的内容可以查看Kademlia相关内容。</p>
+<h1 id="第三章-运输层"><a href="#第三章-运输层" class="headerlink" title="第三章 运输层"></a>第三章 运输层</h1><h2 id="概述和运输层服务"><a href="#概述和运输层服务" class="headerlink" title="概述和运输层服务"></a>概述和运输层服务</h2><p>运输层协议为运行在不同主机上的应用进程提供了逻辑通信。运输层在端系统中实现而不是在网络路由器中实现。在发送方，运输层接收来自上层的的报文转换成运输层分组：将应用报文换分为较小的块，并为每一块加上运输层首部来创建运输层报文段。在发送方体统中，运输层将这些报文段传输给网络层，网络层将其分装进网络层分组并向目的地发送。网络路由器只作用于数据报的网络层字段，即他们不检查分装在该数据报的运输层报文段的字段。</p>
+<h3 id="运输层与网络层的关系"><a href="#运输层与网络层的关系" class="headerlink" title="运输层与网络层的关系"></a>运输层与网络层的关系</h3><p>运输层为运行在不同主机上的进程之间提供逻辑通信，而网络层提供了主机之间的逻辑通信。运输层协议只工作在端系统。运输层协议所能提供的服务也受到底层网络层协议的服务模型的限制，然而，即使网络层不提供响应的服务，运输层协议也能提供某些服务。</p>
+<h3 id="因特网运输层概述"><a href="#因特网运输层概述" class="headerlink" title="因特网运输层概述"></a>因特网运输层概述</h3><p>运输层为应用层提供了两种截然不同的协议：UDP（用户数据报协议）和TCP（传输控制协议），前者提供一种不可靠的无连接服务，后者提供了一种可靠的面向连接的服务。</p>
+<p>网络层协议叫IP（网际协议），IP为主机之间提供了逻辑通信。IP的服务模型是尽力而为交付服务（best-effort delivery service）。即IP尽最大努力交付报文段，但不作任何保证。特别的，它不确保报文段的交付，不确保报文段的按序交付，不确保报文段的完整性。因此IP被称为不可靠服务。每台主机至少有一个网络层地址，即所谓的IP地址。</p>
+<p>TCP和UDP的基本任务：将两个端系统间IP的交付服务扩展到运行在两个端系统的进程之间的交付服务。将主机间交付扩展到进程间交付，称为运输层的多路复用与多路分解。UDP和TCP还通过在其报文段首部添加差错检测字段而提供完整性检查。进程数据交付和差错检测是两种最低限度的运输层服务，也是UDP所提供的仅有的两种服务。</p>
+<p>TCP还提供几种附加的服务，首先提供了可靠数据传输。通过使用流量控制、序号、确认和定时器等技术。TCP确保正确的、按序的将数据从发送进程交付到接收进程，这样TCP将两个端系统之间不可靠的IP服务转换为一种可靠的进程间数据传输服务。TCP还提供拥塞控制，TCP拥塞控制防止任何一条TCP连接用过多流量来淹没通信主机之间的链路和交换设备。</p>
+<h2 id="多路复用与多路分解"><a href="#多路复用与多路分解" class="headerlink" title="多路复用与多路分解"></a>多路复用与多路分解</h2><p>进程有一个或多个套接字，它相当于从网络向进程传递数据和从进程向网络传递数据的门户。</p>
+<p>首先考虑接收主机如何如何将一个收到的运输层报文定向到合适的套接字。为实现这一要求，每个运输层报文段中设置几个字段，在接收端，运输层检测这些字段并标识出接收套接字，然后将报文段定向到该套接字。将运输层报文段中的数据交付到正确的套接字的工作称为多路分解。从源主机的不同套接字中收集数据块，并为每一个数据库封装上首部信息从而生成报文段，然后将报文段传递到网络层的工作叫做多路复用。</p>
+<p>运输层多路复用的要求：</p>
+<ol>
+<li>套接字有唯一标识符。</li>
+<li>每个报文段有特殊字段来指示该报文段要交付的套接字。</li>
+</ol>
+<p><img src="https://s2.ax1x.com/2019/12/24/lCcy9g.png" alt="packet"></p>
+<p>端口号是一个16比特的数字，其大小在0~65535之间。[0,1023]的端口被称为周知端口，是受严格限制的。</p>
+<h3 id="无连接的多路复用与多路分解"><a href="#无连接的多路复用与多路分解" class="headerlink" title="无连接的多路复用与多路分解"></a>无连接的多路复用与多路分解</h3><p>创建UDP套接字时，运输层自动为套接字分配一个端口号（也可以自己指定）。</p>
+<p>一个UDP套接字是由一个包含目的IP地址和目的端口号的二元组来全面标识。</p>
+<h3 id="面向连接的多路复用与多路分解"><a href="#面向连接的多路复用与多路分解" class="headerlink" title="面向连接的多路复用与多路分解"></a>面向连接的多路复用与多路分解</h3><p>TCP套接字是由一个四元组（源IP地址，源端口号，目的IP地址，目的端口号）来标识的。特别的，两个具有不同源IP地址或源端口的到达的TCP报文段将被定向到两个不同的套接字，除非TCP请求了初始创建连接的请求。</p>
+<h2 id="无连接传输：UDP"><a href="#无连接传输：UDP" class="headerlink" title="无连接传输：UDP"></a>无连接传输：UDP</h2><p>UDP只做了运输协议能够做的最少工作。除了多路复用/多路分解功能以及一些轻型的差错检验外，几乎没有对IP增加别的东西。使用UDP时，在发送报文段之前，发送方和接收方的运输层实体之间没有进行握手，因此UDP被称为无连接的。</p>
+<p>使用UDP的原因：</p>
+<ol>
+<li>应用层可以更好的控制要发送的数据和发送的时间。UDP不提供拥塞控制，数据传递给UDP后会立即打包并传递给网络层。</li>
+<li>无需建立连接：因此不会引入建立连接的时延。</li>
+<li>无连接状态：TCP需要在端系统中维护连接状态，UDP不维护连接状态，某些应用专门使用UDP以便能够支持更多的活动客户机。</li>
+<li>分组首部开销小。</li>
+</ol>
+<h3 id="UDP报文段结构"><a href="#UDP报文段结构" class="headerlink" title="UDP报文段结构"></a>UDP报文段结构</h3><p><img src="https://s2.ax1x.com/2019/12/24/lCIr4I.png" alt="UDP struct"></p>
+<p>应用数据是应用层传递来的数据。通过端口号可以使目的主机将应用数据交付到运行在目的端系统的相应进程。接收主机使用校验和来检查报文段中是否存在差错。</p>
+<h3 id="UDP校验和"><a href="#UDP校验和" class="headerlink" title="UDP校验和"></a>UDP校验和</h3><p>UDP校验和提供了差错检验功能，即检验和用于确定当UDP报文段从源主机到达目的时，其中的比特是否发送变化（例如，由于链路中或者路由器中存储数据时的噪声干扰）。发送方的UDP对报文中的所有16比特字的和进行反码运算，求和时遇到的所有溢出都要被回卷，得到的结果放到UDP报文段中的校验和字段。</p>
+<p>举例：</p>
+<p>假定我们有3个16比特字：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0110011001100000</span><br><span class="line">0101010101010101</span><br><span class="line">1000111100001100</span><br></pre></td></tr></table></figure>
+
+<p>此时求和过程为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">0110011001100000</span><br><span class="line">0101010101010101 +</span><br><span class="line">----------------------</span><br><span class="line">1011101110110101</span><br><span class="line">1000111100001100 +</span><br><span class="line">----------------------</span><br><span class="line">0100101011000010</span><br></pre></td></tr></table></figure>
+
+<p>注意，这里第二次相加时，最高位溢出，回卷加到最低位。反码是将所有0换成1，1换成0。所以此时该UDP报文的校验和是<code>1011010100111101</code>。在接收方将全部4个比特字（包括校验和）一起相加。如果分组中无差错，则这个和全是1，否则存在一个0就表面分组中出现错误。</p>
+<p>某些UDP实现只是丢弃受损的报文段，其余实现是将受损的报文段交给应用程序并警告。</p>
+<h2 id="可靠数据传输原理"><a href="#可靠数据传输原理" class="headerlink" title="可靠数据传输原理"></a>可靠数据传输原理</h2><p><img src="https://s2.ax1x.com/2019/12/24/lCbn0S.png" alt="reliable"></p>
+<p>上图说明了我们数据传输的接口。通过rdt_send()函数，可以调用数据传输协议的发送方。它将要发送的数据交付给接收方上层（rdt表示可靠数据传输协议，_send表名发送方被调用）。在接收方，当分组从信道的接收端抵达时，调用rdt_rcv()。当rdt协议想向上层交付数据时，通过调用deliver_data()完成。</p>
+<p>本节中，只考虑单向数据传输的情况，从发送方到接收方。可靠的双向数据传输的情况从概念上讲不会更难。rdt的发送和接收方都需要通过调用udt_send()发送分组给对方（其中udt表示不可靠传输协议）。</p>
+<h3 id="构造可靠传输协议"><a href="#构造可靠传输协议" class="headerlink" title="构造可靠传输协议"></a>构造可靠传输协议</h3><h4 id="完全可靠信道上的可靠数据传输协议：rdt1-0"><a href="#完全可靠信道上的可靠数据传输协议：rdt1-0" class="headerlink" title="完全可靠信道上的可靠数据传输协议：rdt1.0"></a>完全可靠信道上的可靠数据传输协议：rdt1.0</h4><p>首先考虑最简单的情况，即底层信道是完全可靠的。下图展示了rdt1.0发送方和接收方的有限状态机(FSM)定义：</p>
+<p><img src="https://s2.ax1x.com/2019/12/24/lPVAaQ.png" alt="rdt1.0"></p>
+<p>FSM箭头指示了从一个状态变迁到另一个状态。上图发送方和接收方都只有一个状态。此时，有完全可靠的信道，接收方就不需要提供任何反馈给发送方了。</p>
+<h4 id="具有比特差错信道上的可靠数据传输：rdt2-0"><a href="#具有比特差错信道上的可靠数据传输：rdt2-0" class="headerlink" title="具有比特差错信道上的可靠数据传输：rdt2.0"></a>具有比特差错信道上的可靠数据传输：rdt2.0</h4><p>更底层信道模型是分组中比特可能受损。</p>
+<p>首先考虑人们对于该问题的处理。通常情况下，接收者听到、明白、记下每句话可以说“OK”。如果消息接收者听到一句含糊不清的话，可能请求重复那句话。这种口头消息协议使用了肯定确认（positive acknowledgment）与否定确认（negative acknowledge）。在计算机网络中基于这种重传机制的可靠数据传输协议称为自动重传请求（Automatic Repeat reQuest，ARQ）协议。</p>
+<p>一般来说，ARQ协议中需要另外三种协议来处理存在的比特差错：</p>
+<ol>
+<li>差错检测：运输层添加的校验和字段。还有别的方式。</li>
+<li>接收方发送反馈：回复肯定确认（ACK）还是否定确认（NAK）。</li>
+<li>重传：接收方收到有差错的分组，发送方重传。</li>
+</ol>
+<p><img src="https://s2.ax1x.com/2019/12/24/lPepB8.png" alt="rdt2.0"></p>
+<p>注意，当发送方在<code>wait-for-ACK-orNAK</code>状态时，它不能从上层获得更多的数据，也就是说，rdt_send()不会出现，仅当收到ACK并离开该状态时才能继续获得数据。因此发送方不会发送一块新数据，直到发送方确信接收方已经正确接收到当前分组为止。由于这种行为，类似于rdt2.0的协议被称为停等（stop-and-wait）协议。</p>
+<p>rdt2.0存在一个致命的缺陷，即没有考虑到ACK或NAK分组受损的可能性。处理ACK与NAK受损时要考虑以下三种可能解决方案：</p>
+<ol>
+<li>接收到ACK或NAK受损的一方，再次发送NAK，即数据受损，但这样会无线循环下去，该方式不行。</li>
+<li>增加足够的检验和比特使发送方不但能够检测比特受损，还可以恢复当前分组。</li>
+<li>当发送方收到含糊不清的ACK或NAK时，只用重发当前数据分组即可。但这种方法在接收方到发送方中引入了冗余分组（duplicate packet）。冗余分组的根本困难在于接收方不知道它上次发送的ACK或NAK是否被发送方正确地收到，因此它无法事先知道接收到的分组是新的还是一次重发的。</li>
+</ol>
+<p>现在普遍采用的是方法三，这里解决冗余分组的方法是在数据中添加一个新字段，让发送方对其数据分组进行编号，即将发送的数据分组序号放在该字段。此时接收方只需检查序号即可知道是重传的一个还是新发的一个。对于停等协议，只需要1比特序号就足够了。</p>
+<p><img src="https://s2.ax1x.com/2019/12/24/lPMAOI.png" alt="rdt2.1 sender"></p>
+<p><img src="https://s2.ax1x.com/2019/12/24/lPMk6A.png" alt="rdt2.1 receiver"></p>
+<p>对于发送方来说，发送完成之后等待对该次分组的确认，如果接收到的确认消息被损坏或者是NAK则重发，直到收到未被损坏的确认消息且确认消息为ACK，则进入下一个状态（等待下一次调用）。</p>
+<p>对于接收方来说，接收到数据被损坏就会发送NAK并等待重发的数据。直到重发的数据没有被损坏，则发送ACK确认，并进入下一个状态（等待接收下一个分组）。如果接收到的分组不是现在等待的分组，则说明前一个ACK消息被损坏，发送方又重发了一个已经接收到的消息，且发送方未正确进入到下一个状态（因为没有正确接收到ACK），于是接收方此时应该再次发送ACK确认信息即可，直到发送方正确接收到ACK并进入了下一个状态发送了分组。</p>
+<p>再进一步，我们希望只有ACK确认信号而没有NAK信号，此时我们只需要在ACK信号上再绑定应该序号即可，此时也能实现上面的要求，此时在发送方如果收到了要等待的ACK对应的编号与实际收到的不一致时，等同于收到了NAK信号（发送的ACK信号对应编号是已经确认收到的信号，与要等待的不一致说明当前这次发送的分别没有被正确接收），需要重复。</p>
+<p><img src="https://s2.ax1x.com/2019/12/24/lP39HI.png" alt="rdt2.2 sender"></p>
+<h4 id="具有比特差错的丢包信道上的可靠数据传输：rdt3-0"><a href="#具有比特差错的丢包信道上的可靠数据传输：rdt3-0" class="headerlink" title="具有比特差错的丢包信道上的可靠数据传输：rdt3.0"></a>具有比特差错的丢包信道上的可靠数据传输：rdt3.0</h4><p>现在假定处理比特受损外，底层信道还有可能丢包。这里，我们让发送方负责检测和恢复丢包。假设发送方传输一个数据分组，分组本身丢包或者接收分组后确认分组的ACK发生丢失。这两种情况下，发送方都收不到应当到来的响应。如果发送方愿意等待足够长时间以便确认分组已丢失，则只需要重传该分组即可。</p>
+<p><img src="https://s2.ax1x.com/2019/12/24/lP8HfK.png" alt="rdt2.2 3.0 receiver"></p>
+<p>上图的接收到即适合与rdt2.2也适合与接下来的rdt3.0。</p>
+<p>从发送方角度来看，重传是万能的，发送方不知道一个数据分组丢失、一个ACK丢失，还是该分组或ACK只是过度迟延。在所有情况下采用相同动作，即重传。为实现基于时间的重传机制，需要一个倒数计时器（countdown time），在一个给定的时间过期后，可中断发送方。因此发送方需要能做到：</p>
+<ol>
+<li>每次发送一个分组（即第一次分组和重传分组）时便启动一个定时器。</li>
+<li>响应定时器中断（采取适当的动作）。</li>
+<li>终止定时器。</li>
+</ol>
+<p><img src="https://s2.ax1x.com/2019/12/24/lPJ2qJ.png" alt="rdt3.0"></p>
+<p>这里在等待上层调用时会收到ACK是因为冗余数据导致的，因此可直接忽略。</p>
+<p>下图展示了rdt3.0所遇到各种情况是如何工作的：</p>
+<p><img src="https://s2.ax1x.com/2019/12/24/lPJqqH.png" alt="rdt3.0"></p>
+<h3 id="流水线可靠数据传输协议"><a href="#流水线可靠数据传输协议" class="headerlink" title="流水线可靠数据传输协议"></a>流水线可靠数据传输协议</h3><p>rdt3.0是一个功能正确的协议，但并非人人都能满足其性能，rdt3.0的核心问题是其为停等协议，会遭到带宽利用率底下。</p>
+<p>解决这种性能问题的一个简单方法是：不使用停等方式运行，运行发送方发送多个分组而无需等待确认。流水线技术可对可靠数据传输协议带来如下影响：</p>
+<ol>
+<li>必须增加序号范围。</li>
+<li>协议的发送方与接收方必须缓存多个分组，发送方最低限度应当缓存那些已经发送但未确认的分组。</li>
+<li>所需序号范围和对缓冲的要求取决于数据传输协议处理丢失、损坏以及过度延时分组的方式。</li>
+</ol>
+<p>解决流水线差错恢复有两种基本方法：回退N步（Go-Back-N）和选择重传。</p>
+<h3 id="回退N步"><a href="#回退N步" class="headerlink" title="回退N步"></a>回退N步</h3><p>在回退N步（GBN）中，允许发送方发送多个分组（当有时）而不需要等待确认，但也受限于在流水线中未确定的分组数不能超过某个最大允许数N。</p>
+<p><img src="https://s2.ax1x.com/2019/12/24/lPNWZQ.png" alt="GBN"></p>
+<p>上图展示了GBN协议的序号范围。将基序号（base）定义为最早的未确认分组的序号，将下一个序号（nextseqnum）定义为最小的未使用（即下一个待发送）序号，则可将序号范围分成四部分。那些已发送而未被确认的分组的许可序号范围可以被看成是一个在序号范围内长度为N的窗口。随着协议的运行，该窗口向前滑动。N被称为窗口长度，GBN协议常被称为滑动窗口协议。</p>
+<p>一个分组的序号承载在分组首部的一个固定长度的字段中。如果字段长度是K，则序号范围是[0,2^k-1]。所有涉及序号的运算必须使用摸2^k运算。</p>
+<p><img src="https://s2.ax1x.com/2019/12/24/lPafCn.png" alt="GBN FSM"></p>
+<p>对于发送方来说：首先上层调用时，判断是否是超过了N，如果没有，则发送数据，并且判断该发送是否为唯一一个未被确认的发送，如果是，启动计时器。而后更新nextseqnum，如果超过N了，则拒绝发送数据。当收到ACK时，ACK传递的编号是接收方已确定接收到的值。此时即可更新base值。如果更新后的base值与nextseqnum值一致，说明所有传输的分组都已经确认了，此时关闭计时器，否则重新开始计时。当计时器超时时，将base到nextseqnum-1之间已经传输的数据重传。其他情况忽略（不采取动作）。</p>
+<p>对于接收方来说：当接收到数据且没有被损坏且是期望到底的组，就接收该组，并发送ACK数据，报告已经接收到的组编号到了哪，并将期望到达的组编号加一。因此对于接收方来说，其期望数据是按序到达的，如果无效将导致发送方的重传。其他情况下，将发送之前的ACK确认信息。</p>
+<p>GBN期望传输时是有序到达的，该方法的优点是：接收方缓存简单，接收方不用缓冲任何失序分组。因此，虽然发送方必须维护窗口的上下边界及nextseqnum在该串口的位置，但接收方只需要维护下一个按序接收的分组序号（exceptedseqnum）。该方法的缺点是：随后对该分组的重传也许会丢失或出错，因此甚至需要更多的重传。</p>
+<h3 id="选择重传"><a href="#选择重传" class="headerlink" title="选择重传"></a>选择重传</h3><p>选择重传（SR）协议通过让发送方仅重传那些它怀疑在接收方出错（即丢失或受损）的分组而避免不必要的重传。</p>
+<p><img src="https://s2.ax1x.com/2019/12/24/lPB0Ig.png" alt="SR"></p>
+<p>SR发送方所采取的各种动作：</p>
+<ol>
+<li>从上层收到数据：当从上层收到数据时，SR发送方检测下一个可用于该分组的序号，如果序号在发送方的窗口内，则将数据打包并发送，否则像GBN一样，要么返回上层要么缓冲起来。</li>
+<li>超时：定时器再次被用来防止超时，不过对于每个分组必须用于自己的逻辑定时器。因为超时后只能发送一个分组。</li>
+<li>收到ACK。如果收到ACK，且该分组在窗口内，则SR发送方将那个被确定的分组标记为已接收。如果该分组等于send_base，则窗口基序号向前移动到具有最小序号的未确定分组处。如果窗口移动了，并且有序号落在窗口内的未发送分组，则发送该分组。</li>
+</ol>
+<p>SR接收方所采取的各种动作：</p>
+<ol>
+<li>序号在[rcv_base, rcv_base+N-1]内的分组被正确接收。此时，收到的窗口落在接收方的窗口内，一个选择ACK分组被回送给发送方。如果该分组是以前没有收到的分组，则被缓存。如果该分组序号等于接收窗口的基序号rcv_base，则该分组以及以前缓冲的序号连续的分组（起始于rcv_base）交付给上层。然后，接收窗口按向上交付的分组数量向前移动。</li>
+<li>序号在[rcv_base-N, rev_base-1]内的数据被正确接收到。此时说明之前对该序号分组的ACK未被发生方正确接收，此时必须产生一个ACK信号。</li>
+<li>其他情况，忽略该分组。</li>
+</ol>
+<p><img src="https://s2.ax1x.com/2019/12/24/lPrqUO.png" alt="SR"></p>
+<p>上图展示了一个SR的实例。</p>
+<p>对SR协议来说，发送方与接收方的窗口并不总是一致。当我们面对有限序号实现时，不同步的窗口将会导致严重后果。如，对于一个有4个分组序号0,1,2,3的有限范围且窗口长度为3，假定发送了分组0到2，接收方也正确接收了它们。此时接收窗口落到了4,5,6个分组上，其序号为3,0,1。此时考虑两种情况，情况1如下图a，对前三个分组的ACK丢失，发送方要重传这些分组，因此接收方下一步要接收序号0的分组，即第一个发送分组的拷贝。第二种情况如下图b所示，前三个分组被正确交付，因此发送方向前移动窗口并发送4,5,6个分组，其序号是3,0,1。序号3的分组丢失，但序号0的分组到达。</p>
+<p><img src="https://s2.ax1x.com/2019/12/24/lPrbVK.png" alt="SR EX"></p>
+<p>上述两种情况对于接收者来说是无法分辨的。显然窗口大小是有限制的，实际窗口长度必须小于或等于序号空间大小的一半。</p>
+<p>下表展示了可靠数据传输机制及其用途的总结：</p>
+<table>
+<thead>
+<tr>
+<th>机制</th>
+<th>用途和说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>检验和</td>
+<td>用于检测在一个传输分组的比特错误。</td>
+</tr>
+<tr>
+<td>定时器</td>
+<td>用于检测超时/重传一个分组，可能由于该分组（或其ACK）丢失，可能传输超时。</td>
+</tr>
+<tr>
+<td>序号</td>
+<td>用于从发送方流向接收方的数据分组按序排号。所接收分组的序号间的空隙可使该接收方检测出丢失的分组。具有相同序号的分组可使接收方检测出一个分组的冗余拷贝。</td>
+</tr>
+<tr>
+<td>确认</td>
+<td>接收方用于告知发送方一个分组或一组分组已经被正确地接收到。</td>
+</tr>
+<tr>
+<td>否定确认</td>
+<td>接收方用于告知发送方某个分组未被正确接收。</td>
+</tr>
+<tr>
+<td>窗口、流水线</td>
+<td>发送方也许被限制仅发送那些序号落在一个限定范围内的分组。通过允许一次发送多个分组但未被确认，发送方的利用率可在停等等操作模式的基础上增加。</td>
+</tr>
+</tbody></table>
+<h2 id="面向连接的运算：TCP"><a href="#面向连接的运算：TCP" class="headerlink" title="面向连接的运算：TCP"></a>面向连接的运算：TCP</h2><h3 id="TCP连接"><a href="#TCP连接" class="headerlink" title="TCP连接"></a>TCP连接</h3><p>TCP是面向连接的（connection-oriented），在进程间可以开始与另一个进程发送数据之前，这两个进程必须先相互“握手”，即互相发送预备字段，以建立确保数据传输的参数。作为TCP连接建立的一部分，连接的双方都会初始化与TCP连接相关的许多TCP状态变量。</p>
+<p>TCP协议只在端系统中运行，而不会在中间的网络元素（路由器和链路层交换机）中运行，所以网络元素不会维持TCP连接状态。</p>
+<p>TCP是全双工服务，也是点对点服务。在三次握手中，前两次不能存在有效载荷，第三次可以。</p>
+<p>对于发送方，TCP将数据引导到连接的发送缓存里，发送缓存是三次握手初期设置的缓存之一。TCP可以从缓存中取出并放入报文段中的数据数量受限于<strong>最大报文长度</strong>（Maximum Segment Size，MSS）。MSS通常根据最初确定的最大链路层长度（最大传输单元（MTU））来设置。设置该MSS要保证一个TCP报文段加上TCP/IP首部长度将适合单个链路层帧。</p>
+<p>TCP为每块数据配上一个TCP首部，从而形成TCP报文段。这些报文段传输给网络层，网络层将其分别封装进网络层IP数据报中。然后这些IP数据报被发送到网络中。当TCP在另一端接收到一个报文段后，该报文段的数据就被放入该TCP连接的缓存中。</p>
+<h3 id="TCP报文段结构"><a href="#TCP报文段结构" class="headerlink" title="TCP报文段结构"></a>TCP报文段结构</h3><p><img src="https://s2.ax1x.com/2019/12/25/lilwDA.png" alt="TCP packet struction"></p>
+<p>当TCP发送大文件时，通常是将该文件划分为长度为MSS的若干块。报文中除了包含源端口、目的端口、校验和等与UDP一致的，还包含部分其他数据：</p>
+<ol>
+<li>32比特的序号字段（sequence number）和32比特的确认字段（acknowledgment number）。提供可靠数据传输。</li>
+<li>16比特的接收窗口字段，用于流量控制。</li>
+<li>4比特的首部长度字段，指示了以32比特的字为单位的TCP首部长度。</li>
+<li>可选与变长的可选字段（options），该字段用于发送方与接收方协商最大报文长度（MSS）时，或在高速网络下用作窗口调节因子。</li>
+<li>6比特标志字段。ACK比特用于指示确认字段中的值是有效的，即该报文段包括一个对已被成功接收报文段的确认。RST、SYN和FIN用于连接建立和拆除。当PSH比特被设置时，指示接收方应该立即将数据交付给上层。URG比特用来指示报文段中存放着被发送端实体置为紧急的数据。当紧急数据存在并给出指向紧急数据尾的指针的时候，TCP必须通知接收端的上层实体。（实践中PSH、URG和紧急数据指针并没有使用）。</li>
+</ol>
+<h4 id="序号和确认号"><a href="#序号和确认号" class="headerlink" title="序号和确认号"></a>序号和确认号</h4><p>TCP把数据看成一个无结构的、有序的字节流，序号建立在传送的字节流之上，而不是建立在传送的报文段的序列上。一个报文段的序列号是该报文段首字节的字节流编号。</p>
+<p>TCP是双全工的，因此A向B传送的同时，也许同时接收B的数据（同一条TCP连接）。主机A填充进报文段的确认号是主机A期望从主机B收到的下一字节的序号，即可以看做当前A已经接收到的字节数减1，相当于在告诉B当前A已经确认接收到的数据。（这里说确认接收的数据和已经收到的数据其实不是很准确，因为不一定是从0开始的，而是按照一定方式就初始化开始的）。</p>
+<p>同时对于确认号来说，由于TCP是流水线传输，所以对于已经确认接收到的数据来说，可能中间部分没有收到，其前面的分组和后面都收到了，此时确认号是该流中至第一个丢失字节为止的字节，所以TCP被称为提供累积确认（cunulative acknowledgment）。对于失序到达的后面的数据，TCP也不会丢弃，而是缓冲下来。</p>
+<p>这里序号和确认号分别对于与发送方和接收方的序号，从初始化序号即可看出来。一条TCP连接的双方均可以随机选择初始序列号(目的是减少将那些人在网络中存在的来自两台主机之间先前已经终止的连接的报文段、误认为是这两台主机之间新建立连接所产生的有效报文段的可能性（可能碰巧与就连接使用相同的端口号）)。例如A初始序号为a，B初始序号为b，此时相当于B已经接收了a-1个数据，A已经接收了b-1个数据，因此A接下来要接收的数据是b，B接下来要接收的数据为a，因此A的确认号为b，B的确认号为a。</p>
+<p>如下例：</p>
+<p><img src="https://s2.ax1x.com/2019/12/25/liJI9P.png" alt="seq ack"></p>
+<p>上图中A的序号是42，B的序号是79。</p>
+<p>注意：对于发送方来说，发送完成后就要等待接收确认，对于接收方来说，接收到之后，即使自己没有要向发送方传递任何数据，也要发送一个确认报文。如上图的第三天报文。</p>
+<h3 id="往返时间的估计与超时"><a href="#往返时间的估计与超时" class="headerlink" title="往返时间的估计与超时"></a>往返时间的估计与超时</h3><p>与rdt3.0一样，TCP也使用超时/重传机制来处理报文段的丢失问题。</p>
+<h4 id="估计往返时间"><a href="#估计往返时间" class="headerlink" title="估计往返时间"></a>估计往返时间</h4><p>报文段样本RTT（表示为sampleRTT）就是从某报文段被发出到对该报文段被确认收到（收到ACK确认）之间的时间。大多数TCP实现仅在某个时刻做一次sampleRTT测量，而不是为每个发送的报文测量一个sampleRTT。即任意时刻，仅为一个已发送但目前尚未被确认的报文段估计sampleRTT，从而产生一个接近每个RTT的新sampleRTT值。另外，TCP绝不为已被重传的报文段计算sampleRTT。</p>
+<p>显然，sampleRTT值是一个随时间变化的值。TCP维持一个sampleRTT均值（称为EstimatedRTT）。一但获取新sampleRTT值就更新EstimatedRTT：<br>$$<br>EstimatedRTT = (1-\alpha)*EstimatedRTT + \alpha *SampleRTT<br>$$<br>$\alpha$一般取0.125。</p>
+<p>EstimatedRTT是一个sampleRTT的加权平均值，且越接近当前的采样，权重越大。</p>
+<p>除了定义估算RTT外，测量RTT的变化也是有价值的。RTT偏差DevRTT，用于估算sampleRTT一般会偏离EstimatedRTT的程度：<br>$$<br>DevRTT = (1-\beta) * DevRTT + \beta *|sampleRTT - EstimatedRTT|<br>$$<br>$\beta$一般取0.25。</p>
+<h4 id="设置和管理重传超时间隔"><a href="#设置和管理重传超时间隔" class="headerlink" title="设置和管理重传超时间隔"></a>设置和管理重传超时间隔</h4><p>超时间隔应该大于等于EstimatedRTT，否则会造成不必要的重传。超时间隔也不能大太多，否则当报文丢失时，TCP不能很快重传该报文，导致数据传输时延大。于是TCP超时间隔设置为：<br>$$<br>TimeoutInterval = EstimatedRTT + 4 * DevRTT<br>$$</p>
+<h3 id="可靠数据传输"><a href="#可靠数据传输" class="headerlink" title="可靠数据传输"></a>可靠数据传输</h3><p>TCP可靠传输服务确保一个进程从其接收缓存中读出的数据流是无损的、无间隔的、非冗余和按序的数据流。</p>
+<p>前面我们在SR中讲到的方法是使每一个报文和一个定时器关联，但定时器花销是是否大的，因此推荐的定时器管理是仅使用单一的定时器。</p>
+<p>下面给出TCP发送方高度简化的描述：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">/假设发送方不受TCP流量和拥塞控制的限制, 来自上层的数据长度小于MSS,且数据传送只在一个方向进行. */</span><br><span class="line"></span><br><span class="line">loop(forever)</span><br><span class="line">&#123;</span><br><span class="line">	switch(event)</span><br><span class="line">	</span><br><span class="line">		event: data recieved from application above create TCP segment with sequence number NextSeqNum</span><br><span class="line">			if(timer currently not running)</span><br><span class="line">				strat timer</span><br><span class="line">			pass segment to IP</span><br><span class="line">			NextSeqNum = NextSeqNum+length(data)</span><br><span class="line">			break</span><br><span class="line">		</span><br><span class="line">		event: timer timeout</span><br><span class="line">			retransmit not-yet-acknowledged segment with samllest sequence number</span><br><span class="line">			start timer</span><br><span class="line">			break</span><br><span class="line">		</span><br><span class="line">		event : ACK received, with ACK field value of y</span><br><span class="line">			if(y &gt; SendBase)</span><br><span class="line">				SendBase = y</span><br><span class="line">				if(there are currently any not-yet-acknowledged segments)</span><br><span class="line">					start timer</span><br><span class="line">				break;</span><br><span class="line">		</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中Nextseqnum被用来记录序号，SendBase是最小为被确认的字节的序号。</p>
+<h4 id="超时间隔加倍"><a href="#超时间隔加倍" class="headerlink" title="超时间隔加倍"></a>超时间隔加倍</h4><p>如前所述，TCP重传具有最小序号的还没被确认的报文段。只是每次TCP重传时都会将下一次的超时间隔设置为先前的两倍，而不是从EstimatedRTT和DevRTT推算出来的值。然而每当定时器在另外两个事件（即收到上层应用的数据和收到ACK）中任意一个启动时，TimeoutInterval由最近的EstimatedRTT值与DevRTT得到。</p>
+<p>这种修改提供了一个形式受限的拥塞控制。</p>
+<h4 id="快速重传"><a href="#快速重传" class="headerlink" title="快速重传"></a>快速重传</h4><p>超时触发重传存在的问题是超时周期可能相对较长。发送方通常可在超时时间之前通过注意所谓的冗余ACK来较好的检测到丢包情况。冗余ACK就是再次确认某个报文段的ACK，而发送方先前已经收到对该报文段的确认。</p>
+<p>下表总结了TCP接收方ACK的生成策略：</p>
+<table>
+<thead>
+<tr>
+<th>事件</th>
+<th>TCP接收方动作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>具有所期望的按序报文段到达，所有在期望序号以前的数据都已经被确认</td>
+<td>延迟的ACK，对另一个按序报文段的达到最多等待500ms，如果下一个报文段在这个时间间隔内没有达到，则发送一个ACK</td>
+</tr>
+<tr>
+<td>具有所期望序号的按序报文段到达，另一个按序报文段等待ACK传输</td>
+<td>立即发送单个累积ACK，以确认两个按序报文段。</td>
+</tr>
+<tr>
+<td>比期望大的失序报文段到达，检测出现间隔</td>
+<td>立即发送冗余ACK，指示下一个期待字节的序号（其为间隔的低端序号）</td>
+</tr>
+<tr>
+<td>能部分或完全填充数据间隔的报文段到达</td>
+<td>倘若该报文段起始于低端，立即发送ACK</td>
+</tr>
+</tbody></table>
+<p>因为发送方经常发送大量报文段，如果一个报文段丢失，就可能引起许多冗余ACK。如果TCP发送方接收到对相同数据的3个冗余ACK，它把这当成一种指示，说明在这个已被确认过三次的报文段之后的报文段已经丢失。因此，一旦收到3个冗余ACK，TCP就执行快速重传，即在该报文段超时之前重传。</p>
+<p>因此，可用下面的代码来替代之前的发送方部分代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">event : ACK received,wite ACK field value of y</span><br><span class="line">	if(y &gt;SendBase)</span><br><span class="line">	&#123;</span><br><span class="line">		SendBase = y</span><br><span class="line">		if(there are currently any not yet acknowledged segments)</span><br><span class="line">			start timer</span><br><span class="line">	&#125;</span><br><span class="line">	else&#123; /* y == SendBase, 即收到冗余ACK */</span><br><span class="line">		increment number of duplicate ACks received for y</span><br><span class="line">		if(number of duplicate ACKs received for y==3)</span><br><span class="line">		&#123;</span><br><span class="line">			/* TCP fast retransmit */</span><br><span class="line">			resend segment with sequence number y</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>TCP的差错恢复机制应该属于GBN和SR的混合体。</p>
+<h3 id="流量控制"><a href="#流量控制" class="headerlink" title="流量控制"></a>流量控制</h3><p>一条TCP连接每一测主机都为该连接设置了接收缓存。TCP提供了流量控制服务（flow-control service）以消除发送方使接收方缓存溢出的可能。该服务与拥塞控制不同。</p>
+<p>TCP通过让发送方维护一个称为接收窗口（receive window）的变量来提供流量控制。接收窗口用于给发送方一个指示——该接收方还有多少可用的缓存空间。由于TCP是双全工通信，在连接两端的发送方都各种维护一个接收窗口。假设主机A通过一条TCP连接向主机B发送一个大文件。主机B为该连接分配一个缓存区，用RevBuffer来表示其大小。主机上的应用进程不时地从该缓存中读取数据。同时定义如下变量：</p>
+<p>LastByteRead：主机B上的应用进程从缓存读出的数据流的最后一个字节的编号。</p>
+<p>LastByteRevd：从网络到达的并且已放入主机B接收缓存中的数据流的最后一个字节的编号。</p>
+<p>由于TCP不允许缓存溢出，因此：<br>$$<br>LastByteRecv - LastByteRead &lt;= RevBuffer<br>$$<br>接收窗口用rwnd表示，则：<br>$$<br>rwnd = RevBuffer - [LastByteRevd - LastByteRead]<br>$$<br>rwnd是动态变化的。</p>
+<p><img src="https://s2.ax1x.com/2019/12/25/liOh9g.png" alt="rwnd"></p>
+<p>主机B通过把当前rwnd值放到它发送给A的报文段接收窗口字段中，通知主机A它在该连接的缓存中还有多少可用空间。开始时，主机B设定rwnd = RevBuffer。为了实现这一点，主机B必须跟踪几个与连接有关的变量。</p>
+<p>主机A轮流跟踪两个变量，LastByteSent和LastByteAcked。这两个变量之间的差LastByteSend - LastByteAsked就是主机A发送到连接中但未被确认的数据量。将该数量限制在rwnd内就可以保证主机A不会使主机B的接收缓存溢出。所以：<br>$$<br>LastByteSent - LastByteAcked &lt;= rwnd<br>$$<br>但该方案存在一个问题。如果B的接收缓存已经满了，使得rwnd = 0。将rend告知A之后，假设主机B上没有任何数据要发送给A。此时，主机B上的应用进程将缓存清空，TCP并不向主机A发送任何带有rwnd的新报文。这样，主机A不可能知道主机B接收空间已经有新空间了，即主机A被阻塞而不能再发送数据。为了解决这个问题，TCP要求，当主机B接收窗口为0时，主机A继续发送只有一个字节数据的报文段。这些报文段将会被接收方确认。最终缓存将开始清空，并且确认报文里将包含一个非0的rwnd值。</p>
+<h3 id="TCP连接管理"><a href="#TCP连接管理" class="headerlink" title="TCP连接管理"></a>TCP连接管理</h3><p>现在来看一条TCP连接是如何建立的，假设运行在主机（客户）上的一个进程想要与另一台主机（服务器）上的进程建立一条连接。客户机会用下面方式与服务器建立连接：</p>
+<ol>
+<li>第一步：客户机的TCP首先向服务器端的TCP发送一个特殊的TCP报文段。该报文不包含应用层数据。但是报文段首部中的一个标志位（SYN比特）被置1.因此这个特殊报文段被称为SYN报文段。另外，客户机会随机初始化一个初始序号（client_isn），并将该编号置于起始的TCP SYN报文段的序号段中。该报文被封装在一个IP数据报中，并发送给服务器。</li>
+<li>第二步：一旦一个包含TCP SYN报文段的IP数据报到达服务器主机，服务器会从该数据报中提取出TCP SYN报文段，为该TCP连接分配TCP缓存和变量，并向该酷虎就TCP发送允许连接的报文段。（在完成三次握手的第三步之前分配资源，使得TCP易于受到被称为SYN洪泛的拒绝服务攻击）。这个运行连接的报文段也不包含应用层数据。但是该报文段首部包含3个重要信息。首先SYN比特被置1，其次该TCP报文段首部的确认号字段被设置为client_isn+1。最后，服务器选择自己的初始序号（server_isn)，并将其放置到TCP报文段首部的序号字段中。该报文被称为SYNACK报文段。</li>
+<li>在收到SYNACK报文段后，客户机也要为该连接分配缓存和变量。客户机向服务器发送另一个报文段，最后一个报文段对服务器的允许连接的报文段进行了确认（将值server_isn+1放置到TCP报文段首部的确认字段中来完成此项工作）。因为连接已经建立，该SYN比特被置为0。该三次握手的第三阶段可以在报文段负载中携带客户到服务器的数据。</li>
+</ol>
+<p>一旦建立连接后，就可以互相传输报文了，此时SYN都是0。</p>
+<p><img src="https://s2.ax1x.com/2019/12/25/lF9o79.png" alt="TCP three-way"></p>
+<p>下面我们再来看TCP如何终止连接。参与连接的任何一个都可以终止该连接。当连接结束后，主机中的资源将被释放。假如某个主机打算关闭连接，如下图。客户应用进程发出一个关闭连接命令。这会使客户TCP向服务器进程发送一个特殊的TCP报文段，该报文段首部FIN标志位被设置为1。当服务器接收到该该报文段后，就向发送方返回一个确认报文段。然后服务器就发送自己的终止报文，其FIN被置为1.最后，该客户机对这个服务器的终止报文进行确认。此时，在两台主机上用于该连接的所以资源都被释放了。</p>
+<p><img src="https://s2.ax1x.com/2019/12/25/lFPQVH.png" alt="TCP fin"></p>
+<p>下图展示了客户TCP经典的TCP状态序列：</p>
+<p><img src="https://s2.ax1x.com/2019/12/25/lFPfZ4.png" alt="TCP state"></p>
+<p>其中在TIME_WAIT等待状态时，确定ACK丢失，TIME_WAIT状态使TCP客户重传最后的确认报文经过等待后，连接正式关闭，客户机所以资源包括端口号被释放。（等待时间取决于实现）</p>
+<p>下图为服务器端TCP经历的典型的TCP状态序列：</p>
+<p><img src="https://s2.ax1x.com/2019/12/25/lFitYR.png" alt="TCP state"></p>
+<h2 id="拥塞控制原理"><a href="#拥塞控制原理" class="headerlink" title="拥塞控制原理"></a>拥塞控制原理</h2><h3 id="拥塞原因与代价"><a href="#拥塞原因与代价" class="headerlink" title="拥塞原因与代价"></a>拥塞原因与代价</h3><h4 id="情况1：两个发送方和一台无穷大缓存的路由器"><a href="#情况1：两个发送方和一台无穷大缓存的路由器" class="headerlink" title="情况1：两个发送方和一台无穷大缓存的路由器"></a>情况1：两个发送方和一台无穷大缓存的路由器</h4><p>最简单的拥塞情况：两台主机（A和B）都有一条连接，且这两条连接共享源与目的地之间的单跳路由。此时限制只有共享式输出链路的容量。当两个主机传输的总速度超过链路的总容量，就会导致拥塞。</p>
+<h4 id="情况2：两个发送方和一台具有有限缓存的路由器"><a href="#情况2：两个发送方和一台具有有限缓存的路由器" class="headerlink" title="情况2：两个发送方和一台具有有限缓存的路由器"></a>情况2：两个发送方和一台具有有限缓存的路由器</h4><p>此时拥塞则有两部分组成，第一部分和情况1一样，两台主机所传输速度和，还有一个问题则是在有限缓存的路由器上存在丢包。丢包会加大两台主机传输速率，但造成更严重的拥塞和丢包。</p>
+<h4 id="情况3-4个发送方和具有有限缓存的多台路由器及多跳路径"><a href="#情况3-4个发送方和具有有限缓存的多台路由器及多跳路径" class="headerlink" title="情况3:4个发送方和具有有限缓存的多台路由器及多跳路径"></a>情况3:4个发送方和具有有限缓存的多台路由器及多跳路径</h4><p><img src="https://s2.ax1x.com/2019/12/26/lkhPNd.png" alt="state 4"></p>
+<p>此时对于每一条传输路径来说，都经历两段。每段都有两条路径共享，而且共享段是其中一条路径的第一段，另一条路径的第二段。此时，往往作为第一段的那条路径会被优先满足，挤占掉作为第二段路径的那条路径。而被满足的那条路径到它的第二段路径时，又会被另一条路径挤占掉（因为在它的第二段里还存一个作为第一段的路径）。最终将会导致所以路径全部拥塞。</p>
+<h3 id="拥塞控制方法"><a href="#拥塞控制方法" class="headerlink" title="拥塞控制方法"></a>拥塞控制方法</h3><p>拥塞控制主要有两种方法：</p>
+<ol>
+<li>端到端拥塞控制：网络中存在拥塞，端系统必须通过对网络进行观察来推断。</li>
+<li>网络辅助的拥塞控制：在网络辅助的拥塞控制中，网络层构建（即路由器）向发送方提供关于网络中阻塞状态的显示反馈信息。</li>
+</ol>
+<h2 id="TCP拥塞控制"><a href="#TCP拥塞控制" class="headerlink" title="TCP拥塞控制"></a>TCP拥塞控制</h2><p>TCP所采取的方法是让每一个发送方根据所感知到的网络拥塞程度来限定其向连接发送的流量的速率。</p>
+<p>首先来看TCP如何限制向其连接发送流量的。运行在发送方的TCP拥塞控制机制跟踪一个额外的变量，即拥塞控制窗口（cwnd），它对一个TCP发送方能够向网络中发送流量的速率进行了限制，特别是，一个发送方中未被确认的数据量不会超过cwnd和rwnd中的最小值：<br>$$<br>LastByteSent - LastByteAcked &lt;= min{cwnd, rwnd}<br>$$<br>为了只关注与拥塞控制，下面的讨论假设rwnd足够大，我们可以忽略该值。因此，发送方发送速率大概是cwnd/RTT 字节/秒。通过调节cwnd值，我们可以调节其发送速率。</p>
+<p>下面考虑TCP发送方如何感知它与目的地之间的路径上出现了拥塞。我们将一个TCP发送方的“丢包事件”定义为：要么出现超时，要么收到来自接收方的3个冗余ACK。</p>
+<p>接下来考虑网络没有拥塞的情况，即没有出现丢包时间的情况。此时，TCP的发送方将收到对于以前未确认报文段的确认。TCP将这些确认到达作为一切正常的指示，并用来增加窗口的长度。因为TCP使用确认来触发（或计时）增大它的拥塞窗口长度，TCP被说成是自计时的。</p>
+<p>TCP对各个事件的指导性原则是：</p>
+<ol>
+<li>一个丢失的报文段意味着拥塞，因此丢失报文段时应该降低TCP发送方的速率。一个超时事件或者四个确认（一个初始ACK和三个冗余ACK）被解释为“丢包事件”的一种隐含的指示。</li>
+<li>一个确认报文段指示该网络正在向接收方交付发送方的报文段，因此，当对先前未确认报文段的确认到达时，能够增加发送方的速率。</li>
+<li>带宽探测：给定ACK指示源到目的地路径无拥塞，而丢包事件指示路径拥塞，TCP调节其传输速率的策略是增加其速率以响应到达的ACK，除非出现丢包事件，此时才减小传输速度。因为，为探测拥塞开始的速率，TCP发送方增加它的传输速率，从该速率后退，进而再次探测，可靠拥塞开始速率是否发送了变化。</li>
+</ol>
+<p>TCP拥塞控制算法包括三部分：慢启动；拥塞避免；快速恢复。</p>
+<h4 id="慢启动"><a href="#慢启动" class="headerlink" title="慢启动"></a>慢启动</h4><p>当一条TCP连接开始时，cwnd通常设置为一个MSS的较小值，TCP希望迅速找到可用带宽的数量。在慢启动状态，cwnd的值以1个MSS开始并且每当传输的报文段首次被确认就增加一个MSS。如下图所示，每过一个RTT，发送速率就翻倍，TCP发送速率起始慢，但在慢启动阶段以指数增长，</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lkbHEV.png" alt="慢启动"></p>
+<p>慢启动结束的条件有多种。首先，如果存在一个由超时指示的丢包（即拥塞），TCP发送方将cwnd设置为1并重新开始慢启动过程。它还将第二个状态变量的值ssthresh（慢启动阈值）设置为cwnd/2，即当检测到拥塞时，将ssthresh置为拥塞窗口值的一半。慢启动的第二种方式是直接与ssthresh值相关联。因为当检测到拥塞时ssthresh设为cwnd的一半，当cwnd等于ssthresh值时，结束慢启动并将TCP转移到拥塞避免模式。最后一种方式是，如果检测到3个冗余ACK，TCP执行快速重传并进入快速恢复状态。</p>
+<h4 id="拥塞避免"><a href="#拥塞避免" class="headerlink" title="拥塞避免"></a>拥塞避免</h4><p>一旦进入拥塞避免，cwnd值大约是上次遇到拥塞时值的一半。此时采取比较保守的方法，每个RTT只将cwnd值加一（慢启动成倍）。通用方法是对于TCP发送方无论何时到达一个新的确认，就将cwnd增加一个MSS（MSS/cwnd）字节。例如，MSS是1460字节，cwnd是14600字节，则在一个RTT内发送10个报文。每个到达ACK增加1/10MSS的拥塞长度，这样在收到10个报文后，拥塞窗口就增加了一个MSS。</p>
+<p>结束拥塞避免的线性增长时机为：当出现超时时，TCP的拥塞避免算法行为与慢启动情况一致，cwnd被设置为1MSS。当出现3个冗余ACK事件时，网络继续从发送方向接收方交付报文段，因此TCP对这种丢包事件的行为，相比于超时指示的丢包应当不那么剧烈，此时TCP将cwnd的值减半，并且将ssthresh的值记录为cwnd的值的一半。接下来进入快速恢复状态。</p>
+<h4 id="快速恢复"><a href="#快速恢复" class="headerlink" title="快速恢复"></a>快速恢复</h4><p>在快速恢复中，对于引起TCP进入快速恢复状态的缺失报文段，对收到的每个冗余的ACK，cwnd的值增加一个MSS。最终，当对丢失报文段的一个ACK到达时，TCP进入拥塞避免状态。如果出现超时事件，快速恢复再执行如图在慢启动和拥塞避免中相同的动作，迁移到慢启动状态。</p>
+<p>下图展示了TCP的FSM：</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lkO0c4.png" alt="TCP FSM"></p>
+<p>TCP拥塞控制常常被错误加性增、乘性减（AIMD）。</p>
+<p>TCP吞吐量公式，该公式作为丢包率L、往返时间RTT和最大报文段长度MSS的函数：<br>$$<br>一条连接的平均吞吐量 = \frac{1.22*MSS}{RTT\sqrt{L}}<br>$$</p>
 
       
     </div>
@@ -1055,7 +1350,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是因特网"><span class="nav-number">1.</span> <span class="nav-text">什么是因特网</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#具体构成描述"><span class="nav-number">1.1.</span> <span class="nav-text">具体构成描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务描述"><span class="nav-number">1.2.</span> <span class="nav-text">服务描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是协议"><span class="nav-number">1.3.</span> <span class="nav-text">什么是协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络边缘"><span class="nav-number">2.</span> <span class="nav-text">网络边缘</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#客户机和服务器程序"><span class="nav-number">2.1.</span> <span class="nav-text">客户机和服务器程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接入网"><span class="nav-number">2.2.</span> <span class="nav-text">接入网</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#物理媒介"><span class="nav-number">2.3.</span> <span class="nav-text">物理媒介</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络核心"><span class="nav-number">3.</span> <span class="nav-text">网络核心</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#电路交换和分组交换"><span class="nav-number">3.1.</span> <span class="nav-text">电路交换和分组交换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#电路交换网络中的多路复用"><span class="nav-number">3.1.1.</span> <span class="nav-text">电路交换网络中的多路复用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分组交换"><span class="nav-number">3.1.2.</span> <span class="nav-text">分组交换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分组如何通过分组交换形成其通路"><span class="nav-number">3.2.</span> <span class="nav-text">分组如何通过分组交换形成其通路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ISP和因特网主干道"><span class="nav-number">3.3.</span> <span class="nav-text">ISP和因特网主干道</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分组交换网中的时延、丢包和吞吐量"><span class="nav-number">4.</span> <span class="nav-text">分组交换网中的时延、丢包和吞吐量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#时延概述"><span class="nav-number">4.1.</span> <span class="nav-text">时延概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#排队时延和丢包"><span class="nav-number">4.2.</span> <span class="nav-text">排队时延和丢包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#端到端时延"><span class="nav-number">4.3.</span> <span class="nav-text">端到端时延</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算机网络中的吞吐量"><span class="nav-number">4.4.</span> <span class="nav-text">计算机网络中的吞吐量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#协议层次和它们的服务模型"><span class="nav-number">5.</span> <span class="nav-text">协议层次和它们的服务模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分层的体系结构"><span class="nav-number">5.1.</span> <span class="nav-text">分层的体系结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#报文、报文段、数据报和帧"><span class="nav-number">5.2.</span> <span class="nav-text">报文、报文段、数据报和帧</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#攻击威胁下的网络"><span class="nav-number">6.</span> <span class="nav-text">攻击威胁下的网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#坏家伙能够经因特网将恶意软件放入你的计算机"><span class="nav-number">6.1.</span> <span class="nav-text">坏家伙能够经因特网将恶意软件放入你的计算机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#坏家伙能够攻击服务器和网络基础设施"><span class="nav-number">6.2.</span> <span class="nav-text">坏家伙能够攻击服务器和网络基础设施</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#坏家伙能嗅探分组"><span class="nav-number">6.3.</span> <span class="nav-text">坏家伙能嗅探分组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#坏家伙能够伪装成你信任的人"><span class="nav-number">6.4.</span> <span class="nav-text">坏家伙能够伪装成你信任的人</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#坏家伙能够修改或删除报文"><span class="nav-number">6.5.</span> <span class="nav-text">坏家伙能够修改或删除报文</span></a></li></ol></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#第二章-应用层"><span class="nav-number"></span> <span class="nav-text">第二章 应用层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#应用层协议原理"><span class="nav-number">1.</span> <span class="nav-text">应用层协议原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网络应用程序体系结构"><span class="nav-number">1.1.</span> <span class="nav-text">网络应用程序体系结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程通信"><span class="nav-number">1.2.</span> <span class="nav-text">进程通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可供应用程序使用的传输协议"><span class="nav-number">1.3.</span> <span class="nav-text">可供应用程序使用的传输协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#因特网的运输服务"><span class="nav-number">1.4.</span> <span class="nav-text">因特网的运输服务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP服务"><span class="nav-number">1.4.1.</span> <span class="nav-text">TCP服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UDP服务"><span class="nav-number">1.4.2.</span> <span class="nav-text">UDP服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#因特网运输层不提供的服务"><span class="nav-number">1.4.3.</span> <span class="nav-text">因特网运输层不提供的服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程寻址"><span class="nav-number">1.4.4.</span> <span class="nav-text">进程寻址</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用层协议"><span class="nav-number">1.5.</span> <span class="nav-text">应用层协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web应用与HTTP协议"><span class="nav-number">2.</span> <span class="nav-text">Web应用与HTTP协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP概况"><span class="nav-number">2.1.</span> <span class="nav-text">HTTP概况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非持久连接和持久连接"><span class="nav-number">2.2.</span> <span class="nav-text">非持久连接和持久连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP报文格式"><span class="nav-number">2.3.</span> <span class="nav-text">HTTP报文格式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#请求报文"><span class="nav-number">2.3.1.</span> <span class="nav-text">请求报文</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP响应报文"><span class="nav-number">2.3.2.</span> <span class="nav-text">HTTP响应报文</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用于与服务器的交互：cookie"><span class="nav-number">2.4.</span> <span class="nav-text">用于与服务器的交互：cookie</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web缓存"><span class="nav-number">2.5.</span> <span class="nav-text">Web缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条件GET方法"><span class="nav-number">2.6.</span> <span class="nav-text">条件GET方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件传输协议：FTP"><span class="nav-number">3.</span> <span class="nav-text">文件传输协议：FTP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#因特网中的电子邮件"><span class="nav-number">4.</span> <span class="nav-text">因特网中的电子邮件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SMTP"><span class="nav-number">4.1.</span> <span class="nav-text">SMTP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#与HTTP的对比"><span class="nav-number">4.2.</span> <span class="nav-text">与HTTP的对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#邮件报文格式和MIME"><span class="nav-number">4.3.</span> <span class="nav-text">邮件报文格式和MIME</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#非ASCII码数据的MIME扩展"><span class="nav-number">4.3.1.</span> <span class="nav-text">非ASCII码数据的MIME扩展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#接收的报文"><span class="nav-number">4.3.2.</span> <span class="nav-text">接收的报文</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#邮件访问协议"><span class="nav-number">4.4.</span> <span class="nav-text">邮件访问协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#POP3"><span class="nav-number">4.4.1.</span> <span class="nav-text">POP3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IMAP"><span class="nav-number">4.4.2.</span> <span class="nav-text">IMAP</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNS，因特网的目录服务"><span class="nav-number">5.</span> <span class="nav-text">DNS，因特网的目录服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS提供的服务"><span class="nav-number">5.1.</span> <span class="nav-text">DNS提供的服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS工作机理"><span class="nav-number">5.2.</span> <span class="nav-text">DNS工作机理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分布式、层次数据库"><span class="nav-number">5.2.1.</span> <span class="nav-text">分布式、层次数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DNS缓存"><span class="nav-number">5.2.2.</span> <span class="nav-text">DNS缓存</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS记录和报文"><span class="nav-number">5.3.</span> <span class="nav-text">DNS记录和报文</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DNS报文"><span class="nav-number">5.3.1.</span> <span class="nav-text">DNS报文</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在DNS数据库中插入记录"><span class="nav-number">5.3.2.</span> <span class="nav-text">在DNS数据库中插入记录</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#P2P应用"><span class="nav-number">6.</span> <span class="nav-text">P2P应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#P2P文件分发"><span class="nav-number">6.1.</span> <span class="nav-text">P2P文件分发</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#P2P体系结构的扩展性"><span class="nav-number">6.1.1.</span> <span class="nav-text">P2P体系结构的扩展性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BitTorrent"><span class="nav-number">6.1.2.</span> <span class="nav-text">BitTorrent</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在P2P区域中搜索信息"><span class="nav-number">6.2.</span> <span class="nav-text">在P2P区域中搜索信息</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#集中式索引"><span class="nav-number">6.2.1.</span> <span class="nav-text">集中式索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询洪泛"><span class="nav-number">6.2.2.</span> <span class="nav-text">查询洪泛</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#层次覆盖"><span class="nav-number">6.2.3.</span> <span class="nav-text">层次覆盖</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式散列表"><span class="nav-number">6.3.</span> <span class="nav-text">分布式散列表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#环形DHT"><span class="nav-number">6.3.1.</span> <span class="nav-text">环形DHT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对等方的扰动"><span class="nav-number">6.3.2.</span> <span class="nav-text">对等方的扰动</span></a></li></ol></li></ol></li></ol></li></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是因特网"><span class="nav-number">1.</span> <span class="nav-text">什么是因特网</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#具体构成描述"><span class="nav-number">1.1.</span> <span class="nav-text">具体构成描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务描述"><span class="nav-number">1.2.</span> <span class="nav-text">服务描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是协议"><span class="nav-number">1.3.</span> <span class="nav-text">什么是协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络边缘"><span class="nav-number">2.</span> <span class="nav-text">网络边缘</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#客户机和服务器程序"><span class="nav-number">2.1.</span> <span class="nav-text">客户机和服务器程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接入网"><span class="nav-number">2.2.</span> <span class="nav-text">接入网</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#物理媒介"><span class="nav-number">2.3.</span> <span class="nav-text">物理媒介</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络核心"><span class="nav-number">3.</span> <span class="nav-text">网络核心</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#电路交换和分组交换"><span class="nav-number">3.1.</span> <span class="nav-text">电路交换和分组交换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#电路交换网络中的多路复用"><span class="nav-number">3.1.1.</span> <span class="nav-text">电路交换网络中的多路复用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分组交换"><span class="nav-number">3.1.2.</span> <span class="nav-text">分组交换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分组如何通过分组交换形成其通路"><span class="nav-number">3.2.</span> <span class="nav-text">分组如何通过分组交换形成其通路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ISP和因特网主干道"><span class="nav-number">3.3.</span> <span class="nav-text">ISP和因特网主干道</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分组交换网中的时延、丢包和吞吐量"><span class="nav-number">4.</span> <span class="nav-text">分组交换网中的时延、丢包和吞吐量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#时延概述"><span class="nav-number">4.1.</span> <span class="nav-text">时延概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#排队时延和丢包"><span class="nav-number">4.2.</span> <span class="nav-text">排队时延和丢包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#端到端时延"><span class="nav-number">4.3.</span> <span class="nav-text">端到端时延</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算机网络中的吞吐量"><span class="nav-number">4.4.</span> <span class="nav-text">计算机网络中的吞吐量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#协议层次和它们的服务模型"><span class="nav-number">5.</span> <span class="nav-text">协议层次和它们的服务模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分层的体系结构"><span class="nav-number">5.1.</span> <span class="nav-text">分层的体系结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#报文、报文段、数据报和帧"><span class="nav-number">5.2.</span> <span class="nav-text">报文、报文段、数据报和帧</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#攻击威胁下的网络"><span class="nav-number">6.</span> <span class="nav-text">攻击威胁下的网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#坏家伙能够经因特网将恶意软件放入你的计算机"><span class="nav-number">6.1.</span> <span class="nav-text">坏家伙能够经因特网将恶意软件放入你的计算机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#坏家伙能够攻击服务器和网络基础设施"><span class="nav-number">6.2.</span> <span class="nav-text">坏家伙能够攻击服务器和网络基础设施</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#坏家伙能嗅探分组"><span class="nav-number">6.3.</span> <span class="nav-text">坏家伙能嗅探分组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#坏家伙能够伪装成你信任的人"><span class="nav-number">6.4.</span> <span class="nav-text">坏家伙能够伪装成你信任的人</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#坏家伙能够修改或删除报文"><span class="nav-number">6.5.</span> <span class="nav-text">坏家伙能够修改或删除报文</span></a></li></ol></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#第二章-应用层"><span class="nav-number"></span> <span class="nav-text">第二章 应用层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#应用层协议原理"><span class="nav-number">1.</span> <span class="nav-text">应用层协议原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网络应用程序体系结构"><span class="nav-number">1.1.</span> <span class="nav-text">网络应用程序体系结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程通信"><span class="nav-number">1.2.</span> <span class="nav-text">进程通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可供应用程序使用的传输协议"><span class="nav-number">1.3.</span> <span class="nav-text">可供应用程序使用的传输协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#因特网的运输服务"><span class="nav-number">1.4.</span> <span class="nav-text">因特网的运输服务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP服务"><span class="nav-number">1.4.1.</span> <span class="nav-text">TCP服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UDP服务"><span class="nav-number">1.4.2.</span> <span class="nav-text">UDP服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#因特网运输层不提供的服务"><span class="nav-number">1.4.3.</span> <span class="nav-text">因特网运输层不提供的服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程寻址"><span class="nav-number">1.4.4.</span> <span class="nav-text">进程寻址</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用层协议"><span class="nav-number">1.5.</span> <span class="nav-text">应用层协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web应用与HTTP协议"><span class="nav-number">2.</span> <span class="nav-text">Web应用与HTTP协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP概况"><span class="nav-number">2.1.</span> <span class="nav-text">HTTP概况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非持久连接和持久连接"><span class="nav-number">2.2.</span> <span class="nav-text">非持久连接和持久连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP报文格式"><span class="nav-number">2.3.</span> <span class="nav-text">HTTP报文格式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#请求报文"><span class="nav-number">2.3.1.</span> <span class="nav-text">请求报文</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP响应报文"><span class="nav-number">2.3.2.</span> <span class="nav-text">HTTP响应报文</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用于与服务器的交互：cookie"><span class="nav-number">2.4.</span> <span class="nav-text">用于与服务器的交互：cookie</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web缓存"><span class="nav-number">2.5.</span> <span class="nav-text">Web缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条件GET方法"><span class="nav-number">2.6.</span> <span class="nav-text">条件GET方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件传输协议：FTP"><span class="nav-number">3.</span> <span class="nav-text">文件传输协议：FTP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#因特网中的电子邮件"><span class="nav-number">4.</span> <span class="nav-text">因特网中的电子邮件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SMTP"><span class="nav-number">4.1.</span> <span class="nav-text">SMTP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#与HTTP的对比"><span class="nav-number">4.2.</span> <span class="nav-text">与HTTP的对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#邮件报文格式和MIME"><span class="nav-number">4.3.</span> <span class="nav-text">邮件报文格式和MIME</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#非ASCII码数据的MIME扩展"><span class="nav-number">4.3.1.</span> <span class="nav-text">非ASCII码数据的MIME扩展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#接收的报文"><span class="nav-number">4.3.2.</span> <span class="nav-text">接收的报文</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#邮件访问协议"><span class="nav-number">4.4.</span> <span class="nav-text">邮件访问协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#POP3"><span class="nav-number">4.4.1.</span> <span class="nav-text">POP3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IMAP"><span class="nav-number">4.4.2.</span> <span class="nav-text">IMAP</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNS，因特网的目录服务"><span class="nav-number">5.</span> <span class="nav-text">DNS，因特网的目录服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS提供的服务"><span class="nav-number">5.1.</span> <span class="nav-text">DNS提供的服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS工作机理"><span class="nav-number">5.2.</span> <span class="nav-text">DNS工作机理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分布式、层次数据库"><span class="nav-number">5.2.1.</span> <span class="nav-text">分布式、层次数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DNS缓存"><span class="nav-number">5.2.2.</span> <span class="nav-text">DNS缓存</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS记录和报文"><span class="nav-number">5.3.</span> <span class="nav-text">DNS记录和报文</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DNS报文"><span class="nav-number">5.3.1.</span> <span class="nav-text">DNS报文</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在DNS数据库中插入记录"><span class="nav-number">5.3.2.</span> <span class="nav-text">在DNS数据库中插入记录</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#P2P应用"><span class="nav-number">6.</span> <span class="nav-text">P2P应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#P2P文件分发"><span class="nav-number">6.1.</span> <span class="nav-text">P2P文件分发</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#P2P体系结构的扩展性"><span class="nav-number">6.1.1.</span> <span class="nav-text">P2P体系结构的扩展性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BitTorrent"><span class="nav-number">6.1.2.</span> <span class="nav-text">BitTorrent</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在P2P区域中搜索信息"><span class="nav-number">6.2.</span> <span class="nav-text">在P2P区域中搜索信息</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#集中式索引"><span class="nav-number">6.2.1.</span> <span class="nav-text">集中式索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询洪泛"><span class="nav-number">6.2.2.</span> <span class="nav-text">查询洪泛</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#层次覆盖"><span class="nav-number">6.2.3.</span> <span class="nav-text">层次覆盖</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式散列表"><span class="nav-number">6.3.</span> <span class="nav-text">分布式散列表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#环形DHT"><span class="nav-number">6.3.1.</span> <span class="nav-text">环形DHT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对等方的扰动"><span class="nav-number">6.3.2.</span> <span class="nav-text">对等方的扰动</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第三章-运输层"><span class="nav-number"></span> <span class="nav-text">第三章 运输层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述和运输层服务"><span class="nav-number">1.</span> <span class="nav-text">概述和运输层服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#运输层与网络层的关系"><span class="nav-number">1.1.</span> <span class="nav-text">运输层与网络层的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#因特网运输层概述"><span class="nav-number">1.2.</span> <span class="nav-text">因特网运输层概述</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多路复用与多路分解"><span class="nav-number">2.</span> <span class="nav-text">多路复用与多路分解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#无连接的多路复用与多路分解"><span class="nav-number">2.1.</span> <span class="nav-text">无连接的多路复用与多路分解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#面向连接的多路复用与多路分解"><span class="nav-number">2.2.</span> <span class="nav-text">面向连接的多路复用与多路分解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无连接传输：UDP"><span class="nav-number">3.</span> <span class="nav-text">无连接传输：UDP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UDP报文段结构"><span class="nav-number">3.1.</span> <span class="nav-text">UDP报文段结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UDP校验和"><span class="nav-number">3.2.</span> <span class="nav-text">UDP校验和</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可靠数据传输原理"><span class="nav-number">4.</span> <span class="nav-text">可靠数据传输原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构造可靠传输协议"><span class="nav-number">4.1.</span> <span class="nav-text">构造可靠传输协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#完全可靠信道上的可靠数据传输协议：rdt1-0"><span class="nav-number">4.1.1.</span> <span class="nav-text">完全可靠信道上的可靠数据传输协议：rdt1.0</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#具有比特差错信道上的可靠数据传输：rdt2-0"><span class="nav-number">4.1.2.</span> <span class="nav-text">具有比特差错信道上的可靠数据传输：rdt2.0</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#具有比特差错的丢包信道上的可靠数据传输：rdt3-0"><span class="nav-number">4.1.3.</span> <span class="nav-text">具有比特差错的丢包信道上的可靠数据传输：rdt3.0</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#流水线可靠数据传输协议"><span class="nav-number">4.2.</span> <span class="nav-text">流水线可靠数据传输协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回退N步"><span class="nav-number">4.3.</span> <span class="nav-text">回退N步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择重传"><span class="nav-number">4.4.</span> <span class="nav-text">选择重传</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#面向连接的运算：TCP"><span class="nav-number">5.</span> <span class="nav-text">面向连接的运算：TCP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP连接"><span class="nav-number">5.1.</span> <span class="nav-text">TCP连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP报文段结构"><span class="nav-number">5.2.</span> <span class="nav-text">TCP报文段结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#序号和确认号"><span class="nav-number">5.2.1.</span> <span class="nav-text">序号和确认号</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#往返时间的估计与超时"><span class="nav-number">5.3.</span> <span class="nav-text">往返时间的估计与超时</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#估计往返时间"><span class="nav-number">5.3.1.</span> <span class="nav-text">估计往返时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置和管理重传超时间隔"><span class="nav-number">5.3.2.</span> <span class="nav-text">设置和管理重传超时间隔</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可靠数据传输"><span class="nav-number">5.4.</span> <span class="nav-text">可靠数据传输</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#超时间隔加倍"><span class="nav-number">5.4.1.</span> <span class="nav-text">超时间隔加倍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#快速重传"><span class="nav-number">5.4.2.</span> <span class="nav-text">快速重传</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#流量控制"><span class="nav-number">5.5.</span> <span class="nav-text">流量控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP连接管理"><span class="nav-number">5.6.</span> <span class="nav-text">TCP连接管理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拥塞控制原理"><span class="nav-number">6.</span> <span class="nav-text">拥塞控制原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#拥塞原因与代价"><span class="nav-number">6.1.</span> <span class="nav-text">拥塞原因与代价</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#情况1：两个发送方和一台无穷大缓存的路由器"><span class="nav-number">6.1.1.</span> <span class="nav-text">情况1：两个发送方和一台无穷大缓存的路由器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#情况2：两个发送方和一台具有有限缓存的路由器"><span class="nav-number">6.1.2.</span> <span class="nav-text">情况2：两个发送方和一台具有有限缓存的路由器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#情况3-4个发送方和具有有限缓存的多台路由器及多跳路径"><span class="nav-number">6.1.3.</span> <span class="nav-text">情况3:4个发送方和具有有限缓存的多台路由器及多跳路径</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拥塞控制方法"><span class="nav-number">6.2.</span> <span class="nav-text">拥塞控制方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP拥塞控制"><span class="nav-number">7.</span> <span class="nav-text">TCP拥塞控制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#慢启动"><span class="nav-number">7.0.1.</span> <span class="nav-text">慢启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拥塞避免"><span class="nav-number">7.0.2.</span> <span class="nav-text">拥塞避免</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#快速恢复"><span class="nav-number">7.0.3.</span> <span class="nav-text">快速恢复</span></a></li></ol></li></ol></li></div>
             
 
           </div>
