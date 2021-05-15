@@ -262,166 +262,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/27/操作系统设计与实现/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="chst">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="chst's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/06/27/操作系统设计与实现/" itemprop="url">操作系统设计与实现</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-27T14:38:57+08:00">
-                2020-06-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <center><font size="12/">操作系统设计与实现</font></center>
-# 操作系统结构
-
-<h2 id="整体结构"><a href="#整体结构" class="headerlink" title="整体结构"></a>整体结构</h2><p>​        整体结构是一组函数的集合，其中每个函数在需要时可以取调用任意其他函数而不受任何约束。</p>
-<p>​        操作系统通过的服务（系统调用）的请求过程：向将参数放入预先确定的地方（如寄存器或栈），然后执行一条特殊的陷阱指令，即访管程序调用（supervisor call）指令或内核调用（kernel call）指令。该指令将CPU从用户态切换到内核态，并将控制权交给操作系统。</p>
-<p>​        大多数CPU有两种状态，即用户态和内核态。内核态供操作系统使用，在该状态下可以执行所有指令；用户态供用户程序使用，在该状态下不能执行I/O操作和其他一些操作。</p>
-<p>​        举例系统调用执行过程：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">count = read(fd, &amp;buffer, nbytes);</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/06/17/NEpCtg.png" alt="1.16"></p>
-<p>​        整体结构组织结构提出了操作系统的一种基本结构：</p>
-<ol>
-<li><p>一个主程序，用来调用被请求的服务例程。</p>
-</li>
-<li><p>一组服务例程，用来实现相应的系统调用。</p>
-</li>
-<li><p>一组工具函数，用来帮助服务例程的实现。</p>
-<p>​    该模型结构如下：</p>
-<p><img src="https://s1.ax1x.com/2020/06/26/Nr5vXd.png" alt="Nr5vXd.png"></p>
-</li>
-</ol>
-<h2 id="分层结构"><a href="#分层结构" class="headerlink" title="分层结构"></a>分层结构</h2><p>​        分层结构将整个系统组织成一个层次结构，每一层软件都是在它的下层软件的基础上构造起来的。</p>
-<h2 id="虚拟机"><a href="#虚拟机" class="headerlink" title="虚拟机"></a>虚拟机</h2><p>​        时分系统应该提供两个特性：</p>
-<p>​        （1）多道程序；</p>
-<p>​        （2）应该扩展机，其提供比裸机更方便的编程接口。</p>
-<p>​        系统核心是一个虚拟机监控程序，它在裸机上运行并具备多道程序功能。它向上层提供了若干台虚拟机。虚拟机不是具有文件等良好特性的扩展机，而仅仅是裸机的精确拷贝，包含有内核态/用户态、I/O功能、中断以及真实硬件所具有的所有内容。每台虚拟机与裸机完全一样，所以每台虚拟机上都可以运行任意一种操作系统。</p>
-<p>​        如下图：</p>
-<p><img src="https://s1.ax1x.com/2020/06/27/Nys2NQ.png" alt="Nys2NQ.png"></p>
-<p>​        </p>
-<p>​        其中CMS是会话监控系统，VM/370是虚拟机系统。当一个CMS程序执行一条系统调用时，该调用陷入到其虚拟机的操作系统（即CMS），而不是VM/370，然后CMS发出正常的硬件I/O指令来读取它的虚拟磁盘或者做其他事情来完成此次系统调用。这些I/O指令被VM/370捕获，随后VM/370执行这些指针，作为对真实硬件的模拟的一部分。</p>
-<h2 id="外核"><a href="#外核" class="headerlink" title="外核"></a>外核</h2><p>​        在内核态下运行的最底层软件是一个称为外核的程序，其任务是为虚拟机分配资源并确保资源的使用不会发生冲突。每台用户层的虚拟机可以运行自己的操作系统。</p>
-<h2 id="客户-服务器模型"><a href="#客户-服务器模型" class="headerlink" title="客户-服务器模型"></a>客户-服务器模型</h2><p>​        为了获得某项服务，客户进程将请求发送给服务器进程，服务器进程随后完成此次操作并应答信息送回。如下图：</p>
-<p><img src="https://s1.ax1x.com/2020/06/27/Ny6qp9.png" alt="Ny6qp9.png"></p>
-<p>​        内核的全部工作就是处理客户和服务器间的通信。操作系统被分割成许多部分，每一部分只处理一方面的功能，如文件服务、进程服务、终端服务或内存服务。</p>
-<p>​        这样带来的好处有三点：</p>
-<p>​        （1）每一部分变得更小、更易于管理。</p>
-<p>​        （2）所有服务器都是以用户进程形式运行，不是运行在内核态，所以不直接访问硬件。此时，如果在文件服务器中发生错误，那么文件服务可能崩溃，但不会导致整个系统的崩溃。</p>
-<p>​        （3）适用于分布式系统。</p>
-<p>​        有些操作系统功能（如向物理I/O设备寄存器写入命令字）靠用户空间的程序是很难完成的。解决方式有两种：</p>
-<p>​        （1）设立一些运行于内核态的专用服务器进程（如I/O设备驱动程序），它们能够访问所有的硬件设备，仍通过平常的消息机制与其他进程通信。</p>
-<p>​        （2）在内核中设立一套最小的机制，而将策略留给用户空间中的服务器进程。如，内核可能将发往某个特定地址的消息理解为：取出该消息内容，并将其装入某个磁盘的I/O设备寄存器，从而启动一次读盘操作。此时，内核甚至不对消息的内容进行合法性检测，只是机械地复制到磁盘设备寄存器。驱动程序运行在用户空间，然后通过特殊的内核调用来请求读写i/O寄存器，或是访问内核消息。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/21/同学考研前夜的随笔/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1723,6 +1563,152 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/13/红黑树/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="chst">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chst's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/13/红黑树/" itemprop="url">红黑树</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-13T23:39:35+08:00">
+                2019-06-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          红黑树作为一种自平衡二叉树, 其难度与实用性令人不得不重视, 也是面试中常问的问题. 如果说<<平凡的世界>>是茅盾文学奖桂冠上的明珠, 那红黑树就是树型数据结构桂冠上的明珠(逃~). 如果能实现红黑树, 那基本树这种数据结构就算懂得差不多了. 其实用性也是相当高. C++中STL里的set与map均是由红黑树作为底层实现.
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/06/13/红黑树/">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </平凡的世界></div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -1773,7 +1759,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1795,7 +1781,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -1832,7 +1818,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
