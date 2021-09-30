@@ -413,15 +413,12 @@
       
 
       
-        <center><font size="12/">操作系统设计与实现</font></center>
-# 操作系统结构
-
-<h2 id="整体结构"><a href="#整体结构" class="headerlink" title="整体结构"></a>整体结构</h2><p>​        整体结构是一组函数的集合，其中每个函数在需要时可以取调用任意其他函数而不受任何约束。</p>
+        <p><center><font size="12/">操作系统设计与实现</font></center></p>
+<h1 id="操作系统结构"><a href="#操作系统结构" class="headerlink" title="操作系统结构"></a>操作系统结构</h1><h2 id="整体结构"><a href="#整体结构" class="headerlink" title="整体结构"></a>整体结构</h2><p>​        整体结构是一组函数的集合，其中每个函数在需要时可以取调用任意其他函数而不受任何约束。</p>
 <p>​        操作系统通过的服务（系统调用）的请求过程：向将参数放入预先确定的地方（如寄存器或栈），然后执行一条特殊的陷阱指令，即访管程序调用（supervisor call）指令或内核调用（kernel call）指令。该指令将CPU从用户态切换到内核态，并将控制权交给操作系统。</p>
 <p>​        大多数CPU有两种状态，即用户态和内核态。内核态供操作系统使用，在该状态下可以执行所有指令；用户态供用户程序使用，在该状态下不能执行I/O操作和其他一些操作。</p>
 <p>​        举例系统调用执行过程：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">count = read(fd, &amp;buffer, nbytes);</span><br></pre></td></tr></table></figure>
-
 <p><img src="https://s1.ax1x.com/2020/06/17/NEpCtg.png" alt="1.16"></p>
 <p>​        整体结构组织结构提出了操作系统的一种基本结构：</p>
 <ol>
@@ -627,7 +624,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#整体结构"><span class="nav-number">1.</span> <span class="nav-text">整体结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分层结构"><span class="nav-number">2.</span> <span class="nav-text">分层结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟机"><span class="nav-number">3.</span> <span class="nav-text">虚拟机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#外核"><span class="nav-number">4.</span> <span class="nav-text">外核</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户-服务器模型"><span class="nav-number">5.</span> <span class="nav-text">客户-服务器模型</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#操作系统结构"><span class="nav-number">1.</span> <span class="nav-text">操作系统结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#整体结构"><span class="nav-number">1.1.</span> <span class="nav-text">整体结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分层结构"><span class="nav-number">1.2.</span> <span class="nav-text">分层结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟机"><span class="nav-number">1.3.</span> <span class="nav-text">虚拟机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#外核"><span class="nav-number">1.4.</span> <span class="nav-text">外核</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户-服务器模型"><span class="nav-number">1.5.</span> <span class="nav-text">客户-服务器模型</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -985,6 +982,8 @@
   
 
   
+  
+
 
   
 

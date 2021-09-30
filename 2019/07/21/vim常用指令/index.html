@@ -412,14 +412,16 @@
 <h2 id="一般模式"><a href="#一般模式" class="headerlink" title="一般模式"></a>一般模式</h2><p>vim打开或者创建(目录下存在即打开,不存在则创建)一个文件默认进入的模式, 在该模式下可以通过鼠标和键盘查看文件.</p>
 <h2 id="编辑模式"><a href="#编辑模式" class="headerlink" title="编辑模式"></a>编辑模式</h2><p>在一般模式下按下<code>i,  I, o, O, a, A, r, R</code>其中任意一个就会进入编辑模式, 该模式下可以对文本进行编辑. 此时画面左下方会出现<code>insert</code>字样表示进入了编辑模式. 按<code>ESC</code>即会退出编辑模式进入一般模式.</p>
 <h2 id="指令模式"><a href="#指令模式" class="headerlink" title="指令模式"></a>指令模式</h2><p>在一般模式中输入 <code>:, /, ?</code>中任意一个即进入指令模式. </p>
-<h1 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h1><h2 id="一般模式下"><a href="#一般模式下" class="headerlink" title="一般模式下"></a>一般模式下</h2><h3 id="移动光标"><a href="#移动光标" class="headerlink" title="移动光标"></a>移动光标</h3><table>
+<h1 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h1><h2 id="一般模式下"><a href="#一般模式下" class="headerlink" title="一般模式下"></a>一般模式下</h2><h3 id="移动光标"><a href="#移动光标" class="headerlink" title="移动光标"></a>移动光标</h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th><code>Ctrl</code> + <code>f</code></th>
 <th>屏幕向下翻动一页, 相当于<code>Page Down</code>按键</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><code>Ctrl</code> + <code>b</code></td>
 <td>屏幕向上翻动一页, 相当于<code>Page Up</code>按键</td>
 </tr>
@@ -451,15 +453,19 @@
 <td><code>G</code></td>
 <td>移动到文档最后一行.</td>
 </tr>
-</tbody></table>
-<h3 id="搜索与取代"><a href="#搜索与取代" class="headerlink" title="搜索与取代"></a>搜索与取代</h3><table>
+</tbody>
+</table>
+</div>
+<h3 id="搜索与取代"><a href="#搜索与取代" class="headerlink" title="搜索与取代"></a>搜索与取代</h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th><code>/word</code></th>
 <th>从光标所在之下搜索word字符串</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><code>?word</code></td>
 <td>从光标所在之上搜索word字符串</td>
 </tr>
@@ -491,16 +497,20 @@
 <td><code>:s/word1/word2/g</code></td>
 <td>将光标所在整行的word1换成word2</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>搜索后找到的字符串会被高亮显示, 恢复的方式为<code>:noh</code>即可.</p>
-<h3 id="删除复制与粘贴"><a href="#删除复制与粘贴" class="headerlink" title="删除复制与粘贴"></a>删除复制与粘贴</h3><table>
+<h3 id="删除复制与粘贴"><a href="#删除复制与粘贴" class="headerlink" title="删除复制与粘贴"></a>删除复制与粘贴</h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th><code>x</code>/<code>X</code></th>
 <th>在当前刚标处进行删除操作. <code>x</code>为向后删除(删除光标所在字符), <code>X</code>为向前删除(删除光标所在前一个字符).</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><code>n</code> <code>x</code>/<code>X</code></td>
 <td><code>n</code>为数字, 删除规则与上述一致, 不过删除数量为n</td>
 </tr>
@@ -580,15 +590,19 @@
 <td><code>:n1, n2 m n3</code></td>
 <td>将n1与n2行之间的内容剪切到第n3行(之后).</td>
 </tr>
-</tbody></table>
-<h2 id="一般模式切换到编辑模式按钮说明"><a href="#一般模式切换到编辑模式按钮说明" class="headerlink" title="一般模式切换到编辑模式按钮说明"></a>一般模式切换到编辑模式按钮说明</h2><table>
+</tbody>
+</table>
+</div>
+<h2 id="一般模式切换到编辑模式按钮说明"><a href="#一般模式切换到编辑模式按钮说明" class="headerlink" title="一般模式切换到编辑模式按钮说明"></a>一般模式切换到编辑模式按钮说明</h2><div class="table-container">
+<table>
 <thead>
 <tr>
 <th><code>i</code>/ <code>I</code></th>
 <th>进入插入模式, <code>i</code>为从当前光标所在处插入, <code>I</code>为<code>在</code>目前所在行的第一个非空格字符处插入.</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><code>a</code>/<code>A</code></td>
 <td>进入插入模式, <code>a</code>为从目前光标所在下一个字符开始插入. <code>A</code>为从光标所在行的对后一个字符开始插入.</td>
 </tr>
@@ -604,15 +618,19 @@
 <td><code>Esc</code></td>
 <td>退出编辑模式, 回到一般模式.</td>
 </tr>
-</tbody></table>
-<h2 id="一般模式切换到指令模式的可以命令"><a href="#一般模式切换到指令模式的可以命令" class="headerlink" title="一般模式切换到指令模式的可以命令"></a>一般模式切换到指令模式的可以命令</h2><table>
+</tbody>
+</table>
+</div>
+<h2 id="一般模式切换到指令模式的可以命令"><a href="#一般模式切换到指令模式的可以命令" class="headerlink" title="一般模式切换到指令模式的可以命令"></a>一般模式切换到指令模式的可以命令</h2><div class="table-container">
+<table>
 <thead>
 <tr>
 <th><code>:w</code></th>
 <th>保存</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><code>:w!</code></td>
 <td>强制保存. (是否真正能够保存取决于用户权限)</td>
 </tr>
@@ -652,11 +670,12 @@
 <td><code>:set nonu</code></td>
 <td>设置取消行号.</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h1 id="vim暂存机制"><a href="#vim暂存机制" class="headerlink" title="vim暂存机制"></a>vim暂存机制</h1><p>很多编辑软件都有恢复功能 ，即当系统因为某些原因而导致编辑中的文件突然退出．可以通过暂存的文件进行恢复．vim当然也存在这样一个机制．当我们使用vim打开一个文件时，在文件所在目录会自动创建一个.filename.swap文件．对原文件的操作会被记录在其中．当突然退出时，.filename.swap文件会帮我们存储下对文件的修改．当我们再次打开是可以选择是否通过该文件恢复对原文件的修改．</p>
 <p>注意：当vim默认设置文件中存在如下字段时就不会有暂存机制．</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set noswapfile</span><br></pre></td></tr></table></figure>
-
 <p>配置文件一般在<code>~/.vimrc</code>．</p>
 <p>暂存机制主要适用于两种情况．</p>
 <ol>
@@ -665,6 +684,7 @@
 </ol>
 <p>当存在暂存文件已经存在而你右对原文件进行操作而异常退出时会生成第二个暂存文件, 以此类推.</p>
 <p>当暂存文件存在时打开文件就会提示响应的操作,解释如下:</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -672,7 +692,8 @@
 <th>只读模式打开.</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><code>[E]dit anyway</code></td>
 <td>正常方式打开, 不载入暂存文件.</td>
 </tr>
@@ -692,9 +713,12 @@
 <td><code>A(bout)</code></td>
 <td>类似与退出.</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>在较新版本的vim中该功能似乎以及取消了(默认<code>set noswapfile</code>), 通过实验发现确实存在一些问题.所以尽量不要使用为好.</p>
 <h1 id="vim高级操作"><a href="#vim高级操作" class="headerlink" title="vim高级操作"></a>vim高级操作</h1><h2 id="vim区块选择"><a href="#vim区块选择" class="headerlink" title="vim区块选择"></a>vim区块选择</h2><p>区块选择用来操作一个区域. 下面是区块选择键含义.</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -702,7 +726,8 @@
 <th>进行区块选择, 按照进过字符选择. 即按<code>v</code>后,操作光标移动, 将会将移动范围内的内容反白标注选中.</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><code>V</code></td>
 <td>与上面一个类似, 不过是按照行来选取.</td>
 </tr>
@@ -718,13 +743,15 @@
 <td><code>d</code></td>
 <td>复制选中区域</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>区块选则在实际编程操作中使用是否有用. 区块选择后也可以进入编辑模式进行编辑, 例如将多行代码注释掉(或相反操作)只需要将对于的区块选择, 按<code>I</code>进入插入模式, 添加注释, 按<code>Esc</code>退出即可. 过程中按下<code>Esc</code>会过一会儿才出现, 别着急(一般第一行直接出现).</p>
 <h2 id="多档案编辑"><a href="#多档案编辑" class="headerlink" title="多档案编辑"></a>多档案编辑</h2><p>我们可以一次打开多个文件进行一起操作. 实现分别打开无法完成的操作,如将一个文件的一部分复制到另一个文件中. 打开多文件方式为vim后面接多个文件名.</p>
 <p>例:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim file1 file2</span><br></pre></td></tr></table></figure>
-
 <p>多文档编辑操作:</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -732,7 +759,8 @@
 <th>编辑下一个文件</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><code>:N</code></td>
 <td>编辑上一个文件</td>
 </tr>
@@ -740,9 +768,12 @@
 <td><code>:files</code></td>
 <td>列出当前vim开启的所以文件.</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h2 id="多窗口编辑"><a href="#多窗口编辑" class="headerlink" title="多窗口编辑"></a>多窗口编辑</h2><p>上面的操作需要使用指令进行切换而且无法同时查看两个文件, 这对于编程时是十分不方便的, 要能够保存上面多文档的便捷和查看多文件的舒适多窗口才是王道.</p>
 <p>多窗口操作:</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -750,7 +781,8 @@
 <th>开启一个新的窗口, 如果参数filename则在新窗口打开对于文件,否则打开当前文件.</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><code>[Ctrl]</code>+<code>w</code>+<code>j</code>/下箭头</td>
 <td>按键操作是先<code>[Ctrl]</code>+<code>w</code>, 而后松开按第三个键. 切换到下一个窗口中.</td>
 </tr>
@@ -762,19 +794,25 @@
 <td><code>[Ctrl]</code>+<code>w</code>+<code>q</code></td>
 <td>退出当前窗口. 可以按照这个操作,也可以直接在当前窗口<code>:q</code></td>
 </tr>
-</tbody></table>
-<h2 id="操作目录"><a href="#操作目录" class="headerlink" title="操作目录"></a>操作目录</h2><table>
+</tbody>
+</table>
+</div>
+<h2 id="操作目录"><a href="#操作目录" class="headerlink" title="操作目录"></a>操作目录</h2><div class="table-container">
+<table>
 <thead>
 <tr>
 <th><code>:Ex</code></th>
 <th>在当前窗口开启目录浏览器.</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><code>:Sex</code></td>
 <td>新打开一个窗口开启目录浏览器.</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h1 id="未完待续"><a href="#未完待续" class="headerlink" title="未完待续"></a>未完待续</h1><p>vim的操作实在是太多了, 要想全部背下来基本是不可能的, 这里仅仅只是记录了基本使用. 还有很多目前还未知的常用指令会继续添加的.</p>
 
       
@@ -1311,6 +1349,8 @@
   
 
   
+  
+
 
   
 

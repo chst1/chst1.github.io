@@ -88,6 +88,10 @@
 <meta property="og:description" content="数据库作为搭建服务器的重要环节可谓是至关重要. 这里记录了典型关系型数据库管理系统SQL的学习过程,主要以MySQL为例. 方便回来查找以及与大家交流分享.">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://www.runoob.com/wp-content/uploads/2019/01/sql-join.png">
+<meta property="og:image" content="http://yoursite.com/home/chst/Pictures/Screenshot%20from%202019-08-14%2022-49-49.png">
+<meta property="og:image" content="http://yoursite.com/home/chst/Pictures/Screenshot%20from%202019-08-14%2022-52-18.png">
+<meta property="og:image" content="http://yoursite.com/home/chst/Pictures/Screenshot%20from%202019-08-14%2022-57-02.png">
+<meta property="og:image" content="http://yoursite.com/home/chst/Pictures/Screenshot%20from%202019-08-14%2023-01-25.png">
 <meta property="og:updated_time" content="2019-08-15T15:20:39.278Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SQL学习笔记">
@@ -411,32 +415,23 @@
 
       
         <h1 id="Linux下安装配置MySQL"><a href="#Linux下安装配置MySQL" class="headerlink" title="Linux下安装配置MySQL"></a>Linux下安装配置MySQL</h1><h2 id="查看系统是否自带MySQL"><a href="#查看系统是否自带MySQL" class="headerlink" title="查看系统是否自带MySQL"></a>查看系统是否自带MySQL</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa | grep mysql</span><br></pre></td></tr></table></figure>
-
 <h2 id="卸载MySQL"><a href="#卸载MySQL" class="headerlink" title="卸载MySQL"></a>卸载MySQL</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get remove mysql-server</span><br><span class="line">sudo apt-get autoremove</span><br><span class="line">sudo apt-get remove package-name</span><br><span class="line">dpkg -l | grep mysql | grep ii //查看是否删除.</span><br></pre></td></tr></table></figure>
-
 <h2 id="安装MySQL"><a href="#安装MySQL" class="headerlink" title="安装MySQL"></a>安装MySQL</h2><p>先去<a href="https://www.mysql.com/downloads/" target="_blank" rel="noopener">官网</a>下载适合自己版本的安装包到安装目录.当然官网会提供安装方式的,不过是全英文的,也不是很难. 这里做一个简单的介绍. (以Ubuntu为例). 对于任何问题, 官网往往是我们第一个应该想到的解决方式. 毕竟官网是规则的制定者, 当然考虑到很多官网是全英文, 对于像我这样的菜鸟会将官网优先级降低, 不过如果查看不到解决方案则最终也应该考虑官网.</p>
 <p>解压下载文件:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell&gt; sudo dpkg -i /PATH/version-specific-package-name.deb</span><br></pre></td></tr></table></figure>
-
 <p>更新本地环境:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell&gt; sudo apt-get update</span><br></pre></td></tr></table></figure>
-
 <p>安装:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell&gt; sudo apt-get install mysql-server</span><br></pre></td></tr></table></figure>
-
 <p>在安装过程中, 会要求输入一个密码, 作为root用户使用MySQL的密码.</p>
 <p>查看MySQL状态:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell&gt; sudo service mysql status</span><br></pre></td></tr></table></figure>
-
 <p>停止MySQL服务器:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell&gt; sudo service mysql stop</span><br></pre></td></tr></table></figure>
-
 <p>启动MySQL服务器:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell&gt; sudo service mysql start</span><br></pre></td></tr></table></figure>
-
 <p>打开MySQL(确保MySQL服务器启动中)</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
-
 <h1 id="SQL常用指令"><a href="#SQL常用指令" class="headerlink" title="SQL常用指令"></a>SQL常用指令</h1><h2 id="展示并选择数据库"><a href="#展示并选择数据库" class="headerlink" title="展示并选择数据库"></a>展示并选择数据库</h2><p>打开MySQL后可以通过命令<code>show databases;</code>展示存在的数据库.</p>
 <p>选择要使用的数据库<code>use dataname;</code> 选择使用的数据库.</p>
 <p>展示数组库中的表: <code>show tables</code></p>
@@ -446,98 +441,106 @@
 <p>设置数据集使用用户名及密码.<code>create user &#39;username&#39;@&#39;localhost&#39; identified by &#39;password&#39;;</code></p>
 <p> 赋予用户使用数据集的相应权限:<code>GRANT ALL ON dataname.* TO &#39;username&#39;@&#39;localhost&#39;;</code></p>
 <h2 id="MySQL数据类型"><a href="#MySQL数据类型" class="headerlink" title="MySQL数据类型:"></a>MySQL数据类型:</h2><p>在 MySQL 中，有三种主要的类型：Text（文本）、Number（数字）和 Date/Time（日期/时间）类型。</p>
-<h3 id="Text-类型："><a href="#Text-类型：" class="headerlink" title="Text 类型："></a>Text 类型：</h3><table>
+<h3 id="Text-类型："><a href="#Text-类型：" class="headerlink" title="Text 类型："></a>Text 类型：</h3><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="left">数据类型</th>
-<th align="left">描述</th>
+<th style="text-align:left">数据类型</th>
+<th style="text-align:left">描述</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">CHAR(size)</td>
-<td align="left">保存固定长度的字符串（可包含字母、数字以及特殊字符）。在括号中指定字符串的长度。最多 255 个字符。</td>
+<tbody>
+<tr>
+<td style="text-align:left">CHAR(size)</td>
+<td style="text-align:left">保存固定长度的字符串（可包含字母、数字以及特殊字符）。在括号中指定字符串的长度。最多 255 个字符。</td>
 </tr>
 <tr>
-<td align="left">VARCHAR(size)</td>
-<td align="left">保存可变长度的字符串（可包含字母、数字以及特殊字符）。在括号中指定字符串的最大长度。最多 255 个字符。<strong>注释：</strong>如果值的长度大于 255，则被转换为 TEXT 类型。</td>
+<td style="text-align:left">VARCHAR(size)</td>
+<td style="text-align:left">保存可变长度的字符串（可包含字母、数字以及特殊字符）。在括号中指定字符串的最大长度。最多 255 个字符。<strong>注释：</strong>如果值的长度大于 255，则被转换为 TEXT 类型。</td>
 </tr>
 <tr>
-<td align="left">TINYTEXT</td>
-<td align="left">存放最大长度为 255 个字符的字符串。</td>
+<td style="text-align:left">TINYTEXT</td>
+<td style="text-align:left">存放最大长度为 255 个字符的字符串。</td>
 </tr>
 <tr>
-<td align="left">TEXT</td>
-<td align="left">存放最大长度为 65,535 个字符的字符串。</td>
+<td style="text-align:left">TEXT</td>
+<td style="text-align:left">存放最大长度为 65,535 个字符的字符串。</td>
 </tr>
 <tr>
-<td align="left">BLOB</td>
-<td align="left">用于 BLOBs（Binary Large OBjects）。存放最多 65,535 字节的数据。</td>
+<td style="text-align:left">BLOB</td>
+<td style="text-align:left">用于 BLOBs（Binary Large OBjects）。存放最多 65,535 字节的数据。</td>
 </tr>
 <tr>
-<td align="left">MEDIUMTEXT</td>
-<td align="left">存放最大长度为 16,777,215 个字符的字符串。</td>
+<td style="text-align:left">MEDIUMTEXT</td>
+<td style="text-align:left">存放最大长度为 16,777,215 个字符的字符串。</td>
 </tr>
 <tr>
-<td align="left">MEDIUMBLOB</td>
-<td align="left">用于 BLOBs（Binary Large OBjects）。存放最多 16,777,215 字节的数据。</td>
+<td style="text-align:left">MEDIUMBLOB</td>
+<td style="text-align:left">用于 BLOBs（Binary Large OBjects）。存放最多 16,777,215 字节的数据。</td>
 </tr>
 <tr>
-<td align="left">LONGTEXT</td>
-<td align="left">存放最大长度为 4,294,967,295 个字符的字符串。</td>
+<td style="text-align:left">LONGTEXT</td>
+<td style="text-align:left">存放最大长度为 4,294,967,295 个字符的字符串。</td>
 </tr>
 <tr>
-<td align="left">LONGBLOB</td>
-<td align="left">用于 BLOBs (Binary Large OBjects)。存放最多 4,294,967,295 字节的数据。</td>
+<td style="text-align:left">LONGBLOB</td>
+<td style="text-align:left">用于 BLOBs (Binary Large OBjects)。存放最多 4,294,967,295 字节的数据。</td>
 </tr>
 <tr>
-<td align="left">ENUM(x,y,z,etc.)</td>
-<td align="left">允许您输入可能值的列表。可以在 ENUM 列表中列出最大 65535 个值。如果列表中不存在插入的值，则插入空值。<strong>注释：</strong>这些值是按照您输入的顺序排序的。可以按照此格式输入可能的值： ENUM(‘X’,’Y’,’Z’)</td>
+<td style="text-align:left">ENUM(x,y,z,etc.)</td>
+<td style="text-align:left">允许您输入可能值的列表。可以在 ENUM 列表中列出最大 65535 个值。如果列表中不存在插入的值，则插入空值。<strong>注释：</strong>这些值是按照您输入的顺序排序的。可以按照此格式输入可能的值： ENUM(‘X’,’Y’,’Z’)</td>
 </tr>
 <tr>
-<td align="left">SET</td>
-<td align="left">与 ENUM 类似，不同的是，SET 最多只能包含 64 个列表项且 SET 可存储一个以上的选择。</td>
+<td style="text-align:left">SET</td>
+<td style="text-align:left">与 ENUM 类似，不同的是，SET 最多只能包含 64 个列表项且 SET 可存储一个以上的选择。</td>
 </tr>
-</tbody></table>
-<h3 id="Number-类型："><a href="#Number-类型：" class="headerlink" title="Number 类型："></a>Number 类型：</h3><table>
+</tbody>
+</table>
+</div>
+<h3 id="Number-类型："><a href="#Number-类型：" class="headerlink" title="Number 类型："></a>Number 类型：</h3><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="left">数据类型</th>
-<th align="left">描述</th>
+<th style="text-align:left">数据类型</th>
+<th style="text-align:left">描述</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">TINYINT(size)</td>
-<td align="left">带符号-128到127 ，无符号0到255。</td>
+<tbody>
+<tr>
+<td style="text-align:left">TINYINT(size)</td>
+<td style="text-align:left">带符号-128到127 ，无符号0到255。</td>
 </tr>
 <tr>
-<td align="left">SMALLINT(size)</td>
-<td align="left">带符号范围-32768到32767，无符号0到65535, size 默认为 6。</td>
+<td style="text-align:left">SMALLINT(size)</td>
+<td style="text-align:left">带符号范围-32768到32767，无符号0到65535, size 默认为 6。</td>
 </tr>
 <tr>
-<td align="left">MEDIUMINT(size)</td>
-<td align="left">带符号范围-8388608到8388607，无符号的范围是0到16777215。 size 默认为9</td>
+<td style="text-align:left">MEDIUMINT(size)</td>
+<td style="text-align:left">带符号范围-8388608到8388607，无符号的范围是0到16777215。 size 默认为9</td>
 </tr>
 <tr>
-<td align="left">INT(size)</td>
-<td align="left">带符号范围-2147483648到2147483647，无符号的范围是0到4294967295。 size 默认为 11</td>
+<td style="text-align:left">INT(size)</td>
+<td style="text-align:left">带符号范围-2147483648到2147483647，无符号的范围是0到4294967295。 size 默认为 11</td>
 </tr>
 <tr>
-<td align="left">BIGINT(size)</td>
-<td align="left">带符号的范围是-9223372036854775808到9223372036854775807，无符号的范围是0到18446744073709551615。size 默认为 20</td>
+<td style="text-align:left">BIGINT(size)</td>
+<td style="text-align:left">带符号的范围是-9223372036854775808到9223372036854775807，无符号的范围是0到18446744073709551615。size 默认为 20</td>
 </tr>
 <tr>
-<td align="left">FLOAT(size,d)</td>
-<td align="left">带有浮动小数点的小数字。在 size 参数中规定显示最大位数。在 d 参数中规定小数点右侧的最大位数。</td>
+<td style="text-align:left">FLOAT(size,d)</td>
+<td style="text-align:left">带有浮动小数点的小数字。在 size 参数中规定显示最大位数。在 d 参数中规定小数点右侧的最大位数。</td>
 </tr>
 <tr>
-<td align="left">DOUBLE(size,d)</td>
-<td align="left">带有浮动小数点的大数字。在 size 参数中规显示定最大位数。在 d 参数中规定小数点右侧的最大位数。</td>
+<td style="text-align:left">DOUBLE(size,d)</td>
+<td style="text-align:left">带有浮动小数点的大数字。在 size 参数中规显示定最大位数。在 d 参数中规定小数点右侧的最大位数。</td>
 </tr>
 <tr>
-<td align="left">DECIMAL(size,d)</td>
-<td align="left">作为字符串存储的 DOUBLE 类型，允许固定的小数点。在 size 参数中规定显示最大位数。在 d 参数中规定小数点右侧的最大位数。</td>
+<td style="text-align:left">DECIMAL(size,d)</td>
+<td style="text-align:left">作为字符串存储的 DOUBLE 类型，允许固定的小数点。在 size 参数中规定显示最大位数。在 d 参数中规定小数点右侧的最大位数。</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <blockquote>
 <p><strong>注意：</strong>以上的 size 代表的并不是存储在数据库中的具体的长度，如 int(4) 并不是只能存储4个长度的数字。</p>
 <p>实际上int(size)所占多少存储空间并无任何关系。int(3)、int(4)、int(8) 在磁盘上都是占用 4 btyes 的存储空间。就是在显示给用户的方式有点不同外，int(M) 跟 int 数据类型是相同的。</p>
@@ -545,51 +548,53 @@
 <p>1、int的值为10 （指定zerofill）</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; int（9）显示结果为000000010</span><br><span class="line">&gt; int（3）显示结果为010</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
+<p>&gt;</p>
 <blockquote>
 <p>就是显示的长度不一样而已 都是占用四个字节的空间</p>
 </blockquote>
-<h3 id="Date-类型："><a href="#Date-类型：" class="headerlink" title="Date 类型："></a>Date 类型：</h3><table>
+<h3 id="Date-类型："><a href="#Date-类型：" class="headerlink" title="Date 类型："></a>Date 类型：</h3><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="left">数据类型</th>
-<th align="left">描述</th>
+<th style="text-align:left">数据类型</th>
+<th style="text-align:left">描述</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">DATE()</td>
-<td align="left">日期。格式：YYYY-MM-DD<strong>注释：</strong>支持的范围是从 ‘1000-01-01’ 到 ‘9999-12-31’</td>
+<tbody>
+<tr>
+<td style="text-align:left">DATE()</td>
+<td style="text-align:left">日期。格式：YYYY-MM-DD<strong>注释：</strong>支持的范围是从 ‘1000-01-01’ 到 ‘9999-12-31’</td>
 </tr>
 <tr>
-<td align="left">DATETIME()</td>
-<td align="left"><em>日期和时间的组合。格式：YYYY-MM-DD HH:MM:SS*</em>注释：**支持的范围是从 ‘1000-01-01 00:00:00’ 到 ‘9999-12-31 23:59:59’</td>
+<td style="text-align:left">DATETIME()</td>
+<td style="text-align:left"><em>日期和时间的组合。格式：YYYY-MM-DD HH:MM:SS<em>*注释：</em></em>支持的范围是从 ‘1000-01-01 00:00:00’ 到 ‘9999-12-31 23:59:59’</td>
 </tr>
 <tr>
-<td align="left">TIMESTAMP()</td>
-<td align="left"><em>时间戳。TIMESTAMP 值使用 Unix 纪元(‘1970-01-01 00:00:00’ UTC) 至今的秒数来存储。格式：YYYY-MM-DD HH:MM:SS*</em>注释：**支持的范围是从 ‘1970-01-01 00:00:01’ UTC 到 ‘2038-01-09 03:14:07’ UTC</td>
+<td style="text-align:left">TIMESTAMP()</td>
+<td style="text-align:left"><em>时间戳。TIMESTAMP 值使用 Unix 纪元(‘1970-01-01 00:00:00’ UTC) 至今的秒数来存储。格式：YYYY-MM-DD HH:MM:SS<em>*注释：</em></em>支持的范围是从 ‘1970-01-01 00:00:01’ UTC 到 ‘2038-01-09 03:14:07’ UTC</td>
 </tr>
 <tr>
-<td align="left">TIME()</td>
-<td align="left">时间。格式：HH:MM:SS<strong>注释：</strong>支持的范围是从 ‘-838:59:59’ 到 ‘838:59:59’</td>
+<td style="text-align:left">TIME()</td>
+<td style="text-align:left">时间。格式：HH:MM:SS<strong>注释：</strong>支持的范围是从 ‘-838:59:59’ 到 ‘838:59:59’</td>
 </tr>
 <tr>
-<td align="left">YEAR()</td>
-<td align="left">2 位或 4 位格式的年。<strong>注释：</strong>4 位格式所允许的值：1901 到 2155。2 位格式所允许的值：70 到 69，表示从 1970 到 2069。</td>
+<td style="text-align:left">YEAR()</td>
+<td style="text-align:left">2 位或 4 位格式的年。<strong>注释：</strong>4 位格式所允许的值：1901 到 2155。2 位格式所允许的值：70 到 69，表示从 1970 到 2069。</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>*即便 DATETIME 和 TIMESTAMP 返回相同的格式，它们的工作方式很不同。在 INSERT 或 UPDATE 查询中，TIMESTAMP 自动把自身设置为当前的日期和时间。TIMESTAMP 也接受不同的格式，比如 YYYYMMDDHHMMSS、YYMMDDHHMMSS、YYYYMMDD 或 YYMMDD。</p>
 <h2 id="create-table语句"><a href="#create-table语句" class="headerlink" title="create table语句"></a>create table语句</h2><p>创建数据库中的表</p>
 <p>语法:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">create table table_name (column_name1 data_type(size), column_name2 data_type(size), ...);//创建时就要指明表中数据属性及对于类型.</span><br><span class="line"></span><br><span class="line">ex:</span><br><span class="line">create table students (ID varchar(255), name varchar(255), score int, classify int);</span><br><span class="line">注意: 如果使用默认值不自己指定长度则不用括号.</span><br></pre></td></tr></table></figure>
-
 <h2 id="select语句"><a href="#select语句" class="headerlink" title="select语句"></a>select语句</h2><p>select从数据库中选取数据. 结果被存储在一个表中, 被称为结果表.</p>
 <p>对于每个表格, 第一行是属性名称, 叫column_name</p>
 <p>语法:</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">select column_name, column_name from table_name;<span class="comment">//读取表中某几列元素</span></span><br><span class="line"></span><br><span class="line">select * from table_name; <span class="comment">//读取整张表</span></span><br><span class="line"></span><br><span class="line">select distinct column_name, column_name from table_name; <span class="comment">//读取表格中某列的元素, 并且只返回唯一不同的值, 有点类似np.unique()函数.</span></span><br></pre></td></tr></table></figure>
-
 <h2 id="where语句"><a href="#where语句" class="headerlink" title="where语句"></a>where语句</h2><p>where用于过滤提取那些满足要求的记录</p>
 <p>语法:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">select column_name, column_name from table_name where column_name operator values; //where相当于一个限制条件</span><br><span class="line"></span><br><span class="line">ex:</span><br><span class="line">select * from db where Select_priv=&apos;Y&apos;;</span><br><span class="line"></span><br><span class="line">where限制条件: 当是字符项时要使用引号(区分大小写), 当是数字是不能加引号.</span><br><span class="line">= -等于</span><br><span class="line">&lt;&gt; -不等于</span><br><span class="line">&gt;, &gt;=, &lt;, &lt;=;</span><br><span class="line">between -在某个范围内</span><br><span class="line">like -搜索某种模式</span><br><span class="line">in -指定针对某个列的多可能值</span><br></pre></td></tr></table></figure>
-
 <p>对于where的限制条件可以组合</p>
 <p>在各个条件中可以加入and和or和not, 其中优先级顺序<br>() not and or</p>
 <p>特殊条件:</p>
@@ -607,30 +612,22 @@
 <h2 id="order-by语句"><a href="#order-by语句" class="headerlink" title="order by语句"></a>order by语句</h2><p>order by关键字对结果安装一列或多列进行排序. 默认使用升序, 要使用降序时只需要在最后加上desc</p>
 <p>语法:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">select column_name, column_name from tables_name order by column_name, column_name asc|desc;</span><br><span class="line"></span><br><span class="line">对于order by后面有多个列时先按照第一个列进行排序, 如果相等, 使用第二列, 以此类推. 同时可以定义每一列的升序降序, 在每一列的后面标注asc|desc;</span><br><span class="line"></span><br><span class="line">select * from db where user like &apos;m%&apos; order by Select_priv desc;</span><br></pre></td></tr></table></figure>
-
 <h2 id="insert-into语句"><a href="#insert-into语句" class="headerlink" title="insert into语句"></a>insert into语句</h2><p>insert into向表中插入新的记录.</p>
 <p>语法:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">insert into table_name values (values1, value2, value3, ...) //向名为table_name的表中添加元素, 值为括号中参数, 由于没有指明元素属性(属于哪一列), 所以要求所以列都要有参数.</span><br><span class="line"></span><br><span class="line">insert into table_name (column1, column2, column3, ...) values (values1, value2, value3, ...) //向名为table_name的表中添加元素, 添加的元素与值一一对应, 此时不要求每个属性都要有.</span><br></pre></td></tr></table></figure>
-
 <h2 id="update语句"><a href="#update语句" class="headerlink" title="update语句"></a>update语句</h2><p>update用于更新已经存在的记录.</p>
 <p>语法:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update table_name set column_name1 = value1, coulumn_name2 = value2, ... where some_column = some_value; // 更新存在数据, 注意where语句, 如果没有where语句则整个表格均会被更新.</span><br></pre></td></tr></table></figure>
-
 <h2 id="delete语句"><a href="#delete语句" class="headerlink" title="delete语句"></a>delete语句</h2><p>delete语句用于删除某个记录.</p>
 <p>语法:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">delete from table_name where some_column = some_value;</span><br><span class="line">注意, 如果没有where限制,整个表均会被删除(赶快跑路了).</span><br></pre></td></tr></table></figure>
-
 <h2 id="alter-table"><a href="#alter-table" class="headerlink" title="alter table"></a>alter table</h2><p>alter table 用于向表格中插入, 更改, 删除列.</p>
 <h3 id="添加列"><a href="#添加列" class="headerlink" title="添加列"></a>添加列</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alter table table_name add column_name datatype;</span><br><span class="line">ex:</span><br><span class="line">alter table students add dateofbrith date;</span><br></pre></td></tr></table></figure>
-
 <h3 id="删除列"><a href="#删除列" class="headerlink" title="删除列"></a>删除列</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alter table table_name drop column column_name;</span><br><span class="line">ex:</span><br><span class="line">alter table students drop column classify;</span><br></pre></td></tr></table></figure>
-
 <h3 id="更改列-数据类型"><a href="#更改列-数据类型" class="headerlink" title="更改列(数据类型)"></a>更改列(数据类型)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alter table table_name modify column column_name datatype default value;</span><br><span class="line">ex:</span><br><span class="line">alter table students modify column dataofbirth date not null default ’2019-08-13‘;</span><br></pre></td></tr></table></figure>
-
 <h2 id="select-top"><a href="#select-top" class="headerlink" title="select top"></a>select top</h2><p>用于返回按照一点规则排序后的前一定数量个.</p>
 <p>mysql语法:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">select column(s) from table_name limit number;</span><br><span class="line"></span><br><span class="line">ex:</span><br><span class="line">select * from students order by score desc limit 1; //找分数最低的学生信息</span><br></pre></td></tr></table></figure>
-
 <h2 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h2><p>通配符一般与like联合使用, 用于搜索表中数据.</p>
 <p>“%” : 代替0个或多个字符.</p>
 <p>“_”: 代替一个字符.</p>
@@ -682,23 +679,17 @@
 </table>
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from students where ID rlike &apos;^[1234]&apos;;</span><br></pre></td></tr></table></figure>
-
 <h2 id="in"><a href="#in" class="headerlink" title="in"></a>in</h2><p>属于</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table where colunm_name in &#123;v1, v2, v3 , ...&#125;</span><br></pre></td></tr></table></figure>
-
 <h2 id="between"><a href="#between" class="headerlink" title="between"></a>between</h2><p>between a and b. 选取介于两个值之间的数据范围内的值。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table_name where column_name between v1 and v2;</span><br></pre></td></tr></table></figure>
-
 <p>其中v1, v2可以是整数或时间.</p>
 <p>ex:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table where data between &apos;2016-10-1&apos; and &apos;2017-10-1&apos;;</span><br></pre></td></tr></table></figure>
-
 <h2 id="别名"><a href="#别名" class="headerlink" title="别名"></a>别名</h2><p>列的别名:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select column_name as allas_name from table_name;</span><br><span class="line">ex:</span><br><span class="line">select ID as indetify, score as class from students;</span><br></pre></td></tr></table></figure>
-
 <p>表的别名:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">select column_name(s) from table_name as allas_name;</span><br><span class="line">ex:</span><br><span class="line">select w.ID w.score from students as w;</span><br><span class="line">==</span><br><span class="line">select ID, score from students;</span><br></pre></td></tr></table></figure>
-
 <h2 id="join"><a href="#join" class="headerlink" title="join"></a>join</h2><p>join是把两个表或者多个表按照行结合起来.</p>
 <p>主要使用方式有如下几种:</p>
 <p><img src="https://www.runoob.com/wp-content/uploads/2019/01/sql-join.png" alt="join"></p>
@@ -706,19 +697,16 @@
 <h2 id="UNION操作符"><a href="#UNION操作符" class="headerlink" title="UNION操作符"></a>UNION操作符</h2><p><code>UNION</code>操作符合并两个或者多个<code>select</code>语句结果. 要求<code>selec</code>t语句拥有相同数量的列, 列也必须拥有相同的数据类型. 每个<code>select</code>语句列的顺序必须相同.</p>
 <p>语法:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s) FROM table1</span><br><span class="line">UNION [all | distinct]</span><br><span class="line">SELECT column_name(s) FROM table2;</span><br></pre></td></tr></table></figure>
-
 <p><code>[all | distinct]</code>表示可选的。union默认只会列出不同的元素（distinct）, 要想列出所以元素则应该使用<code>union all</code>.</p>
 <p>可以理解为<code>union</code>为取两个或多个<code>select</code>语句组成的集合的<code>unique</code>, 而<code>union all</code>为整个集合.</p>
 <h2 id="SELECT-INTO"><a href="#SELECT-INTO" class="headerlink" title="SELECT INTO"></a>SELECT INTO</h2><p>复制一个表的信息到另一个表中. </p>
 <p>语法:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s)</span><br><span class="line">INTO newtable [IN externaldb]</span><br><span class="line">FROM table1;</span><br></pre></td></tr></table></figure>
-
 <p>该命令表示可以使用外部的数据库中的表.</p>
 <p>MySQL不支持<code>select into</code>语法</p>
 <h2 id="INSERT-INTO-SELECT"><a href="#INSERT-INTO-SELECT" class="headerlink" title="INSERT INTO SELECT"></a>INSERT INTO SELECT</h2><p>与上述语句类似, 复制一个表的数据到另一个表.</p>
 <p>语法</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO table2</span><br><span class="line">(column_name(s))</span><br><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table1;</span><br></pre></td></tr></table></figure>
-
 <p>与<code>select into</code>区别为, <code>insert into select</code>要求插入的元素在被插入的表中原本就是存在的. 即插入部分在被插入的表中存在对于结构(因此上述命令有两个column_name(s)). 而<code>select into</code>则是在被插入的表中不存在对应结构, 命令会自动创建对应结构. 需要注意, <code>insert into select</code>在在当前表后面追加而不是将选取的部分合并到指定的列.</p>
 <h2 id="SQL约束"><a href="#SQL约束" class="headerlink" title="SQL约束"></a>SQL约束</h2><p><code>SQL</code>约束用于规范表中数据规则. 如果存在违反数据规则的行为, 该行为将会被终止. 约束可以在建表时规定(通过<code>create table</code>), 或者在建表之后规定(通过<code>alter table</code>语句).</p>
 <p>约束类型:</p>
@@ -732,59 +720,41 @@
 </ol>
 <p>建表时约束:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE Persons</span><br><span class="line">(</span><br><span class="line">    Id_P int NOT NULL,</span><br><span class="line">    LastName varchar(255) NOT NULL,</span><br><span class="line">    FirstName varchar(255),</span><br><span class="line">    Address varchar(255),</span><br><span class="line">    City varchar(255),</span><br><span class="line">    PRIMARY KEY (Id_P)  //PRIMARY KEY约束</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
 <p><code>alter add</code>时约束</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table tablename add column columnname type default(0)</span><br></pre></td></tr></table></figure>
-
 <p><code>alter modify</code>更改约束:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alter table x modify column_name null;</span><br><span class="line">alter table x modify column_name not null;</span><br></pre></td></tr></table></figure>
-
 <h2 id="UNIQUE约束"><a href="#UNIQUE约束" class="headerlink" title="UNIQUE约束"></a>UNIQUE约束</h2><p><code>UNIQUE</code> 和 <code>PRIMARY KEY</code> 约束均为列或列集合提供了唯一性的保证。<code>PRIMARY KEY</code> 约束拥有自动定义的 <code>UNIQUE</code> 约束。每个表可以有多个 <code>UNIQUE</code> 约束，但是每个表只能有一个<code>PRIMARY KEY</code> 约束。注意: 如果对表中已存在的结构添加约束, 如果当前表内容不符合约束则无法添加.</p>
 <h3 id="创建表时添加unique约束"><a href="#创建表时添加unique约束" class="headerlink" title="创建表时添加unique约束:"></a>创建表时添加<code>unique</code>约束:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE Persons</span><br><span class="line">(</span><br><span class="line">P_Id int NOT NULL,</span><br><span class="line">LastName varchar(255) NOT NULL,</span><br><span class="line">FirstName varchar(255),</span><br><span class="line">Address varchar(255),</span><br><span class="line">City varchar(255),</span><br><span class="line">UNIQUE (P_Id)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
 <h3 id="定义多个列的约束并命名unique约束"><a href="#定义多个列的约束并命名unique约束" class="headerlink" title="定义多个列的约束并命名unique约束:"></a>定义多个列的约束并命名<code>unique</code>约束:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE Persons</span><br><span class="line">(</span><br><span class="line">P_Id int NOT NULL,</span><br><span class="line">LastName varchar(255) NOT NULL,</span><br><span class="line">FirstName varchar(255),</span><br><span class="line">Address varchar(255),</span><br><span class="line">City varchar(255),</span><br><span class="line">CONSTRAINT uc_PersonID UNIQUE (P_Id,LastName)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
 <p>注意: 该处表示(P_Id,LastName)构成的结果整体唯一. 只有一个是相同的是被允许的.</p>
 <h3 id="alter-table时的unique约束"><a href="#alter-table时的unique约束" class="headerlink" title="alter table时的unique约束"></a><code>alter table</code>时的<code>unique</code>约束</h3><p>添加约束:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE Persons</span><br><span class="line">ADD UNIQUE (P_Id)</span><br></pre></td></tr></table></figure>
-
 <p>添加多个列并命名约束:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE Persons</span><br><span class="line">ADD CONSTRAINT uc_PersonID UNIQUE (P_Id,LastName)</span><br></pre></td></tr></table></figure>
-
 <h3 id="撤销unique约束"><a href="#撤销unique约束" class="headerlink" title="撤销unique约束"></a>撤销<code>unique</code>约束</h3><p>MySQL:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE Persons</span><br><span class="line">DROP INDEX uc_PersonID</span><br></pre></td></tr></table></figure>
-
 <p>SQL Server / Oracle / MS Access：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE Persons</span><br><span class="line">DROP CONSTRAINT uc_PersonID</span><br></pre></td></tr></table></figure>
-
 <h2 id="PRIMARY-KEY约束"><a href="#PRIMARY-KEY约束" class="headerlink" title="PRIMARY KEY约束"></a><code>PRIMARY KEY</code>约束</h2><p><code>PRIMARY KEY</code> 约束唯一标识数据库表中的每条记录。主键必须包含唯一的值。主键列不能包含 NULL 值。每个表都应该有一个主键，并且每个表只能有一个主键。</p>
 <h3 id="CREATE-TABLE时的PRIMARY-KEY约束"><a href="#CREATE-TABLE时的PRIMARY-KEY约束" class="headerlink" title="CREATE TABLE时的PRIMARY KEY约束:"></a><code>CREATE TABLE</code>时的<code>PRIMARY KEY</code>约束:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE Persons</span><br><span class="line">(</span><br><span class="line">P_Id int NOT NULL,</span><br><span class="line">LastName varchar(255) NOT NULL,</span><br><span class="line">FirstName varchar(255),</span><br><span class="line">Address varchar(255),</span><br><span class="line">City varchar(255),</span><br><span class="line">CONSTRAINT pk_PersonID PRIMARY KEY (P_Id,LastName)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
 <p>该出与上述<code>unique</code>一致, 表示两个构成的集合.</p>
 <h3 id="ALTER-TABLE时的PRIMARY-KEY约束"><a href="#ALTER-TABLE时的PRIMARY-KEY约束" class="headerlink" title="ALTER TABLE时的PRIMARY KEY约束"></a><code>ALTER TABLE</code>时的<code>PRIMARY KEY</code>约束</h3><p>添加约束:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE Persons</span><br><span class="line">ADD CONSTRAINT pk_PersonID PRIMARY KEY (P_Id,LastName)</span><br></pre></td></tr></table></figure>
-
 <p>撤销约束:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE Persons</span><br><span class="line">DROP PRIMARY KEY</span><br></pre></td></tr></table></figure>
-
 <h2 id="FOREIGN-KEY约束"><a href="#FOREIGN-KEY约束" class="headerlink" title="FOREIGN KEY约束"></a><code>FOREIGN KEY</code>约束</h2><p>一个表中的 <code>FOREIGN KEY</code> 指向另一个表中的 <code>UNIQUE KEY</code>(唯一约束的键)。即在该表中, <code>foreign key</code>约束始终与另一个表中的<code>unique key</code>约束对应. <code>FOREIGN KEY</code> 约束用于预防破坏表之间连接的行为。也能防止非法数据插入外键列，因为它必须是它指向的那个表中的值之一。</p>
 <h3 id="CREATE-TABLE时的FOREIGN-KEY"><a href="#CREATE-TABLE时的FOREIGN-KEY" class="headerlink" title="CREATE TABLE时的FOREIGN KEY"></a><code>CREATE TABLE</code>时的<code>FOREIGN KEY</code></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE Orders</span><br><span class="line">(</span><br><span class="line">O_Id int NOT NULL,</span><br><span class="line">OrderNo int NOT NULL,</span><br><span class="line">P_Id int,</span><br><span class="line">PRIMARY KEY (O_Id),</span><br><span class="line">CONSTRAINT fk_PerOrders FOREIGN KEY (P_Id)</span><br><span class="line">REFERENCES Persons(P_Id)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
 <h3 id="alter-table时的FOREIGN-KEY"><a href="#alter-table时的FOREIGN-KEY" class="headerlink" title="alter table时的FOREIGN KEY"></a><code>alter table</code>时的<code>FOREIGN KEY</code></h3><p>建立外链连接:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE Orders</span><br><span class="line">ADD CONSTRAINT fk_PerOrders</span><br><span class="line">FOREIGN KEY (P_Id)</span><br><span class="line">REFERENCES Persons(P_Id)</span><br></pre></td></tr></table></figure>
-
 <p>撤销外链连接:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE Orders</span><br><span class="line">DROP FOREIGN KEY fk_PerOrders</span><br></pre></td></tr></table></figure>
-
 <h2 id="CHECK约束"><a href="#CHECK约束" class="headerlink" title="CHECK约束"></a><code>CHECK</code>约束</h2><p><code>check</code>约束用来限制列中值的范围. 当对一个列设置限制时, 那么该列只允许特定的值(或范围). 如果对一个表定义 <code>CHECK</code> 约束，那么此约束会基于行中其他列的值在特定的列中对值进行限制。(如列a要大于列b)</p>
 <h3 id="CREATETABLE时CHECK约束"><a href="#CREATETABLE时CHECK约束" class="headerlink" title="CREATETABLE时CHECK约束"></a><code>CREATETABLE</code>时<code>CHECK</code>约束</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE Persons</span><br><span class="line">(</span><br><span class="line">P_Id int NOT NULL,</span><br><span class="line">LastName varchar(255) NOT NULL,</span><br><span class="line">FirstName varchar(255),</span><br><span class="line">Address varchar(255),</span><br><span class="line">City varchar(255),</span><br><span class="line">CONSTRAINT chk_Person CHECK (P_Id&gt;0 AND City=&apos;Sandnes&apos;)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
 <h3 id="alter-table时约束"><a href="#alter-table时约束" class="headerlink" title="alter table时约束"></a><code>alter table</code>时约束</h3><p>增加约束:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE Persons</span><br><span class="line">ADD CONSTRAINT chk_Person CHECK (P_Id&gt;0 AND City=&apos;Sandnes&apos;)</span><br></pre></td></tr></table></figure>
-
 <p>撤销约束</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE Persons</span><br><span class="line">DROP CHECK chk_Person</span><br></pre></td></tr></table></figure>
-
 <p>注意: 在MySQL数据库中, 只是check，但是不强制check(和没有有啥区别吗?). 因此要想实现限制有两种方式.</p>
 <ol>
 <li>如果范围较小,可枚举,则可将列类型设置为enum()或set().</li>
@@ -793,129 +763,123 @@
 <h2 id="AUTO-INCREMENT字段"><a href="#AUTO-INCREMENT字段" class="headerlink" title="AUTO_INCREMENT字段"></a><code>AUTO_INCREMENT</code>字段</h2><p>有时我们希望在每次插入新记录时可以自动的创建主键字段的值. 此时我们可以在表中创建一个<code>auto_increment</code>字段. 注意: <code>auto_increment</code>所在列必须为主键, 即存在<code>primary key</code>约束.</p>
 <p><code>create table</code>时方式:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE Persons</span><br><span class="line">(</span><br><span class="line">ID int NOT NULL AUTO_INCREMENT,</span><br><span class="line">LastName varchar(255) NOT NULL,</span><br><span class="line">FirstName varchar(255),</span><br><span class="line">Address varchar(255),</span><br><span class="line">City varchar(255),</span><br><span class="line">PRIMARY KEY (ID)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
 <p><code>alter table</code>时:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE table_name CHANGE column_name column_name data_type(size) constraint_name AUTO_INCREMENT;</span><br><span class="line"></span><br><span class="line">ex:</span><br><span class="line">ALTER TABLE student CHANGE id id INT(11) NOT NULL AUTO_INCREMENT;</span><br></pre></td></tr></table></figure>
-
 <p>此时默认的, <code>AUTO_INCREMENT</code>起始值为1, 每条记录递增1. 此时再插入数据时可以不用为ID赋值, 会自动添加一个唯一值.</p>
 <h2 id="SQL-default约束"><a href="#SQL-default约束" class="headerlink" title="SQL default约束"></a><code>SQL default</code>约束</h2><p><code>create ablet</code>时设置default约束:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE Persons</span><br><span class="line">(</span><br><span class="line">    P_Id int NOT NULL,</span><br><span class="line">    LastName varchar(255) NOT NULL,</span><br><span class="line">    FirstName varchar(255),</span><br><span class="line">    Address varchar(255),</span><br><span class="line">    City varchar(255) DEFAULT &apos;Sandnes&apos;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
 <p><code>alter table</code>时设置:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">结构已存在时:</span><br><span class="line">ALTER TABLE Persons</span><br><span class="line">ALTER City SET DEFAULT &apos;SANDNES&apos;</span><br><span class="line"></span><br><span class="line">结构不存在时:</span><br><span class="line">alter table table_name</span><br><span class="line">add column column_name default value comment &quot;info&quot;;</span><br></pre></td></tr></table></figure>
-
 <p>撤销默认值:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE Persons</span><br><span class="line">ALTER City DROP DEFAULT</span><br></pre></td></tr></table></figure>
-
 <h2 id="CREATE-INDEX语句"><a href="#CREATE-INDEX语句" class="headerlink" title="CREATE INDEX语句"></a><code>CREATE INDEX</code>语句</h2><p>CREATE INDEX 语句用于在表中创建索引。</p>
 <p>创建简单索引语法:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CREATE INDEX index_name</span><br><span class="line">ON table_name (column_name)</span><br></pre></td></tr></table></figure>
-
 <p>创建唯一索引语法:唯一的索引意味着两个行不能拥有相同的索引值.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CREATE UNIQUE INDEX index_name</span><br><span class="line">ON table_name (column_name)</span><br></pre></td></tr></table></figure>
-
 <h2 id="DROP语句"><a href="#DROP语句" class="headerlink" title="DROP语句"></a><code>DROP</code>语句</h2><p>使用 DROP 语句，可以轻松地删除索引、表和数据库。</p>
 <p>删除索引:<code>ALTER TABLE table_name DROP INDEX index_name</code></p>
 <p>删除表: <code>DROP TABLE table_name</code></p>
 <p>删除数据库: <code>DROP DATABASE database_name</code></p>
 <h2 id="SQL-视图"><a href="#SQL-视图" class="headerlink" title="SQL 视图"></a>SQL 视图</h2><p>视图是可视化的表. 视图是基于SQL语句的结果集的可视化的表. 视图包含行和列, 如同一个真实的表. 视图中的字段来自一个或者多个数据库中真实的表中的字段. 可以向视图中添加函数, where以及json语句, 也可以输出视图数据.</p>
 <h3 id="SQL-CREATEVIEW语句"><a href="#SQL-CREATEVIEW语句" class="headerlink" title="SQL CREATEVIEW语句"></a>SQL CREATEVIEW语句</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CREATE VIEW view_name AS</span><br><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE condition</span><br></pre></td></tr></table></figure>
-
 <p><strong>注释：</strong>视图总是显示最新的数据！每当用户查询视图时，数据库引擎通过使用视图的 SQL 语句重建数据。</p>
 <p>例:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">create view moreavgage_user_id_user_name as</span><br><span class="line">select id, name</span><br><span class="line">from user</span><br><span class="line">where age&gt;(select avg(age) from user)</span><br></pre></td></tr></table></figure>
-
 <h3 id="更新视图"><a href="#更新视图" class="headerlink" title="更新视图"></a>更新视图</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CREATE OR REPLACE VIEW view_name AS</span><br><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE condition</span><br></pre></td></tr></table></figure>
-
 <h3 id="撤销视图"><a href="#撤销视图" class="headerlink" title="撤销视图"></a>撤销视图</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DROP VIEW view_name</span><br></pre></td></tr></table></figure>
-
 <h2 id="NULL"><a href="#NULL" class="headerlink" title="NULL"></a>NULL</h2><p>NULL 值代表遗漏的未知数据。默认地，表的列可以存放 NULL 值。NULL 值的处理方式与其他值不同。NULL 用作未知的或不适用的值的占位符。无法使用比较运算符来测试 NULL 值，比如 =、&lt; 或 &lt;&gt;。我们必须使用 IS NULL 和 IS NOT NULL 操作符。</p>
 <h2 id="IFNULL函数"><a href="#IFNULL函数" class="headerlink" title="IFNULL函数"></a>IFNULL函数</h2><p>该函数用于处理数据为空的情况, 例如:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT ProductName,UnitPrice*(UnitsInStock+IFNULL(UnitsOnOrder,0))</span><br><span class="line">FROM Products</span><br></pre></td></tr></table></figure>
-
 <p>此时,当UnitsOnOrder为空, 我们就用0代替.</p>
-<h1 id="SQL函数"><a href="#SQL函数" class="headerlink" title="SQL函数"></a>SQL函数</h1><table>
+<h1 id="SQL函数"><a href="#SQL函数" class="headerlink" title="SQL函数"></a>SQL函数</h1><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">函数</th>
-<th align="center">作用</th>
-<th align="center">语法</th>
+<th style="text-align:center">函数</th>
+<th style="text-align:center">作用</th>
+<th style="text-align:center">语法</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">AVG()</td>
-<td align="center">返回数值例的评价值</td>
-<td align="center"><code>select avg(column_name) from table_name</code></td>
+<tbody>
+<tr>
+<td style="text-align:center">AVG()</td>
+<td style="text-align:center">返回数值例的评价值</td>
+<td style="text-align:center"><code>select avg(column_name) from table_name</code></td>
 </tr>
 <tr>
-<td align="center">COUNT()</td>
-<td align="center">返回匹配指定条件的行数</td>
-<td align="center"><code>select count(column_name) from table_name</code>(返回指定列的数目,null不计).  <code>select count(*) from table_name</code>(返回表中记录数目).  <code>select count(distinct column_name) from table_name</code>(返回指定列不同值的数目).</td>
+<td style="text-align:center">COUNT()</td>
+<td style="text-align:center">返回匹配指定条件的行数</td>
+<td style="text-align:center"><code>select count(column_name) from table_name</code>(返回指定列的数目,null不计).  <code>select count(*) from table_name</code>(返回表中记录数目).  <code>select count(distinct column_name) from table_name</code>(返回指定列不同值的数目).</td>
 </tr>
 <tr>
-<td align="center">MAX()</td>
-<td align="center">返回指定列最大值</td>
-<td align="center"><code>select max(column_name) from table_name</code></td>
+<td style="text-align:center">MAX()</td>
+<td style="text-align:center">返回指定列最大值</td>
+<td style="text-align:center"><code>select max(column_name) from table_name</code></td>
 </tr>
 <tr>
-<td align="center">MIN()</td>
-<td align="center">返回指定列最大值</td>
-<td align="center"><code>select min(column_name) from table_name</code></td>
+<td style="text-align:center">MIN()</td>
+<td style="text-align:center">返回指定列最大值</td>
+<td style="text-align:center"><code>select min(column_name) from table_name</code></td>
 </tr>
 <tr>
-<td align="center">SUM()</td>
-<td align="center">返回指定列之和</td>
-<td align="center"><code>select sum(column_name) from table</code></td>
+<td style="text-align:center">SUM()</td>
+<td style="text-align:center">返回指定列之和</td>
+<td style="text-align:center"><code>select sum(column_name) from table</code></td>
 </tr>
 <tr>
-<td align="center">GROUP BY</td>
-<td align="center">句用于结合聚合函数,根据一个或多个列结果进行分组.</td>
-<td align="center"><code>select column_name, aggregate_function(column_name) from table_name where column_name operator valus group bu column_name</code></td>
+<td style="text-align:center">GROUP BY</td>
+<td style="text-align:center">句用于结合聚合函数,根据一个或多个列结果进行分组.</td>
+<td style="text-align:center"><code>select column_name, aggregate_function(column_name) from table_name where column_name operator valus group bu column_name</code></td>
 </tr>
 <tr>
-<td align="center">UCASE()</td>
-<td align="center">把字段的大写转换成小写</td>
-<td align="center"><code>select UCASE(column_name) from table_name</code></td>
+<td style="text-align:center">UCASE()</td>
+<td style="text-align:center">把字段的大写转换成小写</td>
+<td style="text-align:center"><code>select UCASE(column_name) from table_name</code></td>
 </tr>
 <tr>
-<td align="center">LCASE()</td>
-<td align="center">把字段的小写转换成大写</td>
-<td align="center"><code>select LCASE(column_name) from table_name</code></td>
+<td style="text-align:center">LCASE()</td>
+<td style="text-align:center">把字段的小写转换成大写</td>
+<td style="text-align:center"><code>select LCASE(column_name) from table_name</code></td>
 </tr>
 <tr>
-<td align="center">MID()</td>
-<td align="center">从文本字段中提取字符</td>
-<td align="center"><code>select MID(column_name, start[, length]) from table_name</code></td>
+<td style="text-align:center">MID()</td>
+<td style="text-align:center">从文本字段中提取字符</td>
+<td style="text-align:center"><code>select MID(column_name, start[, length]) from table_name</code></td>
 </tr>
 <tr>
-<td align="center">LEN()</td>
-<td align="center">返回文本字段值的长度</td>
-<td align="center"><code>select LEN(column_name) from table_name</code></td>
+<td style="text-align:center">LEN()</td>
+<td style="text-align:center">返回文本字段值的长度</td>
+<td style="text-align:center"><code>select LEN(column_name) from table_name</code></td>
 </tr>
 <tr>
-<td align="center">ROUND()</td>
-<td align="center">把数值字段舍入为指定的小数位数</td>
-<td align="center"><code>select  ROUND(column_name, decimals) from table_name</code></td>
+<td style="text-align:center">ROUND()</td>
+<td style="text-align:center">把数值字段舍入为指定的小数位数</td>
+<td style="text-align:center"><code>select  ROUND(column_name, decimals) from table_name</code></td>
 </tr>
 <tr>
-<td align="center">NOW()</td>
-<td align="center">返回当前系统的日期和时间</td>
-<td align="center"><code>SELECT NOW() FROM table_name</code></td>
+<td style="text-align:center">NOW()</td>
+<td style="text-align:center">返回当前系统的日期和时间</td>
+<td style="text-align:center"><code>SELECT NOW() FROM table_name</code></td>
 </tr>
 <tr>
-<td align="center">FORMAT()</td>
-<td align="center">对字段的显示进行格式化</td>
-<td align="center"><code>SELECT FORMAT(column_name,format) FROM table_name</code> 例: <code>SELECT name, url, DATE_FORMAT(Now(),&#39;%Y-%m-%d&#39;) AS date FROM Websites;</code></td>
+<td style="text-align:center">FORMAT()</td>
+<td style="text-align:center">对字段的显示进行格式化</td>
+<td style="text-align:center"><code>SELECT FORMAT(column_name,format) FROM table_name</code> 例: <code>SELECT name, url, DATE_FORMAT(Now(),&#39;%Y-%m-%d&#39;) AS date FROM Websites;</code></td>
 </tr>
-</tbody></table>
-<h1 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h1><h2 id="RDBMS术语"><a href="#RDBMS术语" class="headerlink" title="RDBMS术语"></a>RDBMS术语</h2><table>
+</tbody>
+</table>
+</div>
+<h1 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h1><h2 id="RDBMS术语"><a href="#RDBMS术语" class="headerlink" title="RDBMS术语"></a>RDBMS术语</h2><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>数据库</th>
 <th>数据库是一些关联表的集合。</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><strong>数据表</strong></td>
 <td>表是数据的矩阵。在一个数据库中的表看起来像一个简单的电子表格。</td>
 </tr>
@@ -955,35 +919,31 @@
 <td>表头</td>
 <td>每一列的名字。</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h2 id="MySQL用户设置"><a href="#MySQL用户设置" class="headerlink" title="MySQL用户设置"></a>MySQL用户设置</h2><h3 id="添加用户"><a href="#添加用户" class="headerlink" title="添加用户"></a>添加用户</h3><p>添加mysql用户，可以在mysql数据库（use mysql）中的user表中添加新用户即可。可以通过<code>show columns from user</code>中查看需要那些内容，而后通过<code>insert into user （columns）value（columns_value）</code>对用户赋予响应配置。而后使用<code>FLUSH PRIVILEGES</code>重新载入授权表。</p>
 <p>第二种添加用户方式为：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grant select,insert,update,delete,create,drop on database.* to &apos;name@localhost&apos; identified by &apos;password&apos;</span><br></pre></td></tr></table></figure>
-
 <p>授权相应权限给新加的用户。</p>
 <h2 id="MySQL分组"><a href="#MySQL分组" class="headerlink" title="MySQL分组"></a>MySQL分组</h2><p><code>group by</code>语句更具一个或多个列对结果进行分组。在分组的列上，我们可以使用<code>count</code>，<code>sum</code>，<code>avg</code>等函数。</p>
 <p>语法：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name, function(column_name)</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE column_name operator value</span><br><span class="line">GROUP BY column_name;</span><br></pre></td></tr></table></figure>
-
 <p>举例：</p>
 <p>通过如下操作导入数据：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">SET NAMES utf8;</span><br><span class="line">SET FOREIGN_KEY_CHECKS = 0;</span><br><span class="line">CREATE TABLE `employee_tbl` (</span><br><span class="line">  `id` int(11) NOT NULL,</span><br><span class="line">  `name` char(10) NOT NULL DEFAULT &apos;&apos;,</span><br><span class="line">  `date` datetime NOT NULL,</span><br><span class="line">  `singin` tinyint(4) NOT NULL DEFAULT &apos;0&apos; COMMENT &apos;登录次数&apos;,</span><br><span class="line">  PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8;</span><br><span class="line">BEGIN;</span><br><span class="line">INSERT INTO `employee_tbl` VALUES (&apos;1&apos;, &apos;小明&apos;, &apos;2016-04-22 15:25:33&apos;, &apos;1&apos;), (&apos;2&apos;, &apos;小王&apos;, &apos;2016-04-20 15:25:47&apos;, &apos;3&apos;), (&apos;3&apos;, &apos;小丽&apos;, &apos;2016-04-19 15:26:02&apos;, &apos;2&apos;), (&apos;4&apos;, &apos;小王&apos;, &apos;2016-04-07 15:26:14&apos;, &apos;4&apos;), (&apos;5&apos;, &apos;小明&apos;, &apos;2016-04-11 15:26:40&apos;, &apos;4&apos;), (&apos;6&apos;, &apos;小明&apos;, &apos;2016-04-04 15:26:54&apos;, &apos;2&apos;);</span><br><span class="line">COMMIT;</span><br><span class="line">SET FOREIGN_KEY_CHECKS = 1;</span><br></pre></td></tr></table></figure>
-
 <p>此时使用<code>select</code>得到数据库为：</p>
-<p>![Screenshot from 2019-08-14 22-49-49](/home/chst/Pictures/Screenshot from 2019-08-14 22-49-49.png)</p>
+<p><img src="/home/chst/Pictures/Screenshot from 2019-08-14 22-49-49.png" alt="Screenshot from 2019-08-14 22-49-49"></p>
 <p>使用<code>group by</code>语句进行按名字分组，并统计没人的记录数量。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT name, COUNT(*) FROM   employee_tbl GROUP BY name;</span><br></pre></td></tr></table></figure>
-
 <p>结果为：</p>
-<p>![Screenshot from 2019-08-14 22-52-18](/home/chst/Pictures/Screenshot from 2019-08-14 22-52-18.png)</p>
+<p><img src="/home/chst/Pictures/Screenshot from 2019-08-14 22-52-18.png" alt="Screenshot from 2019-08-14 22-52-18"></p>
 <p><code>with rollup</code>可实现在分组统计基础上再进行相同的统计。如在按名字分组后统计每个人登录次数。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT name, SUM(singin) as singin_count FROM  employee_tbl GROUP BY name WITH ROLLUP;</span><br></pre></td></tr></table></figure>
-
-<p>![Screenshot from 2019-08-14 22-57-02](/home/chst/Pictures/Screenshot from 2019-08-14 22-57-02.png)</p>
+<p><img src="/home/chst/Pictures/Screenshot from 2019-08-14 22-57-02.png" alt="Screenshot from 2019-08-14 22-57-02"></p>
 <p>使用<code>select coalesce(a,b,c)</code>来设置取代<code>null</code>的值。该语句表示，如果<code>a==null</code>则取<code>b</code>， 如果<code>b==null</code>则取<code>c</code>。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT coalesce(name, &apos;总数&apos;), SUM(singin) as singin_count FROM  employee_tbl GROUP BY name WITH ROLLUP;</span><br></pre></td></tr></table></figure>
-
-<p>![Screenshot from 2019-08-14 23-01-25](/home/chst/Pictures/Screenshot from 2019-08-14 23-01-25.png)</p>
+<p><img src="/home/chst/Pictures/Screenshot from 2019-08-14 23-01-25.png" alt="Screenshot from 2019-08-14 23-01-25"></p>
 <h2 id="MySQL事务"><a href="#MySQL事务" class="headerlink" title="MySQL事务"></a>MySQL事务</h2><p><a href="https://www.runoob.com/mysql/mysql-transaction.html" target="_blank" rel="noopener">菜鸟教程</a></p>
 <h2 id="MySQL临时表"><a href="#MySQL临时表" class="headerlink" title="MySQL临时表"></a>MySQL临时表</h2><p><a href="https://www.runoob.com/mysql/mysql-temporary-tables.html" target="_blank" rel="noopener">菜鸟教程</a></p>
 <h2 id="MySQL复制表"><a href="#MySQL复制表" class="headerlink" title="MySQL复制表"></a>MySQL复制表</h2><p><a href="https://www.runoob.com/mysql/mysql-clone-tables.html" target="_blank" rel="noopener">菜鸟教程</a></p>
@@ -1526,6 +1486,8 @@
   
 
   
+  
+
 
   
 

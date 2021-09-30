@@ -412,17 +412,13 @@
 
 <h2 id="ubuntu下配置环境"><a href="#ubuntu下配置环境" class="headerlink" title="ubuntu下配置环境"></a>ubuntu下配置环境</h2><h3 id="安装MySQL"><a href="#安装MySQL" class="headerlink" title="安装MySQL"></a>安装MySQL</h3><p>参考前面的文章。</p>
 <h3 id="下载配置文件"><a href="#下载配置文件" class="headerlink" title="下载配置文件"></a>下载配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get libmysqld-dev</span><br></pre></td></tr></table></figure>
-
 <h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>写如下代码：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;my_global.h&gt;</span><br><span class="line">#include&lt;mysql.h&gt;</span><br><span class="line">#include&lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int main(int argc, char **argv)</span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;&quot;MySQL client version:&quot;&lt;&lt;mysql_get_client_info()&lt;&lt;endl;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>编译运行：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g++ test.cpp -o test.out `mysql_config --libs --include`</span><br></pre></td></tr></table></figure>
-
 <p>其中<code>test.cpp</code>是我们写的程序，<code>-o</code>指明文件输出的名字，这里是<code>test.out</code>。之后的<code>mysql_config --lib --include</code>(前后要有`)，是指明编译需要的引用文件和库，并且位置不是随意放置（不然报错）。</p>
 <p>具体需要添加什么可以根据如下命令查看：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql_config</span><br></pre></td></tr></table></figure>
-
 <p>而后运行生成的文件<code>./test.out</code>能够正确打印即可。</p>
 <h2 id="配置需求"><a href="#配置需求" class="headerlink" title="配置需求"></a>配置需求</h2><p>通讯缓冲区必须足够大，以包含单个SQL语句（用于客户端到服务器的流量）和一行返回的数据（用于服务端到客户端的流量）。每个会话的通讯缓冲区都会被动态放大，以处理任何查询，直到最大限制。例如，BLOB值包含最多16MB数据，则必须具有至少16MB的缓冲区限制（在服务器和客户端中）。客户端库中内置默认配置最大值是1GB，但服务器中默认最大值为1MB，可以通过<code>max_allowed_packet</code>在服务器启动时更改参数来增加此值。</p>
 <h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><h3 id="MYSQL"><a href="#MYSQL" class="headerlink" title="MYSQL"></a>MYSQL</h3><p>MYSQL是连接数据库的句柄，几乎在所以函数都会用到，不应该尝试拷贝一个MYSQL，不能保证拷贝的结果可以正常使用。</p>
@@ -432,7 +428,6 @@
 <h3 id="MYSQL-FIELD-OFFSET"><a href="#MYSQL-FIELD-OFFSET" class="headerlink" title="MYSQL_FIELD_OFFSET"></a>MYSQL_FIELD_OFFSET</h3><p>这是MySQL字段列表中偏移量的类型安全表示。使用<code>mysql_field_seek()</code>获得。偏移量是一行中的字段编号，从零开始。</p>
 <h3 id="my-ulonglong"><a href="#my-ulonglong" class="headerlink" title="my_ulonglong"></a>my_ulonglong</h3><p>该数据类型表示行的数量和<code>mysql_affected_rows()</code>,<code>mysql_num_rows()</code>,<code>mysql_insert_id()</code>函数。该类型提供一个范围[0, 1.84e19]。一些使用该类型作为返回值的类型，通过返回-1表示出现错误或意外情况。检测是否出现-1可以使用返回值和<code>(my_ulonglong)-1</code>或<code>(my_ulonglong)~0</code>比较。一些系统无法直接打印该类型，可以先将其转换为<code>unsigned long</code>并且使用<code>%lu</code>打印该值。例如：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">"Number of rows: %lu\n"</span>, (<span class="keyword">unsigned</span> <span class="keyword">long</span>)mysql_num_rows(result));</span><br></pre></td></tr></table></figure>
-
 <h3 id="my-bool"><a href="#my-bool" class="headerlink" title="my_bool"></a>my_bool</h3><p>bool类型。</p>
 <h3 id="char-name"><a href="#char-name" class="headerlink" title="char *name"></a>char *name</h3><p>字段名字。对于存在别名时，则值为别名。</p>
 <h3 id="char-org-name"><a href="#char-org-name" class="headerlink" title="char *org_name"></a>char *org_name</h3><p>字段原名。</p>
@@ -450,80 +445,83 @@
 <h3 id="unsigned-int-catalog-length"><a href="#unsigned-int-catalog-length" class="headerlink" title="unsigned int catalog_length"></a>unsigned int catalog_length</h3><p>catalog length</p>
 <h3 id="unsigned-int-def-length"><a href="#unsigned-int-def-length" class="headerlink" title="unsigned int def_length"></a>unsigned int def_length</h3><p>def length</p>
 <h3 id="unsigned-int-flags"><a href="#unsigned-int-flags" class="headerlink" title="unsigned int flags"></a>unsigned int flags</h3><p>flags是一个二进制数字，每一个元素都有一个对应的flags，每一位表示元素一个属性，具体如下。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">位</th>
-<th align="center">含义</th>
+<th style="text-align:center">位</th>
+<th style="text-align:center">含义</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">NOT_NULL_FLAG</td>
-<td align="center">元素不能是空。</td>
+<tbody>
+<tr>
+<td style="text-align:center">NOT_NULL_FLAG</td>
+<td style="text-align:center">元素不能是空。</td>
 </tr>
 <tr>
-<td align="center">PRI_KEY_FLAG</td>
-<td align="center">元素是主键的一部分。</td>
+<td style="text-align:center">PRI_KEY_FLAG</td>
+<td style="text-align:center">元素是主键的一部分。</td>
 </tr>
 <tr>
-<td align="center">UNIQUE_KEY_FLAG</td>
-<td align="center">元素是唯一性约束的一部分。</td>
+<td style="text-align:center">UNIQUE_KEY_FLAG</td>
+<td style="text-align:center">元素是唯一性约束的一部分。</td>
 </tr>
 <tr>
-<td align="center">MULTIPLE_kEY_FLAG</td>
-<td align="center">元素是非唯一性键的一部分。</td>
+<td style="text-align:center">MULTIPLE_kEY_FLAG</td>
+<td style="text-align:center">元素是非唯一性键的一部分。</td>
 </tr>
 <tr>
-<td align="center">UNSIGNED_FLAG</td>
-<td align="center">元素具有无符号属性。</td>
+<td style="text-align:center">UNSIGNED_FLAG</td>
+<td style="text-align:center">元素具有无符号属性。</td>
 </tr>
 <tr>
-<td align="center">ZEROFILL_FLAG</td>
-<td align="center">元素具有0填充的属性。</td>
+<td style="text-align:center">ZEROFILL_FLAG</td>
+<td style="text-align:center">元素具有0填充的属性。</td>
 </tr>
 <tr>
-<td align="center">BINARY_FLAG</td>
-<td align="center">元素有二进制属性。</td>
+<td style="text-align:center">BINARY_FLAG</td>
+<td style="text-align:center">元素有二进制属性。</td>
 </tr>
 <tr>
-<td align="center">AUTO_INCREMENT_FLAG</td>
-<td align="center">元素有自动增加的属性。</td>
+<td style="text-align:center">AUTO_INCREMENT_FLAG</td>
+<td style="text-align:center">元素有自动增加的属性。</td>
 </tr>
 <tr>
-<td align="center">ENUM_FLAG</td>
-<td align="center">元素是enum。</td>
+<td style="text-align:center">ENUM_FLAG</td>
+<td style="text-align:center">元素是enum。</td>
 </tr>
 <tr>
-<td align="center">SET_FLAG</td>
-<td align="center">元素是set。</td>
+<td style="text-align:center">SET_FLAG</td>
+<td style="text-align:center">元素是set。</td>
 </tr>
 <tr>
-<td align="center">BLOB_FLAG</td>
-<td align="center">元素是blob或text。（已弃用）</td>
+<td style="text-align:center">BLOB_FLAG</td>
+<td style="text-align:center">元素是blob或text。（已弃用）</td>
 </tr>
 <tr>
-<td align="center">TIMESTAMP_FLAG</td>
-<td align="center">元素是时间戳。（已弃用）</td>
+<td style="text-align:center">TIMESTAMP_FLAG</td>
+<td style="text-align:center">元素是时间戳。（已弃用）</td>
 </tr>
 <tr>
-<td align="center">NUM_FLAG</td>
-<td align="center">元素是数字。</td>
+<td style="text-align:center">NUM_FLAG</td>
+<td style="text-align:center">元素是数字。</td>
 </tr>
 <tr>
-<td align="center">NO_DEFAULT_VALUE_FLAG</td>
-<td align="center">元素无默认值。</td>
+<td style="text-align:center">NO_DEFAULT_VALUE_FLAG</td>
+<td style="text-align:center">元素无默认值。</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>要检查BOLB或者TIMESTAMP值，检查type是否是MYSQL_TYPE_BLOB或MYSQL_TYPE_TIMESTAMP.</p>
 <p>ENUM和SET值作为字符串返回，对于这两个，检查type值为MYSQL_TYPE_STRING并且非lags中ENUM_FLAG或SET_FLAG被置位。</p>
 <p>NUM_FLAG表明这一列是数字。这表明类型应该是下面之一：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MYSQL_TYPE_DECIMAL, MYSQL_TYPE_NEWDECIMAL, MYSQL_TYPE_TINY, MYSQL_TYPE_SHORT,</span><br><span class="line">MYSQL_TYPE_LONG, MYSQL_TYPE_FLOAT, MYSQL_TYPE_DOUBLE, MYSQL_TYPE_NULL,</span><br><span class="line">MYSQL_TYPE_LONGLONG, MYSQL_TYPE_INT24,MYSQL_TYPE_YEAR.</span><br></pre></td></tr></table></figure>
-
 <p>NO_DEFALT_VALUE_FLAG表明该列无设置默认值。这不能被用于NULL列（由于该列设有默认值NULL）和AUTO_INCREAM列（有着隐式默认值）。</p>
 <p>下面的列子表明上述内容如何使用：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(field-&gt;flags &amp; NOT_NULL_FLAG)</span><br><span class="line">    print(<span class="string">"field connot be null\n"</span>);</span><br></pre></td></tr></table></figure>
-
 <p>可以使用下表中显示的便捷宏来确定值的布尔状态 <code>flags</code>。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -531,7 +529,8 @@
 <th>描述</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><code>IS_NOT_NULL(flags)</code></td>
 <td>如果此字段定义为NOT NULL，则为True ``</td>
 </tr>
@@ -543,9 +542,12 @@
 <td><code>IS_BLOB(flags)</code></td>
 <td>如果此字段为a <a href="https://dev.mysql.com/doc/refman/5.7/en/blob.html" target="_blank" rel="noopener"><code>BLOB</code></a>或 <a href="https://dev.mysql.com/doc/refman/5.7/en/blob.html" target="_blank" rel="noopener"><code>TEXT</code></a>（不建议使用;请测试 <code>field-&gt;type</code>），则为True</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h3 id="unsigned-int-decimals"><a href="#unsigned-int-decimals" class="headerlink" title="unsigned int decimals"></a>unsigned int decimals</h3><p>数字字段的小数位数，以及时间字段的小数秒精度。</p>
 <h3 id="unsigned-int-charsetnr"><a href="#unsigned-int-charsetnr" class="headerlink" title="unsigned int charsetnr"></a>unsigned int charsetnr</h3><h3 id="enum-enum-field-type-type"><a href="#enum-enum-field-type-type" class="headerlink" title="enum enum_field_type type"></a>enum enum_field_type type</h3><p>元素类型。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -553,7 +555,8 @@
 <th>类型说明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><code>MYSQL_TYPE_TINY</code></td>
 <td><a href="https://dev.mysql.com/doc/refman/5.7/en/integer-types.html" target="_blank" rel="noopener"><code>TINYINT</code></a> 类型</td>
 </tr>
@@ -641,11 +644,12 @@
 <td><code>MYSQL_TYPE_NULL</code></td>
 <td><code>NULL</code>- 字段</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p><code>MYSQL_TYPE_TIME2</code>， <code>MYSQL_TYPE_DATETIME2</code>和 <code>MYSQL_TYPE_TIMESTAMP2</code>类型码仅在服务器侧使用。客户看到 <code>MYSQL_TYPE_TIME</code>， <code>MYSQL_TYPE_DATETIME</code>和 <code>MYSQL_TYPE_TIMESTAMP</code>代码。</p>
 <p>您可以使用<code>IS_NUM()</code>宏来测试字段是否具有数字类型。将<code>type</code>值传递 给<code>IS_NUM()</code> 它，如果该字段是数字，则计算结果为TRUE：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (IS_NUM(field-&gt;type))</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Field is numeric\n"</span>);</span><br></pre></td></tr></table></figure>
-
 <h2 id="程序流程"><a href="#程序流程" class="headerlink" title="程序流程"></a>程序流程</h2><h3 id="初始化MySQL客户端库"><a href="#初始化MySQL客户端库" class="headerlink" title="初始化MySQL客户端库"></a>初始化MySQL客户端库</h3><p><code>mysql_library_init()</code>。</p>
 <h3 id="连接和初始化"><a href="#连接和初始化" class="headerlink" title="连接和初始化"></a>连接和初始化</h3><p>调用<code>mysql_init()</code>初始化一个连接的头。使用<code>mysql_real_connect()</code>连接到服务器。</p>
 <h3 id="关闭与MySQL服务器的连接"><a href="#关闭与MySQL服务器的连接" class="headerlink" title="关闭与MySQL服务器的连接"></a>关闭与MySQL服务器的连接</h3><p><code>mysql_close()</code></p>
@@ -656,41 +660,41 @@
 <p>无论使用那种方式，访问行均是通过<code>mysql_fetch_row()</code>函数。对于<code>mysql_store_result()</code>,<code>mysql_fetch_row()</code>访问早已经从服务器获取的行。对于<code>mysql_use_result()</code>,<code>mysql_fetch_row()</code>真正向服务器请求行。每一行可得到的大小可以通过函数<code>mysql_fetch_length()</code>获得。</p>
 <p>在处理完结果集后，应该使用<code>mysql_free_result()</code>去释放其使用的内存。</p>
 <p>两种方式的比较：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">方式</th>
-<th align="center">优点</th>
-<th align="center">缺点</th>
+<th style="text-align:center">方式</th>
+<th style="text-align:center">优点</th>
+<th style="text-align:center">缺点</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center"><code>mysql_store_result()</code></td>
-<td align="center">由于行已经被完全获得，因此不但能够连续的访问行，而且可以使用<code>mysql_data_seek()</code>和<code>mysql_row_seek()</code>去改变当前行所处位置。也能够通过<code>mysql_num_rows()</code>获取行的数量。</td>
-<td align="center">需要是否大的内存来完整的存储所有行，很可能遭遇超出内存的错误。</td>
+<tbody>
+<tr>
+<td style="text-align:center"><code>mysql_store_result()</code></td>
+<td style="text-align:center">由于行已经被完全获得，因此不但能够连续的访问行，而且可以使用<code>mysql_data_seek()</code>和<code>mysql_row_seek()</code>去改变当前行所处位置。也能够通过<code>mysql_num_rows()</code>获取行的数量。</td>
+<td style="text-align:center">需要是否大的内存来完整的存储所有行，很可能遭遇超出内存的错误。</td>
 </tr>
 <tr>
-<td align="center"><code>mysql_use_result()</code></td>
-<td align="center">一次只用维护一行，需要很少的内存。并且，由于很少的存储开销，会很快。</td>
-<td align="center">需要快速的处理每一行以避免占用服务器。不能随意访问，只能按行访问。且，在访问完所以行之前，行的数量未知。最糟的是，必须访问完所以的行，即使在获取一半后查找到了需要的信息。</td>
+<td style="text-align:center"><code>mysql_use_result()</code></td>
+<td style="text-align:center">一次只用维护一行，需要很少的内存。并且，由于很少的存储开销，会很快。</td>
+<td style="text-align:center">需要快速的处理每一行以避免占用服务器。不能随意访问，只能按行访问。且，在访问完所以行之前，行的数量未知。最糟的是，必须访问完所以的行，即使在获取一半后查找到了需要的信息。</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>API使客户端可以适当的响应语句，而无需知道语句是否为一个select（查询）。在<code>mysql_query()</code>/<code>mysql_real_query()</code>之后调用<code>mysql_store_result()</code>。如果结果集正确响应，该语句是select并且可以读取行。如果结果集调用失败，调用<code>mysql_field_count()</code>函数去确定是否真正发生了未期待的结果。如果返回值为0，表面无返回数据，则表示该命令是非查询语句（update，insert，delete…）。如果结果不是0，则表面已经应该返回了行，但是没有，发生了一个错误。</p>
 <h3 id="字段信息"><a href="#字段信息" class="headerlink" title="字段信息"></a>字段信息</h3><p><code>mysql_store_result()</code>和<code>mysql_use_result()</code>使得用户可以获得组成结果集的字段的信息（字段数量，名字，类型等等）。我们可以重复的调用<code>mysql_fetch_field()</code>函数来连续的获取行内字段信息，或者通过字段在行内编号通过<code>mysql_fetch_field_direct()</code>函数直接获取信息。游标的当前位置可以改变通过<code>mysql_field_seek()</code>。设置字段游标影响接下来的<code>mysql_fetch_field()</code>函数调用结果。还可以通过一次调用<code>mysql_fetch_fields()</code>获取所以字段的信息。</p>
 <h3 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h3><p>为了检测和报告错误，MySQL通过<code>mysql_errno()</code>和<code>mysql_error()</code>函数提供对错误信息的访问。这些函数返回最近调用的可能成功或失败的错误代码或错误消息，使得用户可以确定错误发生时间和错误信息。</p>
 <h2 id="API"><a href="#API" class="headerlink" title="API"></a>API</h2><h3 id="mysql-library-init"><a href="#mysql-library-init" class="headerlink" title="mysql_library_init()"></a>mysql_library_init()</h3><p>函数原型：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int mysql_library_init(int argc, char **argv, char **groups)</span><br></pre></td></tr></table></figure>
-
 <p>该函数用来在调用其他函数之前初始化MySQL客户端库。为了防止内存泄露，应该在使用完成（例如中断连接后）后，调用函数<code>mysql_library_end()</code>函数来清理并且释放库产生的资源。参数argc和argv是与main函数类似的，这是作为服务器的可选参数，为了方便，一般argc是0，此时调用该函数通常是<code>myslq_library_int(0, NULL, NULL)</code>。0表示正确执行并返回，否则表示错误。</p>
 <p>测试代码：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;my_global.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;mysql.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(mysql_library_init(<span class="number">0</span>, <span class="literal">NULL</span>,<span class="literal">NULL</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"could not initialize MySQL client library"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"succeed initialize mysql"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        mysql_library_end();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h3 id="mysql-init"><a href="#mysql-init" class="headerlink" title="mysql_init()"></a>mysql_init()</h3><p>函数原型：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MySQL *mysql_init(MYSQL *mysql);</span><br></pre></td></tr></table></figure>
-
 <p>为<code>mysql_real_connect()</code>分配或初始化一个MYSQL实例。如果参数为NULL，则分配，初始化并返回一个新的MYSQL指针。否则，仅仅只是初始化。当调用<code>mysql_close()</code>时释放。正常返回一个初始化后的MYSQL*头，当没有足够的内存时，会返回NULL。</p>
 <h3 id="mysql-real-connect"><a href="#mysql-real-connect" class="headerlink" title="mysql_real_connect()"></a>mysql_real_connect()</h3><h4 id="函数原型："><a href="#函数原型：" class="headerlink" title="函数原型："></a>函数原型：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MYSQL *mysql_real_connect(MYSQL *mysql, const char *host, const char *user, const char *passwd, const char *db, unsigned int port, const char *unix_socket, unsigned long client_flag)</span><br></pre></td></tr></table></figure>
-
 <p>该函数试图与运行在host的数据库引擎建立连接。在执行需要MYSQL连接句柄的任意函数在执行前必须要保证该函数正确执行完成。</p>
 <h4 id="参数解释"><a href="#参数解释" class="headerlink" title="参数解释"></a>参数解释</h4><p>mysql为一个已经存在的mysql的指针，在调用该函数之前使用<code>mysql_init()</code>获得。同时，可以使用<code>mysql_options()</code>设置很多的连接选项。</p>
 <p>host要么是一个主机名，要么是一个IP地址。客户端连接方式为：</p>
@@ -714,93 +718,97 @@
 <li>待补充</li>
 </ol>
 <h4 id="返回"><a href="#返回" class="headerlink" title="返回"></a>返回</h4><p>如果调用正确返回为一个MYSQL *，否则返回NULL。</p>
-<h4 id="错误-1"><a href="#错误-1" class="headerlink" title="错误"></a>错误</h4><table>
-<thead>
-<tr>
-<th align="center">CR_CONN_HOST_ERROR</th>
-<th align="center">连接服务器失败。</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">CR_CONNECTION_ERROR</td>
-<td align="center">连接到本地服务器失败。</td>
-</tr>
-<tr>
-<td align="center">CR_IPSOCK_ERROR</td>
-<td align="center">创建一个IP套接字失败。</td>
-</tr>
-<tr>
-<td align="center">CR_OUT_OF_MEMORY</td>
-<td align="center">超出内存。</td>
-</tr>
-<tr>
-<td align="center">CR_SOCKET_CREATE_ERROR</td>
-<td align="center">创建unix套接字失败。</td>
-</tr>
-<tr>
-<td align="center">CR_UNKNOW_ERROR</td>
-<td align="center">寻找主机IP地址失败。</td>
-</tr>
-<tr>
-<td align="center">CR_VERSION_ERROR</td>
-<td align="center">服务端库与客户端库不匹配。</td>
-</tr>
-<tr>
-<td align="center">CR_NAMEDPIPEOPEN_ERROR</td>
-<td align="center">创建一个管道失败（windows）</td>
-</tr>
-<tr>
-<td align="center">CR_NAMEDPIPEWAIT_ERROR</td>
-<td align="center">等待管道失败（windows）</td>
-</tr>
-<tr>
-<td align="center">CR_NAMEPIPESETSTATE_ERROR</td>
-<td align="center">获取管道句柄失败（windows）</td>
-</tr>
-<tr>
-<td align="center">CR_SERVER_LOST</td>
-<td align="center">服务器进程终止，或者connect_timeout超过设定时间。</td>
-</tr>
-<tr>
-<td align="center">CR_ALREADY_CONNECTED</td>
-<td align="center">MYSQL句柄已经存在连接。</td>
-</tr>
-</tbody></table>
-<h3 id="mysql-query"><a href="#mysql-query" class="headerlink" title="mysql_query()"></a>mysql_query()</h3><p>函数原型：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int mysql_query(MYSQL *mysql, const char *stmt_str)</span><br></pre></td></tr></table></figure>
-
-<p>执行以空字符作为结尾的stmt_str的SQL指令。通常，该字符串必须包含一条SQL指令，并且不能存在分号和<code>\g</code>。该指令里面的字符串不能包含二进制数据，如果存在，必须使用<code>mysql_real_query()</code>代替，这是因为二进制数据中可能存在<code>\0</code>，这会被认为是终止。如果想要知道是否该指令返回了结果集，可以使用<code>mysql_field_count()</code>函数确定。具体方法看上文的程序流程中的处理结果集部分。</p>
-<p>返回值为0表示成功，否则表示发生错误。</p>
-<p>错误：</p>
+<h4 id="错误-1"><a href="#错误-1" class="headerlink" title="错误"></a>错误</h4><div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">CR_COMMANDS_OUT_OF_SYNC</th>
-<th align="center">目录执行顺序错误。</th>
+<th style="text-align:center">CR_CONN_HOST_ERROR</th>
+<th style="text-align:center">连接服务器失败。</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">CR_SERVER_GONE_ERROR</td>
-<td align="center">MySQL服务器终止。</td>
+<tbody>
+<tr>
+<td style="text-align:center">CR_CONNECTION_ERROR</td>
+<td style="text-align:center">连接到本地服务器失败。</td>
 </tr>
 <tr>
-<td align="center">CR_SERVER_LOST</td>
-<td align="center">在请求时与服务器直接的连接中断。</td>
+<td style="text-align:center">CR_IPSOCK_ERROR</td>
+<td style="text-align:center">创建一个IP套接字失败。</td>
 </tr>
 <tr>
-<td align="center">CR_UNKNOWN_ERROR</td>
-<td align="center">发生了一个未知的错误。</td>
+<td style="text-align:center">CR_OUT_OF_MEMORY</td>
+<td style="text-align:center">超出内存。</td>
 </tr>
-</tbody></table>
+<tr>
+<td style="text-align:center">CR_SOCKET_CREATE_ERROR</td>
+<td style="text-align:center">创建unix套接字失败。</td>
+</tr>
+<tr>
+<td style="text-align:center">CR_UNKNOW_ERROR</td>
+<td style="text-align:center">寻找主机IP地址失败。</td>
+</tr>
+<tr>
+<td style="text-align:center">CR_VERSION_ERROR</td>
+<td style="text-align:center">服务端库与客户端库不匹配。</td>
+</tr>
+<tr>
+<td style="text-align:center">CR_NAMEDPIPEOPEN_ERROR</td>
+<td style="text-align:center">创建一个管道失败（windows）</td>
+</tr>
+<tr>
+<td style="text-align:center">CR_NAMEDPIPEWAIT_ERROR</td>
+<td style="text-align:center">等待管道失败（windows）</td>
+</tr>
+<tr>
+<td style="text-align:center">CR_NAMEPIPESETSTATE_ERROR</td>
+<td style="text-align:center">获取管道句柄失败（windows）</td>
+</tr>
+<tr>
+<td style="text-align:center">CR_SERVER_LOST</td>
+<td style="text-align:center">服务器进程终止，或者connect_timeout超过设定时间。</td>
+</tr>
+<tr>
+<td style="text-align:center">CR_ALREADY_CONNECTED</td>
+<td style="text-align:center">MYSQL句柄已经存在连接。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="mysql-query"><a href="#mysql-query" class="headerlink" title="mysql_query()"></a>mysql_query()</h3><p>函数原型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int mysql_query(MYSQL *mysql, const char *stmt_str)</span><br></pre></td></tr></table></figure>
+<p>执行以空字符作为结尾的stmt_str的SQL指令。通常，该字符串必须包含一条SQL指令，并且不能存在分号和<code>\g</code>。该指令里面的字符串不能包含二进制数据，如果存在，必须使用<code>mysql_real_query()</code>代替，这是因为二进制数据中可能存在<code>\0</code>，这会被认为是终止。如果想要知道是否该指令返回了结果集，可以使用<code>mysql_field_count()</code>函数确定。具体方法看上文的程序流程中的处理结果集部分。</p>
+<p>返回值为0表示成功，否则表示发生错误。</p>
+<p>错误：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">CR_COMMANDS_OUT_OF_SYNC</th>
+<th style="text-align:center">目录执行顺序错误。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">CR_SERVER_GONE_ERROR</td>
+<td style="text-align:center">MySQL服务器终止。</td>
+</tr>
+<tr>
+<td style="text-align:center">CR_SERVER_LOST</td>
+<td style="text-align:center">在请求时与服务器直接的连接中断。</td>
+</tr>
+<tr>
+<td style="text-align:center">CR_UNKNOWN_ERROR</td>
+<td style="text-align:center">发生了一个未知的错误。</td>
+</tr>
+</tbody>
+</table>
+</div>
 <h3 id="mysql-field-count"><a href="#mysql-field-count" class="headerlink" title="mysql_field_count()"></a>mysql_field_count()</h3><p>函数原型：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unsigned int mysql_field_count(MYSQL *mysql)</span><br></pre></td></tr></table></figure>
-
 <p>函数返回最近连接中请求生成结果集的列的数量。通常在<code>mysql_store_result()</code>返回为NULL时调用该函数去确定是否<code>mysql_store_result()</code>应该已经生成了一个非空结果。这使得客户端能够采取使得的行为当不知道请求是否为SELECT（类SELECT）时。函数返回值为一个非负整数，如果是0，表示该指令为非查询指令，否则表示为查询指令。</p>
 <p>例：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">if (mysql_query(&amp;mysql,query_string))</span><br><span class="line">&#123;</span><br><span class="line">    // error</span><br><span class="line">&#125;</span><br><span class="line">else // query succeeded, process any data returned by it</span><br><span class="line">&#123;</span><br><span class="line">    result = mysql_store_result(&amp;mysql);</span><br><span class="line">    if (result) // there are rows</span><br><span class="line">    &#123;</span><br><span class="line">        num_fields = mysql_num_fields(result);</span><br><span class="line">        // retrieve rows, then call mysql_free_result(result)</span><br><span class="line">    &#125;</span><br><span class="line">    else // mysql_store_result() returned nothing; should it have?</span><br><span class="line">    &#123;</span><br><span class="line">        if(mysql_field_count(&amp;mysql) == 0)</span><br><span class="line">        &#123;</span><br><span class="line">            // query does not return data</span><br><span class="line">            // (it was not a SELECT)</span><br><span class="line">            num_rows = mysql_affected_rows(&amp;mysql);</span><br><span class="line">        &#125;</span><br><span class="line">        else // mysql_store_result() should have returned data</span><br><span class="line">        &#123;</span><br><span class="line">            fprintf(stderr, &quot;Error: %s\n&quot;, mysql_error(&amp;mysql));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h3 id="mysql-store-result"><a href="#mysql-store-result" class="headerlink" title="mysql_store_result()"></a>mysql_store_result()</h3><h4 id="函数原型：-1"><a href="#函数原型：-1" class="headerlink" title="函数原型："></a>函数原型：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MYSQL_RES *mysql_store_result(MYSQL *mysql)</span><br></pre></td></tr></table></figure>
-
 <h4 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h4><p>在调用完<code>mysql_query()</code>或<code>mysql_real_query()</code>生成结果集的指令（select，show，describe，explain，table等等）后必须调用<code>mysql_store_result()</code>/<code>mysql_use_result()</code>。同时在处理完结果集后需要调用<code>mysql_free_result()</code>函数。在不产生结果集的语句中，不必调用<code>mysql_store_result()</code>/<code>mysql_use_result()</code>，但在任何情况下都调用<code>mysql_store_result()</code>也不会有任何危害或者产生明显性能下降。能够通过检测是否<code>mysql_store_result()</code>返回的为非0值来判断是否存在一个结果集。</p>
 <p>如果支持多指令，则应该在调用<code>mysql_query()</code>或<code>mysql_real_query()</code>后循环调用<code>mysql_next_result()</code>查看更多结果集。</p>
 <p>如果想要检查一条指令是否应该返回一个结果集，可以使用<code>mysql_field_count()</code>函数进行检查。</p>
@@ -809,32 +817,35 @@
 <p>当没有结果集没有行存在时，返回一个空的结果集（空的结果集不同于空指针）。</p>
 <p>在调用<code>mysql_store_result()</code>后正确获得结果集后，可以调用<code>mysql_num_rows()</code>获得行数。调用<code>mysql_fetch_row()</code>从结果集中获取行。或者<code>mysql_row_seek()</code>/<code>mysql_row_tell()</code>来获取或者/设置当前行的位置。</p>
 <h4 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h4><p>返回一个MYSQL_RES指针。如果不存在结果集或发生错误，返回NULL。检测是否发生错误可以使用<code>mysql_error()</code>判断是否返回非空字符串，<code>mysql_errno()</code>返回值非0，或者<code>mysql_field_count()</code>返回值非零。</p>
-<h4 id="错误-2"><a href="#错误-2" class="headerlink" title="错误"></a>错误</h4><table>
+<h4 id="错误-2"><a href="#错误-2" class="headerlink" title="错误"></a>错误</h4><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">CR_COMMANDS_OUT_OF_SYNC</th>
-<th align="center">命令执行顺序异常</th>
+<th style="text-align:center">CR_COMMANDS_OUT_OF_SYNC</th>
+<th style="text-align:center">命令执行顺序异常</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">CR_OUT_OF_MEMORY</td>
-<td align="center">超出内存</td>
+<tbody>
+<tr>
+<td style="text-align:center">CR_OUT_OF_MEMORY</td>
+<td style="text-align:center">超出内存</td>
 </tr>
 <tr>
-<td align="center">CR_SERVER_GONE_ERROR</td>
-<td align="center">服务器终止</td>
+<td style="text-align:center">CR_SERVER_GONE_ERROR</td>
+<td style="text-align:center">服务器终止</td>
 </tr>
 <tr>
-<td align="center">CR_SERVER_LOST</td>
-<td align="center">与服务器连接中断</td>
+<td style="text-align:center">CR_SERVER_LOST</td>
+<td style="text-align:center">与服务器连接中断</td>
 </tr>
 <tr>
-<td align="center">CR_UNKNOWN_ERROR</td>
-<td align="center">未知异常</td>
+<td style="text-align:center">CR_UNKNOWN_ERROR</td>
+<td style="text-align:center">未知异常</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h3 id="mysql-use-result"><a href="#mysql-use-result" class="headerlink" title="mysql_use_result()"></a>mysql_use_result()</h3><h4 id="函数原型"><a href="#函数原型" class="headerlink" title="函数原型"></a>函数原型</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MYSQL_RES *mysql_use_result(MYSQL *result)</span><br></pre></td></tr></table></figure>
-
 <h4 id="描述-1"><a href="#描述-1" class="headerlink" title="描述"></a>描述</h4><p>在调用完<code>mysql_query()</code>或<code>mysql_real_query()</code>生成结果集的指令（select，show，describe，explain，table等等）后必须调用<code>mysql_store_result()</code>/<code>mysql_use_result()</code>。同时在处理完结果集后需要调用<code>mysql_free_result()</code>函数。</p>
 <p><code>mysql_use_result()</code>初始化了一个结果集的检索而并未真正读取到了结果集。相反的，每一行必须被独立的检索通过调用<code>mysql_fetch_now()</code>，此命令直接从服务器请求行而不是装载临时表或者本地内存数据。</p>
 <p>另一方面，<code>mysql_use_result()</code>如果对客户端的每一行进行大量处理，或者输出发送到用户可以键入的屏幕<code>^S</code>（停止滚动），则不应使用 锁定读取。这会占用服务器并阻止其他线程更新从中获取数据的任何表。</p>
@@ -842,32 +853,35 @@
 <p>不得使用 <code>mysql_data_seek()</code>， <code>mysql_row_seek()</code>， <code>mysql_row_tell()</code>， <code>mysql_num_rows()</code>，或 <code>mysql_affected_rows()</code>从返回的结果 <code>mysql_use_result()</code>，也不得发出其他查询，直至 <code>mysql_use_result()</code>完成。（但是，在获取所有行之后，<code>mysql_num_rows()</code>准确地返回获取的行数。）</p>
 <p>一旦处理完成结果集，必须调用<code>mysql_free_result()</code>.</p>
 <h4 id="返回值-1"><a href="#返回值-1" class="headerlink" title="返回值"></a>返回值</h4><p>返回一个MYSQL_RES类指针。如果出错，返回NULL。</p>
-<h4 id="错误-3"><a href="#错误-3" class="headerlink" title="错误"></a>错误</h4><table>
+<h4 id="错误-3"><a href="#错误-3" class="headerlink" title="错误"></a>错误</h4><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">CR_COMMANDS_OUT_OF_SYNC</th>
-<th align="center">命令执行顺序异常</th>
+<th style="text-align:center">CR_COMMANDS_OUT_OF_SYNC</th>
+<th style="text-align:center">命令执行顺序异常</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">CR_OUT_OF_MEMORY</td>
-<td align="center">超出内存</td>
+<tbody>
+<tr>
+<td style="text-align:center">CR_OUT_OF_MEMORY</td>
+<td style="text-align:center">超出内存</td>
 </tr>
 <tr>
-<td align="center">CR_SERVER_GONE_ERROR</td>
-<td align="center">服务器终止</td>
+<td style="text-align:center">CR_SERVER_GONE_ERROR</td>
+<td style="text-align:center">服务器终止</td>
 </tr>
 <tr>
-<td align="center">CR_SERVER_LOST</td>
-<td align="center">与服务器连接中断</td>
+<td style="text-align:center">CR_SERVER_LOST</td>
+<td style="text-align:center">与服务器连接中断</td>
 </tr>
 <tr>
-<td align="center">CR_UNKNOWN_ERROR</td>
-<td align="center">未知异常</td>
+<td style="text-align:center">CR_UNKNOWN_ERROR</td>
+<td style="text-align:center">未知异常</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h3 id="mysql-fetch-row"><a href="#mysql-fetch-row" class="headerlink" title="mysql_fetch_row()"></a>mysql_fetch_row()</h3><h4 id="函数原型-1"><a href="#函数原型-1" class="headerlink" title="函数原型"></a>函数原型</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MYSQL_ROW mysql_fetch_row(MYSQL_RES *result)</span><br></pre></td></tr></table></figure>
-
 <h4 id="描述-2"><a href="#描述-2" class="headerlink" title="描述"></a>描述</h4><p><code>mysql_fetch_row()</code>索引结果集的下一行。对于<code>mysql_store_result()</code>,如果返回空表示达到结尾。对于<code>mysql_use_result()</code>，如果返回空表示到达结尾或发生错误。</p>
 <p>行内元素数量被确定通过<code>mysql_num_fields(result)</code>。如果row是调用<code>mysql_fetch_row()</code>的返回值，指针内值被获取通过<code>row[0]</code>到<code>row[mysql_num_fields(result)-1]</code>。NULL值通过空指针表示。</p>
 <p>可以通过调用<code>mysql_fetch_lengths()</code>获得行中的字段值的长度。空字段和包含<code>NULL</code>两者的字段长度为0; 您可以通过检查字段值的指针来区分这些。如果指针是 <code>NULL</code>，则字段为<code>NULL</code>; 否则，该字段为空。</p>
@@ -877,41 +891,30 @@
 <p>CR_UNKNOWN_ERROR</p>
 <p>出现未知错误。</p>
 <h4 id="例"><a href="#例" class="headerlink" title="例"></a>例</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">MYSQL_ROW row;</span><br><span class="line">unsigned int num_fields;</span><br><span class="line">unsigned int i;</span><br><span class="line"></span><br><span class="line">num_fields = mysql_num_fields(result);</span><br><span class="line">while ((row = mysql_fetch_row(result)))</span><br><span class="line">&#123;</span><br><span class="line">   unsigned long *lengths;</span><br><span class="line">   lengths = mysql_fetch_lengths(result);</span><br><span class="line">   for(i = 0; i &lt; num_fields; i++)</span><br><span class="line">   &#123;</span><br><span class="line">       printf(&quot;[%.*s] &quot;, (int) lengths[i],</span><br><span class="line">              row[i] ? row[i] : &quot;NULL&quot;);</span><br><span class="line">   &#125;</span><br><span class="line">   printf(&quot;\n&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h3 id="mysql-affected-rows"><a href="#mysql-affected-rows" class="headerlink" title="mysql_affected_rows()"></a>mysql_affected_rows()</h3><h4 id="函数原型：-2"><a href="#函数原型：-2" class="headerlink" title="函数原型："></a>函数原型：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">my_ulonglong mysql_affected_rows(MYSQL *mysql)</span><br></pre></td></tr></table></figure>
-
 <h4 id="描述-3"><a href="#描述-3" class="headerlink" title="描述"></a>描述</h4><p>该函数可以在调用<code>mysql_query()</code>/<code>mysql_real_query()</code>后调用。它返回被更改行的数量（试用于update, delete, insert)。对于select命令，该函数与<code>mysql_num_rows()</code>作用一样。</p>
 <p>由于<code>mysql_affected_rows()</code>返回一个无符号整数，与-1比较可以试用<code>(my_ulonglong)-1</code>(或者<code>(my_ulonglong)~0</code>，等价)</p>
 <h3 id="mysql-close"><a href="#mysql-close" class="headerlink" title="mysql_close()"></a>mysql_close()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void mysql_close(MYSQL *mysql)</span><br></pre></td></tr></table></figure>
-
 <p>关闭已经打开的连接。</p>
 <h3 id="mysql-data-seek"><a href="#mysql-data-seek" class="headerlink" title="mysql_data_seek()"></a>mysql_data_seek()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void mysql_data_seek(MYSQL_RES *result, my_ulonglong offset)</span><br></pre></td></tr></table></figure>
-
 <p>将游标定位到结果集的指定行。其中offset指定行的索引。该值处于0到<code>mysql_num_rows(result)-1</code>之间。该函数只能在<code>mysql_store_result()</code>生成的结果集中使用。</p>
 <h3 id="mysql-errno"><a href="#mysql-errno" class="headerlink" title="mysql_errno()"></a>mysql_errno()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unsigned int mysql_errno(MYSQL *mysql)</span><br></pre></td></tr></table></figure>
-
 <p>该函数返回最近因此API调用产生的错误代码。非零意味着存在错误，否则表示没有错误。客户端错误信息被列出在MySQL errmsg.h中，服务器错误信息被列出在mysql_error.h。</p>
 <p>一条重要规则是：所以请求服务器的指令如果成功会重置<code>mysql_errno()</code>。</p>
 <h3 id="mysql-error"><a href="#mysql-error" class="headerlink" title="mysql_error()"></a>mysql_error()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const char *mysql_error(MYSQL *mysql)</span><br></pre></td></tr></table></figure>
-
 <p>该函数返回最近一次调用API造成的错误信息，如果没有发生错误，则会返回上一次的错误或者空字符串。</p>
 <p>一条重要规则是：所以请求服务器的指令如果成功会重置<code>mysql_error()</code>。</p>
 <h3 id="mysql-fetch-field"><a href="#mysql-fetch-field" class="headerlink" title="mysql_fetch_field()"></a>mysql_fetch_field()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MYSQL_FIELD *mysql_fetch_field(MYSQL_RES *result)</span><br></pre></td></tr></table></figure>
-
 <p>该函数返回一个MYSQL_FIELD结果的指针。重复调用该函数来获取所以列字段的信息。当返回空是表示没有了。</p>
 <h3 id="mysql-fetch-field-direct"><a href="#mysql-fetch-field-direct" class="headerlink" title="mysql_fetch_field_direct()"></a>mysql_fetch_field_direct()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MYSQL_FIELD *mysql_fetch_field_direct(MYSQL_RES *result, unsigned int fieldnr)</span><br></pre></td></tr></table></figure>
-
 <p>该函数提供一个索引来获取对于字段信息。fieldnr处于0到<code>mysql_num_fields(result)-1</code>之间。</p>
 <h3 id="mysql-fetch-fields"><a href="#mysql-fetch-fields" class="headerlink" title="mysql_fetch_fields()"></a>mysql_fetch_fields()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MYSQL_FIELD *mysql_fetch_fields(MYSQL_RES *result)</span><br></pre></td></tr></table></figure>
-
 <p>返回一个字段信息结构的矩阵,元素是MYSQL_FIELD，不是指针。</p>
 <h3 id="mysql-fetch-lengths"><a href="#mysql-fetch-lengths" class="headerlink" title="mysql_fetch_lengths()"></a>mysql_fetch_lengths()</h3><p>函数原型：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unsigned long *mysql_fetch_lengths(MYSQL_RES *result)</span><br></pre></td></tr></table></figure>
-
 <p>函数返回在当前结果集当前游标行中，各个元素对应的长度。当我们想要拷贝对应内容时，该函数是是否有用的，这可以使我们避免调用strlen()函数。并且，如果结果集包含二进制数据，我们必须使用该函数来确定数据的大小，这是由于如果字符串中包含空字符，strlen()将返回错误的结果。对于空的字段或者字段值为NULL，长度为0.</p>
 <p>返回值为一个非负长整型数组，代表每个字段长度（不包含结尾空字符）。如果出错返回NULL。</p>
 <h2 id="例-1"><a href="#例-1" class="headerlink" title="例"></a>例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;iostream&gt;</span><br><span class="line">#include&lt;mysql.h&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    mysql_library_init(0, NULL, NULL);</span><br><span class="line">    MYSQL *db = mysql_init(NULL);</span><br><span class="line">    if(mysql_real_connect(db,&quot;localhost&quot;,&quot;root&quot;,&quot;****&quot;,&quot;testdb&quot;,0,NULL,0))</span><br><span class="line">    &#123;</span><br><span class="line">        int is_succeed = mysql_query(db,&quot;select * from students&quot;);</span><br><span class="line">        MYSQL_RES *result = mysql_store_result(db);</span><br><span class="line">        if(result)</span><br><span class="line">        &#123;</span><br><span class="line"></span><br><span class="line">            int num = mysql_num_rows(result);</span><br><span class="line">            cout&lt;&lt;&quot;testdb has num:&quot;&lt;&lt;num&lt;&lt;endl;</span><br><span class="line">            MYSQL_ROW row = mysql_fetch_row(result);</span><br><span class="line">            int columns = mysql_field_count(db);</span><br><span class="line">            MYSQL_FIELD *columns_info = mysql_fetch_fields(result);</span><br><span class="line">            for(int i=0;i&lt;columns;i++)</span><br><span class="line">            &#123;</span><br><span class="line">                cout&lt;&lt;i+1&lt;&lt;&quot;th&apos;s name is:&quot;&lt;&lt;columns_info[i].name&lt;&lt;endl;</span><br><span class="line">            &#125;</span><br><span class="line">            while(row)</span><br><span class="line">            &#123;</span><br><span class="line">                unsigned long *column_size = mysql_fetch_lengths(result);</span><br><span class="line">                for(int i=0;i&lt;columns;i++)</span><br><span class="line">                &#123;</span><br><span class="line">                    cout&lt;&lt;column_size[i]&lt;&lt;&quot;  &quot;&lt;&lt;(column_size[i] ? row[i]:&quot;NULL&quot;);</span><br><span class="line">                    cout&lt;&lt;&quot;  &quot;;</span><br><span class="line">                &#125;</span><br><span class="line">                cout&lt;&lt;endl;</span><br><span class="line">                row = mysql_fetch_row(result);</span><br><span class="line">            &#125;</span><br><span class="line">            if(mysql_errno(db))</span><br><span class="line">                cout&lt;&lt;mysql_error(db)&lt;&lt;endl;</span><br><span class="line">            else</span><br><span class="line">                cout&lt;&lt;&quot;everything in right&quot;&lt;&lt;endl;</span><br><span class="line">        &#125;</span><br><span class="line">        mysql_free_result(result);</span><br><span class="line">        mysql_query(db,&quot;update students set score=0&quot;);</span><br><span class="line">        int affected_num =  mysql_affected_rows(db);</span><br><span class="line">        cout&lt;&lt;&quot;affected row is:&quot;&lt;&lt;affected_num&lt;&lt;endl;</span><br><span class="line">        mysql_library_end();</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 
       
     </div>
@@ -1447,6 +1450,8 @@
   
 
   
+  
+
 
   
 
