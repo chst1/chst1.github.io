@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="chst&#39;s Blog">
 <meta property="og:description" content="C++作为一门高级语言, 往往大家对其又爱又恨. 但对于真正想学习编程的人来说, 第一门语言我首推C++, 它真的太严格了, 远不及其他语言这么灵活确实大大增加了难道, 但这也对于初学者来说培养编程思维十分重要. 这里是一个对C++的复习总结, 参照C++ prime学习过程而写. 设计基础语法, 类, STL, 编译等等. 其中会又作者本人对难点的深刻思考, 帮助更加深刻的理解与使用. 其中指针">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2021-09-30T06:49:16.549Z">
+<meta property="og:updated_time" content="2021-09-30T14:51:28.187Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="c++复习">
 <meta name="twitter:description" content="C++作为一门高级语言, 往往大家对其又爱又恨. 但对于真正想学习编程的人来说, 第一门语言我首推C++, 它真的太严格了, 远不及其他语言这么灵活确实大大增加了难道, 但这也对于初学者来说培养编程思维十分重要. 这里是一个对C++的复习总结, 参照C++ prime学习过程而写. 设计基础语法, 类, STL, 编译等等. 其中会又作者本人对难点的深刻思考, 帮助更加深刻的理解与使用. 其中指针">
@@ -488,9 +488,10 @@
 <li><p>结构体变量的首地址能够被其最宽基本类型成员的大小所整除。</p>
 </li>
 <li><p>结构体的每个成员相对于结构体首地址的偏移量（offset）都是成员大小的整数倍，如有需要，编译器会在成员之间加上填充字节（internal adding）。</p>
-<pre><code> 3. 结构体的总大小为结构体最宽基本类型成员大小的整数倍，如有需要，编译器会在最末一个成员后加上填充字节（trailing padding）。
-         4. 注意：空结构体（不含数据成员）的sizeof值为1。试想一个“不占空间“的变量如何被取地址、两个不同的“空结构体”变量又如何得以区分呢，于是，“空结构体”变量也得被存储，这样编译器也就只能为其分配一个字节的空间用于占位了。
-</code></pre></li>
+</li>
+<li><p>结构体的总大小为结构体最宽基本类型成员大小的整数倍，如有需要，编译器会在最末一个成员后加上填充字节（trailing padding）。</p>
+<p> 注意：空结构体（不含数据成员）的sizeof值为1。试想一个“不占空间“的变量如何被取地址、两个不同的“空结构体”变量又如何得以区分呢，于是，“空结构体”变量也得被存储，这样编译器也就只能为其分配一个字节的空间用于占位了。</p>
+</li>
 </ol>
 <p>对于存在<code>virtual</code>的结构体，情况较为复杂，将来学习后再说。</p>
 <h3 id="联合体sizeof"><a href="#联合体sizeof" class="headerlink" title="联合体sizeof"></a>联合体sizeof</h3><p>​        结构体在内存组织上是顺序式的，联合体则是重叠式，各成员共享一段内存；所以整个联合体的sizeof也就是每个成员sizeof的最大值。</p>
@@ -725,14 +726,54 @@
 <h3 id="覆盖重载的函数"><a href="#覆盖重载的函数" class="headerlink" title="覆盖重载的函数"></a>覆盖重载的函数</h3><p>当基类中存在成员函数, 我们希望也被派生类使用, 但我们又希望定义一个或多个对其重载, 此时, 由于名字查找优先级大于参数匹配, 我们一旦定义同名函数, 基类中的就会被隐藏.  所以, 一个策略是将基类中的函数在派生类中在写一遍, 再添加新的重载, 但是这显然比较麻烦, 还有一个方式则是使用using申明语句. 申明我们希望使用基类中的成员函数, 而后我们只需定义派生类中特有的重载即可. 而且此时如果存在派生类的函数参数与基类的一致, 基类的将会被隐藏, 依然使用派生类中自定义的函数.</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">get_m</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">get_m</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">get_m</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">int</span>)</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> :</span> A</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">using</span> A::get_m; <span class="comment">//申明B要使用A内的get_m函数</span></span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">get_m</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">int</span>)</span></span>; <span class="comment">//自定义了一个get_m重载函数, 此时A中get_m(int, int)将被隐藏.</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="访问控制与继承"><a href="#访问控制与继承" class="headerlink" title="访问控制与继承"></a>访问控制与继承</h3><p>对于继承来说, 存在三种方式, 即public, protected, 以及private. 这只是说明其继承中将基类成员继承为何种成员. 某个类对其继承而来的成员访问权限受两个方面的影响, 一个是在基类中的访问说明符, 一个是派生列表中的访问说明符.具体如下:</p>
-<p>基类中访问说明符          派生列表说明符          派生类中访问权限</p>
-<p>public                                   public                           public</p>
-<p>public                                   protected                      protected</p>
-<p>public                                   private                          private</p>
-<p>protected                              public                           protected</p>
-<p>protected                              protected                     protected</p>
-<p>protected                              private                         private</p>
-<p>private                                  —                                  无访问权限</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>基类中访问说明符</th>
+<th>派生列表说明符</th>
+<th>派生类中访问权限</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>public</td>
+<td>public</td>
+<td>public</td>
+</tr>
+<tr>
+<td>public</td>
+<td>protected</td>
+<td>protected</td>
+</tr>
+<tr>
+<td>public</td>
+<td>private</td>
+<td>private</td>
+</tr>
+<tr>
+<td>protected</td>
+<td>public</td>
+<td>protected</td>
+</tr>
+<tr>
+<td>protected</td>
+<td>protected</td>
+<td>protected</td>
+</tr>
+<tr>
+<td>protected</td>
+<td>private</td>
+<td>private</td>
+</tr>
+<tr>
+<td>private</td>
+<td>—</td>
+<td>无访问权限</td>
+</tr>
+</tbody>
+</table>
+</div>
 <p>解释: 对于基类中是private的成员, 派生类访问权限完全取决于派生列表中希望其拥有的访问权限. 对于基类中protected, 基类本身就是希望其只能在基类与派生类对其进行访问, 因此至少其访问权限是protected, 如果继承列表使用private,则其访问权限会被加强为private. 对于基类中的private成员, 基类本身就不希望派生类能够访问, 因此, 无论如何其都没有对private的访问权限, 但派生类又确实存在该成员. 因此, 如果希望访问private的话只能通过基类中定义的接口函数.</p>
 <p>对于派生类访问基类的private数据成员的解释:</p>
 <p>当派生类想要调用基类的private数据成员时, 首先会在自己的作用域中查找, 当然是找不到的, 而后会在基类中查找, 但是, 在基类中查找时, 其并没有查找private的权限, 因此也是找不到的,此时就会报错. 而当使用基类对于的接口函数时则是可以的. 同样先在派生类中查找, 找不到回去基类中查找, 找到后, 基类的接口还是有权限访问private数据成员, 此时就可以访问到派生类无法访问到的基类中private成员.</p>

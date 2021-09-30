@@ -198,7 +198,7 @@
 <meta property="og:image" content="https://s2.ax1x.com/2020/02/11/1TylFK.png">
 <meta property="og:image" content="https://s2.ax1x.com/2020/02/11/1Tccaq.png">
 <meta property="og:image" content="https://s2.ax1x.com/2020/02/11/1Tccaq.png">
-<meta property="og:updated_time" content="2021-09-30T06:51:18.553Z">
+<meta property="og:updated_time" content="2021-09-30T15:21:25.407Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="计算机网络-自顶向下方法">
 <meta name="twitter:description" content="终于秋招上岸，怎奈何自己太菜，在去实习前被布置了一堆任务，其中就有我面试最怕的计算机网络。恰巧UNIX高级编程看到了套接字，发现没有计算机网络的知识直接看好像看不太明白，于是就把那个先放一放，等看完这本再回去接着看UNIX高级编程。当然，目前这个也在不断更新中。">
@@ -1665,7 +1665,7 @@ LastByteSent - LastByteAcked <= min\{cwnd, rwnd\}</script><p>为了只关注与�
 <h3 id="距离向量路由选路算法"><a href="#距离向量路由选路算法" class="headerlink" title="距离向量路由选路算法"></a>距离向量路由选路算法</h3><p>距离向量（Distance-Vector，DV）算法是一种迭代的、异步的和分布式的算法。说其是分布式的，因为每个节点都要从一个都要从一个或多个直接相连邻居接收某些信息，执行计算，然后将其计算结果分发给邻居。说其是迭代的，因为此过程一直要持续到邻居之间无更多信息要交换为止。说是异步的，因为不要求所有节点相互之间步伐一致地操作。</p>
 <p>令$ d_x(y)$是从节点x到节点y的最低开销路径的开销。则该最低开销与著名的Bellman-Ford方程相关，即：</p>
 <script type="math/tex; mode=display">
-d_x(y) = min_v |c(x,v)+d_v(y) |</script><p>方程中的$min_v$是对于x的所有邻居的。</p>
+d_x(y) = min_v | c(x,v)+d_v(y) |</script><p>方程中的$min_v$是对于x的所有邻居的。</p>
 <p>DV算法基本思想为：每个节点x以$D_x(y)$开始，对N中所有节点y，估计从x到y的最低开销路径。令$D_x = [D_x(y):y\in N]$是节点x的距离向量，该向量是从x到在N中所有其他节点y的开销估计向量。使用DV算法，每个节点x维护下列路由选择信息：</p>
 <ol>
 <li>对于每个邻居v，从x到到直接相连邻居v的开销为c(x,v)。</li>
