@@ -129,7 +129,7 @@
 <meta property="og:image" content="https://s2.ax1x.com/2020/02/18/3FcYtA.png">
 <meta property="og:image" content="https://s2.ax1x.com/2020/02/21/3nHyJH.png">
 <meta property="og:image" content="https://s2.ax1x.com/2020/02/25/3YHjQP.png">
-<meta property="og:updated_time" content="2021-09-30T15:45:59.905Z">
+<meta property="og:updated_time" content="2021-09-30T16:03:49.286Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="unix高级编程">
 <meta name="twitter:description" content="UNIX下高级编程，目前正在学习中，不断更新。">
@@ -675,11 +675,13 @@ fcntl返回值与命令有关, 如果出错则都返回-1, 否则返回某个其
 
 timespec结构类型按照秒和纳秒定义了时间，至少包含以下两个字段：
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">time_t tv_sec;</span><br><span class="line">long tv_nsec;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">time_t</span> tv_sec;</span><br><span class="line"><span class="keyword">long</span> tv_nsec;</span><br></pre></td></tr></table></figure>
 
-stat中使用到的类型大都属于基本统计类型。使用前`include<sys types.h>`。
+stat中使用到的类型大都属于基本统计类型。使用前$include<sys types.h>$。
 
 ## 文件类型
+
+
 
 
 
