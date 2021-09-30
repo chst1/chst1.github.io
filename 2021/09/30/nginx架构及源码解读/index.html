@@ -104,7 +104,7 @@
 <meta property="og:image" content="https://z3.ax1x.com/2021/08/01/WzSSNq.png">
 <meta property="og:image" content="http://yoursite.com/Users/wangyinkui/Library/Application%20Support/typora-user-images/image-20210801153020166.png">
 <meta property="og:image" content="https://z3.ax1x.com/2021/08/03/fFttns.png">
-<meta property="og:updated_time" content="2021-09-30T08:56:26.418Z">
+<meta property="og:updated_time" content="2021-09-30T15:54:17.121Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="nginx架构及源码阅读">
 <meta name="twitter:description" content="Nginx源码解读，正在阅读中。">
@@ -1047,7 +1047,7 @@
 <h3 id="设置配置项解析方式（ngx-commend-S）"><a href="#设置配置项解析方式（ngx-commend-S）" class="headerlink" title="设置配置项解析方式（ngx_commend_S）"></a>设置配置项解析方式（ngx_commend_S）</h3><p>下面介绍读取配置时是如何使用ngx_commend_s的：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ngx_command_s</span> &#123;</span></span><br><span class="line">    <span class="keyword">ngx_str_t</span>             name;</span><br><span class="line">    <span class="keyword">ngx_uint_t</span>            type;</span><br><span class="line">    <span class="keyword">char</span>               *(*<span class="built_in">set</span>)(<span class="keyword">ngx_conf_t</span> *cf, <span class="keyword">ngx_command_t</span> *cmd, <span class="keyword">void</span> *conf);</span><br><span class="line">    <span class="keyword">ngx_uint_t</span>            conf;</span><br><span class="line">    <span class="keyword">ngx_uint_t</span>            offset;</span><br><span class="line">    <span class="keyword">void</span>                 *post;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <h4 id="ngx-str-t-name"><a href="#ngx-str-t-name" class="headerlink" title="ngx_str_t  name"></a>ngx_str_t  name</h4><p>配置名称，和解析出的名称做比较，确定是否是该模块关注的配置。</p>
-<h4 id="ngx-uint-t-type"><a href="#ngx-uint-t-type" class="headerlink" title="ngx_uint_t type"></a>ngx_uint_t type</h4><p>type决定配置项可以在哪些块出现（如http、server、location、if、upstream），以及可以携带参数类型和个数。下表列出了可以的取值。可同时取多个值，通过|连接。</p>
+<h4 id="ngx-uint-t-type"><a href="#ngx-uint-t-type" class="headerlink" title="ngx_uint_t type"></a>ngx_uint_t type</h4><p>type决定配置项可以在哪些块出现（如http、server、location、if、upstream），以及可以携带参数类型和个数。下表列出了可以的取值。可同时取多个值，通过$ \vert $连接。</p>
 <table>
   <tr>
     <td>type类型</td>
