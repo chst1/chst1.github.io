@@ -129,7 +129,7 @@
 <meta property="og:image" content="https://s2.ax1x.com/2020/02/18/3FcYtA.png">
 <meta property="og:image" content="https://s2.ax1x.com/2020/02/21/3nHyJH.png">
 <meta property="og:image" content="https://s2.ax1x.com/2020/02/25/3YHjQP.png">
-<meta property="og:updated_time" content="2021-09-30T06:50:15.765Z">
+<meta property="og:updated_time" content="2021-09-30T15:45:59.905Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="unix高级编程">
 <meta name="twitter:description" content="UNIX下高级编程，目前正在学习中，不断更新。">
@@ -542,7 +542,7 @@
 <p><img src="https://s2.ax1x.com/2019/06/24/ZA0K9s.png" alt="结构"></p>
 <p>如果两个独立进程各自打开同一文件, 则有下图关系:</p>
 <p><img src="https://s2.ax1x.com/2019/06/24/ZA0M3n.png" alt="打开同一文件"></p>
-<font color="red">可能有多个文件描述符项指向同一文件表项.</font>这会在dup或fork函数后产生. 注意: 文件描述符标志与文件状态标志在作用范围上的区别: 前者只用于一个进程的一个描述符, 而后者则应用与指向该文件表项的任意进程中的所有描述符.(有点类型指针和底层存储的区别).
+<font color="red">可能有多个文件描述符项指向同一文件表项.</font>这会在dup或fork函数后产生. 注意: 文件描述符标志与文件状态标志在作用范围上的区别: 前者只用于一个进程的一个描述符, 而后者则应用与指向该文件表项的任意进程中的所有描述符.(有点类型指针和底层存储的区别)
 
 ## 原子操作
 
@@ -680,6 +680,8 @@ timespec结构类型按照秒和纳秒定义了时间，至少包含以下两个
 stat中使用到的类型大都属于基本统计类型。使用前`include<sys types.h>`。
 
 ## 文件类型
+
+
 
 |    文件类型    |                             说明                             |
 | :------------: | :----------------------------------------------------------: |
