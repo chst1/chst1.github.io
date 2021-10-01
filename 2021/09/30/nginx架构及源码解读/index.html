@@ -104,7 +104,7 @@
 <meta property="og:image" content="https://z3.ax1x.com/2021/08/01/WzSSNq.png">
 <meta property="og:image" content="http://yoursite.com/Users/wangyinkui/Library/Application%20Support/typora-user-images/image-20210801153020166.png">
 <meta property="og:image" content="https://z3.ax1x.com/2021/08/03/fFttns.png">
-<meta property="og:updated_time" content="2021-10-01T13:12:24.933Z">
+<meta property="og:updated_time" content="2021-10-01T13:14:15.806Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="nginx架构及源码阅读">
 <meta name="twitter:description" content="Nginx源码解读，正在阅读中。">
@@ -1197,7 +1197,7 @@
 </table>
 
 <p> 如果HTTP模块中定义的配置项在nginx.conf配置文件中实际出现的位置和参数格式与type意义不符，那么Nginx启动报错。</p>
-<p>每个进程都有一个唯一的ngx_cycle_t核心结构体，其成员conf_ctx维护所有模块配置结构体。其类型是void<strong><strong>。conf_ctx意义为首先指向一个成员皆为指针的数组，其中每个成员指针又指向另外一个成员皆为指针的数组，第二个子数组中的成员指针才会指向个模块生成的配置结构体。这是为了事件模块、http模块、mail模块而设计的。而NGX_CORE_MODULE类型的核心模块解析配置项时，配置项一定是全局的，不会从属任何{}配置块，其不需要这种双数组设计。解析标识为NGX_DIRECT_CONF类型的配置项时，会将void</strong></strong>转换为void**。</p>
+<p>每个进程都有一个唯一的ngx_cycle_t核心结构体，其成员conf_ctx维护所有模块配置结构决定配置项可以在哪些块出现决定配置项可以在哪些块出现体。其类型是void<strong><strong>。conf_ctx意义为首先指向一个成员皆为指针的数组，其中每个成员指针又指向另外一个成员皆为指针的数组，第二个子数组中的成员指针才会指向个模块生成的配置结构体。这是为了事件模块、http模块、mail模块而设计的。而NGX_CORE_MODULE类型的核心模块解析配置项时，配置项一定是全局的，不会从属任何{}配置块，其不需要这种双数组设计。解析标识为NGX_DIRECT_CONF类型的配置项时，会将void</strong></strong>转换为void**。</p>
 <h4 id="char-set-ngx-conf-t-cf-ngx-command-t-cmd-void-conf"><a href="#char-set-ngx-conf-t-cf-ngx-command-t-cmd-void-conf" class="headerlink" title="char(set)(ngx_conf_t cf, ngx_command_t cmd, void *conf)"></a>char(set)(ngx_conf_t <em>cf, ngx_command_t</em> cmd, void *conf)</h4><p><code>set</code>回调方法，使用位置在ngx_conf_handler中已展现。对于set方法，我们即可以实现一个回调方法来处理，也可以使用Nginx预设的14个解析配置项方法。预设方法如下：</p>
 <div class="table-container">
 <table>
