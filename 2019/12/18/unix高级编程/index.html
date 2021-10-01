@@ -89,6 +89,12 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://s2.ax1x.com/2019/06/24/ZA0K9s.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/06/24/ZA0M3n.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/06/24/ZAOi2d.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/18/3ichM8.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/18/3ig3SP.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/09/09/ntqGge.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/09/09/ntqJjH.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/09/09/ntLpxe.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/09/22/u9LAM9.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/09/22/u9LErR.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/09/22/u9LeVx.png">
@@ -129,7 +135,7 @@
 <meta property="og:image" content="https://s2.ax1x.com/2020/02/18/3FcYtA.png">
 <meta property="og:image" content="https://s2.ax1x.com/2020/02/21/3nHyJH.png">
 <meta property="og:image" content="https://s2.ax1x.com/2020/02/25/3YHjQP.png">
-<meta property="og:updated_time" content="2021-10-01T13:34:00.540Z">
+<meta property="og:updated_time" content="2021-10-01T13:35:38.081Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="unix高级编程">
 <meta name="twitter:description" content="UNIX下高级编程，目前正在学习中，不断更新。">
@@ -542,52 +548,28 @@
 <p><img src="https://s2.ax1x.com/2019/06/24/ZA0K9s.png" alt="结构"></p>
 <p>如果两个独立进程各自打开同一文件, 则有下图关系:</p>
 <p><img src="https://s2.ax1x.com/2019/06/24/ZA0M3n.png" alt="打开同一文件"></p>
-<font color="red">可能有多个文件描述符项指向同一文件表项.</font>这会在dup或fork函数后产生. 注意: 文件描述符标志与文件状态标志在作用范围上的区别: 前者只用于一个进程的一个描述符, 而后者则应用与指向该文件表项的任意进程中的所有描述符.(有点类型指针和底层存储的区别)
-
-
-
-## 原子操作
-
-原子操作指的是由多步组成的一个操作. 如果该操作原子的执行, 则要么执行完所有的步骤, 要么一步也不执行, 不可能只执行所以步骤中的一个子集. 任何要求多于一个函数调用的操作都不是原子操作, 因为在两个函数调用之间, 内核有可能会临时挂起进程.
-
-## 函数dup和dup2
-
-dup和dup2都用来赋值一个现有的文件描述符. 原型:
-
+<p>可能有多个文件描述符项指向同一文件表项.这会在dup或fork函数后产生. 注意: 文件描述符标志与文件状态标志在作用范围上的区别: 前者只用于一个进程的一个描述符, 而后者则应用与指向该文件表项的任意进程中的所有描述符.(有点类型指针和底层存储的区别)</p>
+<h2 id="原子操作"><a href="#原子操作" class="headerlink" title="原子操作"></a>原子操作</h2><p>原子操作指的是由多步组成的一个操作. 如果该操作原子的执行, 则要么执行完所有的步骤, 要么一步也不执行, 不可能只执行所以步骤中的一个子集. 任何要求多于一个函数调用的操作都不是原子操作, 因为在两个函数调用之间, 内核有可能会临时挂起进程.</p>
+<h2 id="函数dup和dup2"><a href="#函数dup和dup2" class="headerlink" title="函数dup和dup2"></a>函数dup和dup2</h2><p>dup和dup2都用来赋值一个现有的文件描述符. 原型:</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dup</span><span class="params">(<span class="keyword">int</span> fd)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dup2</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">int</span> fd2)</span></span>;</span><br><span class="line"><span class="comment">//函数返回值, 若成功返回新的文件描述符, 否则返回-1</span></span><br></pre></td></tr></table></figure>
-
-由dup返回的新文件描述符一定是当前可用文件描述符中最小数值. dup2可以通过fd2指定新的文件描述符的值. 如果fd2已经打开则先关闭. 如果fd2与fd一致,则不关闭直接返回fd2.  执行dup函数后可能的结果如图:
-
-![dup](https://s2.ax1x.com/2019/06/24/ZAOi2d.png)
-
-## 函数sync, fsync, fdatasync
-
-传统的UNIX系统实现内核中设有缓冲区高速缓存或页高速缓存. 向文件写入数据时, 内核首先将数据复制到缓冲区, 然后排入队列. 当内核需要重用缓冲区来存放其他磁盘块数据时, 它会把延迟写数据块写入磁盘, 为了保证磁盘上实际文件与缓冲区内容一致, 可以使用sync, fsync, fdatasync函数. 原型:
-
+<p>由dup返回的新文件描述符一定是当前可用文件描述符中最小数值. dup2可以通过fd2指定新的文件描述符的值. 如果fd2已经打开则先关闭. 如果fd2与fd一致,则不关闭直接返回fd2.  执行dup函数后可能的结果如图:</p>
+<p><img src="https://s2.ax1x.com/2019/06/24/ZAOi2d.png" alt="dup"></p>
+<h2 id="函数sync-fsync-fdatasync"><a href="#函数sync-fsync-fdatasync" class="headerlink" title="函数sync, fsync, fdatasync"></a>函数sync, fsync, fdatasync</h2><p>传统的UNIX系统实现内核中设有缓冲区高速缓存或页高速缓存. 向文件写入数据时, 内核首先将数据复制到缓冲区, 然后排入队列. 当内核需要重用缓冲区来存放其他磁盘块数据时, 它会把延迟写数据块写入磁盘, 为了保证磁盘上实际文件与缓冲区内容一致, 可以使用sync, fsync, fdatasync函数. 原型:</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fsync</span><span class="params">(<span class="keyword">int</span> fd)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fdatasync</span><span class="params">(<span class="keyword">int</span> fd)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sync</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br></pre></td></tr></table></figure>
-
-sync将所有修改过的缓冲区排入写队列, 然后返回, 并不等待实际写磁盘结束.
-
-fsync函数只对指定文件描述符起作用, 并且等待写磁盘结束才返回.
-
-fdatasync与fsync类似, 不过只影响文件的数据部分, 而fsync除了数据部分还会同步更新文件属性.
-
-## 函数fcntl
-
-fcntl函数可以改变已经打开文件的属性. 原型:
-
+<p>sync将所有修改过的缓冲区排入写队列, 然后返回, 并不等待实际写磁盘结束.</p>
+<p>fsync函数只对指定文件描述符起作用, 并且等待写磁盘结束才返回.</p>
+<p>fdatasync与fsync类似, 不过只影响文件的数据部分, 而fsync除了数据部分还会同步更新文件属性.</p>
+<h2 id="函数fcntl"><a href="#函数fcntl" class="headerlink" title="函数fcntl"></a>函数fcntl</h2><p>fcntl函数可以改变已经打开文件的属性. 原型:</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fcntl</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">int</span> cmd, ...<span class="comment">/* int arg */</span>)</span></span>;</span><br></pre></td></tr></table></figure>
-
-fcntl函数有以下5中功能:
-
-1. 赋值一个已有的文件描述符(cmd = F_DUPFD或F_DUPFD_CLOEXEC).
-2. 获取/设置文件描述符标志(cmd = F_GETFD或F_SETFD).
-3. 获取/设置文件状态标志(cmd = F_GETFL或F_SETFL).
-4. 获取/设置异步I/O所有权(cmd = F_GETOWN或F_SETOWN).
-5. 获取/设置记录锁(cmd = F_GETLK, F_SETLK或F_SETLKW).
-
-下面对上述参数进行解释:
-
+<p>fcntl函数有以下5中功能:</p>
+<ol>
+<li>赋值一个已有的文件描述符(cmd = F_DUPFD或F_DUPFD_CLOEXEC).</li>
+<li>获取/设置文件描述符标志(cmd = F_GETFD或F_SETFD).</li>
+<li>获取/设置文件状态标志(cmd = F_GETFL或F_SETFL).</li>
+<li>获取/设置异步I/O所有权(cmd = F_GETOWN或F_SETOWN).</li>
+<li>获取/设置记录锁(cmd = F_GETLK, F_SETLK或F_SETLKW).</li>
+</ol>
+<p>下面对上述参数进行解释:</p>
 <table>
     <tr>
         <td>F_DUPFD</td>
@@ -623,312 +605,350 @@ fcntl函数有以下5中功能:
     </tr>
 </table>
 
-fcntl返回值与命令有关, 如果出错则都返回-1, 否则返回某个其它值.
-
-下表列出了文件状态标志(与open时描述的一样)：
-
-![fd](https://s2.ax1x.com/2020/02/18/3ichM8.png)
-
-例: 查看文件状态标志
-
+<p>fcntl返回值与命令有关, 如果出错则都返回-1, 否则返回某个其它值.</p>
+<p>下表列出了文件状态标志(与open时描述的一样)：</p>
+<p><img src="https://s2.ax1x.com/2020/02/18/3ichM8.png" alt="fd"></p>
+<p>例: 查看文件状态标志</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"apue.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> val;</span><br><span class="line">    <span class="keyword">if</span>(argc!=<span class="number">2</span>)</span><br><span class="line">        err_quit(<span class="string">"usage: a.out&lt;descriptor#&gt;"</span>);</span><br><span class="line">    <span class="keyword">if</span>((val = fcntl(atoi(argv[<span class="number">1</span>]), F_GETFL, <span class="number">0</span>))&lt;<span class="number">0</span>)</span><br><span class="line">        err_sys(<span class="string">"fcntl error for fd %d"</span>, atoi(argv[<span class="number">1</span>]));</span><br><span class="line">    <span class="keyword">switch</span>(val &amp; O_ACCMODE)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> O_RDONLY:</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"read only"</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> O_WRONLY:</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"write only"</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> O_RDWR:</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"read write"</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            err_dump(<span class="string">"unknow access mode"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(val &amp; O_APPEND)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">", append"</span>);</span><br><span class="line">    <span class="keyword">if</span>(val &amp; O_NONBLOCK)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">", nonblock"</span>);</span><br><span class="line">    <span class="keyword">if</span>(val &amp; O_SYNC)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">", sunchronous write"</span>);</span><br><span class="line"><span class="meta"># <span class="meta-keyword">if</span> !defined(_POSIX_C_SOURCE) &amp;&amp; defined(O_FSYNC) &amp;&amp; (O_FSYNC != O_SYNC)</span></span><br><span class="line">    <span class="keyword">if</span>(val &amp; O_FSYNC)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">", synchronous write"</span>);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    <span class="built_in">putchar</span>(<span class="string">'\n'</span>);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//output:</span></span><br><span class="line">chst@wyk-GL63:~/study_file/unix编程$ ./getfl.o <span class="number">0</span> &lt; /dev/tty</span><br><span class="line">read only</span><br><span class="line">chst@wyk-GL63:~/study_file/unix编程$ ./getfl.o <span class="number">1</span> &gt; temp.foo</span><br><span class="line">chst@wyk-GL63:~/study_file/unix编程$ cat temp.foo</span><br><span class="line">write only</span><br><span class="line">chst@wyk-GL63:~/study_file/unix编程$ ./getfl.o <span class="number">2</span> <span class="number">2</span>&gt;&gt;temp.foo</span><br><span class="line">write only, append</span><br><span class="line">chst@wyk-GL63:~/study_file/unix编程$ ./getfl.o <span class="number">5</span> <span class="number">5</span>&lt;&gt;temp.foo</span><br><span class="line">read write</span><br></pre></td></tr></table></figure>
-
-子句`5<>temp.foo`表示在文件描述符5上打开文件temp.foo以供读写。
-
-## 函数ioctl
-
-函数ioctl是I/O操作的杂物箱：
-
+<p>子句<code>5&lt;&gt;temp.foo</code>表示在文件描述符5上打开文件temp.foo以供读写。</p>
+<h2 id="函数ioctl"><a href="#函数ioctl" class="headerlink" title="函数ioctl"></a>函数ioctl</h2><p>函数ioctl是I/O操作的杂物箱：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt; /* system v */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/icotl.h&gt; /* BSD and linux */ </span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ioctl</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">int</span> request, ...)</span></span>;</span><br><span class="line"><span class="comment">//出错返回-1， 成功返回其他值</span></span><br></pre></td></tr></table></figure>
-
-下表总结FreeBSD支持的通用ioctl命令的一些类别：
-
-![icotl](https://s2.ax1x.com/2020/02/18/3ig3SP.png)
-
-## /dev/fd
-
-较新的系统提供/dev/fd目录, 其目录项是名0, 1, 2等的文件. 打开文件/dev/fd/n等效于复制描述符n. 
-
-例:
-
+<p>下表总结FreeBSD支持的通用ioctl命令的一些类别：</p>
+<p><img src="https://s2.ax1x.com/2020/02/18/3ig3SP.png" alt="icotl"></p>
+<h2 id="dev-fd"><a href="#dev-fd" class="headerlink" title="/dev/fd"></a>/dev/fd</h2><p>较新的系统提供/dev/fd目录, 其目录项是名0, 1, 2等的文件. 打开文件/dev/fd/n等效于复制描述符n. </p>
+<p>例:</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fd = open(<span class="string">"/dev/fd/o"</span>, mode);</span><br><span class="line">==</span><br><span class="line">fd = dup(<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
-
-/dev/fd文件主要用于shell, 它允许使用路径名作为调用参数的程序. 例如cat将'-'解释为标准输入.
-
+<p>/dev/fd文件主要用于shell, 它允许使用路径名作为调用参数的程序. 例如cat将’-‘解释为标准输入.</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">filter file2 | cat file1 - file3 | lpr</span><br><span class="line">==</span><br><span class="line">filer file2 | cat file1 /dev/fd/0 file3 | lpr</span><br><span class="line">// |表示通道, 即前一个命令的输出作为下一个命令的输入</span><br></pre></td></tr></table></figure>
-
-这里'-'别替换为filter file2的输出。
-
-# 第四章 文件和目录
-
-## 函数stat, fstat, fstatat和lstat
-
-函数原型：
-
+<p>这里’-‘别替换为filter file2的输出。</p>
+<h1 id="第四章-文件和目录"><a href="#第四章-文件和目录" class="headerlink" title="第四章 文件和目录"></a>第四章 文件和目录</h1><h2 id="函数stat-fstat-fstatat和lstat"><a href="#函数stat-fstat-fstatat和lstat" class="headerlink" title="函数stat, fstat, fstatat和lstat"></a>函数stat, fstat, fstatat和lstat</h2><p>函数原型：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">stat</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *<span class="keyword">restrict</span> pathname, struct stat *<span class="keyword">restrict</span> buf)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fstat</span><span class="params">(<span class="keyword">int</span> fd, struct stat *buf)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">lstat</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *<span class="keyword">restrict</span> pathname, struct stat *<span class="keyword">restrict</span> buf)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fstatat</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">const</span> <span class="keyword">char</span> *<span class="keyword">restrict</span> pathname, struct stat *<span class="keyword">restrict</span> buf, <span class="keyword">int</span> flag)</span></span>;</span><br></pre></td></tr></table></figure>
-
-　　一旦给出pathname，stat函数返回与此命名文件有关的信息结构。fstat获得已在描述符fd中打开的文件有关信息。lstat与stat类似，但当命名文件是一个符号链接时，lstat返回该链接对应的有关信息而不是链接指向的文件。
-
-　　fstatat返回相对于当前打开目录（由fd参数指向）的路径名的文件统计信息。flag参数控制是否跟随着一个符号链接。当AT_SYLINK_NOFOLLOW被置位时，不跟随符号链接，只返回符号链接本身的文件信息。否则，在默认情况下，返回的是符号链接指向的文件对于的信息。如果fd参数是AT_FDCWD，并且pathname是一个相对路径，则会计算相对于当前目录的pathname参数，返回对应文件信息。如果pathname是绝对路径，fd会被忽略。
-
-　　buf是一个指针，指向我们必须提供的结构。函数来填充内容。结构的基本形式为：
-
+<p>　　一旦给出pathname，stat函数返回与此命名文件有关的信息结构。fstat获得已在描述符fd中打开的文件有关信息。lstat与stat类似，但当命名文件是一个符号链接时，lstat返回该链接对应的有关信息而不是链接指向的文件。</p>
+<p>　　fstatat返回相对于当前打开目录（由fd参数指向）的路径名的文件统计信息。flag参数控制是否跟随着一个符号链接。当AT_SYLINK_NOFOLLOW被置位时，不跟随符号链接，只返回符号链接本身的文件信息。否则，在默认情况下，返回的是符号链接指向的文件对于的信息。如果fd参数是AT_FDCWD，并且pathname是一个相对路径，则会计算相对于当前目录的pathname参数，返回对应文件信息。如果pathname是绝对路径，fd会被忽略。</p>
+<p>　　buf是一个指针，指向我们必须提供的结构。函数来填充内容。结构的基本形式为：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span>&#123;</span></span><br><span class="line">    <span class="keyword">mode_t</span> st_mode; <span class="comment">//文件类型和mode(权限)</span></span><br><span class="line">    <span class="keyword">ino_t</span>  st_ino; <span class="comment">//i节点数量</span></span><br><span class="line">    <span class="keyword">dev_t</span>  st_dev;<span class="comment">//设备数量</span></span><br><span class="line">    <span class="keyword">dev_t</span> st_rdev;<span class="comment">//对于特殊文件来说设备数量</span></span><br><span class="line">    <span class="keyword">nlink_t</span> st_nlink;<span class="comment">//链接数量</span></span><br><span class="line">    <span class="keyword">uid_t</span> st_uid;<span class="comment">//拥有者用户ｉｄ</span></span><br><span class="line">    <span class="keyword">gid_t</span> st_gid;<span class="comment">//拥有者组ｉｄ</span></span><br><span class="line">    <span class="keyword">off_t</span> st_size;<span class="comment">//大小(bytes)</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timespec</span> <span class="title">st_atime</span>;</span><span class="comment">//最后一次访问时间</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timespec</span> <span class="title">st_mtime</span>;</span><span class="comment">//最后一次更改时间</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timespec</span> <span class="title">st_time</span>;</span><span class="comment">//最后一次文件stat更改时间。</span></span><br><span class="line">    <span class="keyword">blksize_t</span> st_blksize;<span class="comment">//best I/O block size</span></span><br><span class="line">    <span class="keyword">blkcnt_t</span> st_blocks;<span class="comment">//number of disk bocks allocated</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-timespec结构类型按照秒和纳秒定义了时间，至少包含以下两个字段：
-
+<p>timespec结构类型按照秒和纳秒定义了时间，至少包含以下两个字段：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">time_t</span> tv_sec;</span><br><span class="line"><span class="keyword">long</span> tv_nsec;</span><br></pre></td></tr></table></figure>
-
-stat中使用到的类型大都属于基本统计类型。使用前$include<sys types.h>$。
-
-## 文件类型
-
-
-
-
-
-|    文件类型    |                             说明                             |
-| :------------: | :----------------------------------------------------------: |
-|    普通文件    |               最常见的文件，包含某种形式数据。               |
-|    目录文件    | 包含了其他文件的名字以及指向这些文件有关信息的指针。对于一个目录文件具有度权限的任一进程都能读取目录内容，但只有内核能够写目录文件。 |
-|   块特殊文件   |   提供对设备带缓冲的访问，每次访问以以固定长队为单位进行。   |
-|  字符特殊文件  | 提供对设备不带缓冲的访问，每次访问长度可变。系统中的所以设备要么是字符特殊文件，要么是块特殊文件。 |
-|   FIFO(管道)   |                       用于进程间通讯。                       |
-| 套接字(socket) |                     用于进程间网路通信。                     |
-|   符号连接。   |                       指向另一个文件。                       |
-
-文件类型信息包含在stat结构中的st_mode中。使用如下宏来确定文件类型：参数均为stat结果中的st_mode。
-
-| S_ISREG()  |   普通文件   |
-| :--------: | :----------: |
-| S_ISDIR()  |   目录文件   |
-| S_ISCHR()  | 字符特殊文件 |
-| S_ISBLK()  |  块特殊文件  |
-| S_ISFIFO() |     管道     |
-| S_ISLNK()  |   符号连接   |
-| S_ISSOCK() |    套接字    |
-
-
-
-## 设置用户ID和组ID
-
-一个进程关联的ID有六个或更多。
-
-| 实际用户ID/实际组ID             | 我们实际上是谁       |
-| ------------------------------- | -------------------- |
-| 有效用户ID/有效组ID/附属组ID    | 用于文件访问权限检查 |
-| 保存的设置用户ID/保存的设置组ID | 由exec函数保存       |
-
-通常有效用户ID等于实际用户ID，有效组ID等于实际组ID。所以者和所有者组由stat中st_uid和st_gid指定。
-
-实际用户ID和实际组ID表示我们究竟是谁.这两个字段在登录时取自口令文件的登录项(应该是由执行该文件的用户决定).
-
-当执行一个程序文件时,通常进程的有效用户ID就是实际用户ID,有效组ID通常是实际组ID. 但我们可以在文件模式字(st_mode)中设置一个标志,其含义是"当执行次文件时,将进程有有效用户ID设置为文件所有者的用户ID",与次类似,在文件模式字中,可以设置另一位,它将执行文件的进程的有效组ID设置为文件所有者组ID.这两个位分别为设置用户ID位(set-user-id)和设置组ID位(set-group-ID).
-
-## <a id="文件访问权限 ">文件访问权限</a>
-
-st_mode值也包含了对文件的访问权限.这里的文件是指上述所有七种文件.
-
-每个文件有几个访问位权限,可以分为三类:
-
-|        st_mode屏蔽        |      含义      |
-| :-----------------------: | :------------: |
-| S_IRUSER/S_IWUSER/S_IXUSE | 用户读/写/执行 |
-|  S_IRGRP/S_IWGRP/S_IXGRP  |  组读/写/执行  |
-|  S_IROTH/S_IWORT/S_IXOTH  | 其他读/写/执行 |
-
-用户指的是所有者.chomd命令用来修改这九个权限.该命令允许我们用u表示用户,用g表示组,用o表示其他.
-
-使用规则:
-
-### 一
-
-当我们使用名字打开一个文件时,我们对该名字中包含的每一个目录,包括它可能隐藏的当前的工作目录都应该具有执行权限.这也是为何对目录执行权限位通常被称为搜索位.
-
-注意:对于目录的读权限和执行权限的意义是不同的.读权限允许我们读目录,获得在该目录下所以文件名的列表.当一个目录是我们要访问文件路径名的一部分时,对该目录的执行权限使得我们可以通过该目录.
-
-### 二
-
-对于一个文件的读权限决定了我们能否打开文件进行读操作.
-
-### 三
-
-对于一个文件的写权限决定了我们能否打开文件进行写操作.
-
-### 四
-
-为了在open函数中对一个文件指定O_TRUNC标志,必须对该文件具有写权限.
-
-### 五
-
-为了在一个目录下创建一个新文件,需要对该目录具有写和执行权限.
-
-### 六
-
-为了删除一个文件,需要对该文件所在目录具有写和执行权限而不必对文件本身具有相应权限.
-
-### 七
-
-如果使用七个exec函数执行某个文件,需要对该文件具有执行权限.
-
-进程每次<font color="red">打开,创建,删除</font>一个文件时,内核就会进行文件访问权限测试,而这种测试可能涉及文件所有者(st_uid和st_gid),进程的有效ID(有效用户ID和有效组ID)已经进程的附属组ID.<font color="red">两个所有者ID是文件的性质,而两个有效ID和附属ID则是进程的性质</font>. 内核测试具体如下:
-
-1. 若进程有效ID是0(超级用户),则允许访问.
-2. 若进程的有效用户ID等于文件所有者ID(即进程拥有此文件),则判断所有者是否具有进程将要操作的权限,如果没有则拒绝.
-3. 若进程的有效组ID或进程的附属组ID之一等于文件的组ID,那么组适当的权限被置位则允许访问.
-4. 若其他用户适当的访问权限被置位,则允许访问.
-
-按顺序执行这四步.需要注意,这四步是截断的,即一个条件被满足就不会继续向下进行.
-
-## 新文件和目录的所有权
-
-新文件的用户ID设置为进程的有效用户ID,新文件的组ID可以是进程的有效组ID,也可以是它所在目录的组ID.
-
-## 函数access和faccess
-
-access和faccess是按照进程实际用户ID和实际组ID进行权限测试的.
-
-函数原型:
-
+<p>stat中使用到的类型大都属于基本统计类型。使用前$include<sys types.h>$。</sys></p>
+<h2 id="文件类型"><a href="#文件类型" class="headerlink" title="文件类型"></a>文件类型</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">文件类型</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">普通文件</td>
+<td style="text-align:center">最常见的文件，包含某种形式数据。</td>
+</tr>
+<tr>
+<td style="text-align:center">目录文件</td>
+<td style="text-align:center">包含了其他文件的名字以及指向这些文件有关信息的指针。对于一个目录文件具有度权限的任一进程都能读取目录内容，但只有内核能够写目录文件。</td>
+</tr>
+<tr>
+<td style="text-align:center">块特殊文件</td>
+<td style="text-align:center">提供对设备带缓冲的访问，每次访问以以固定长队为单位进行。</td>
+</tr>
+<tr>
+<td style="text-align:center">字符特殊文件</td>
+<td style="text-align:center">提供对设备不带缓冲的访问，每次访问长度可变。系统中的所以设备要么是字符特殊文件，要么是块特殊文件。</td>
+</tr>
+<tr>
+<td style="text-align:center">FIFO(管道)</td>
+<td style="text-align:center">用于进程间通讯。</td>
+</tr>
+<tr>
+<td style="text-align:center">套接字(socket)</td>
+<td style="text-align:center">用于进程间网路通信。</td>
+</tr>
+<tr>
+<td style="text-align:center">符号连接。</td>
+<td style="text-align:center">指向另一个文件。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>文件类型信息包含在stat结构中的st_mode中。使用如下宏来确定文件类型：参数均为stat结果中的st_mode。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">S_ISREG()</th>
+<th style="text-align:center">普通文件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">S_ISDIR()</td>
+<td style="text-align:center">目录文件</td>
+</tr>
+<tr>
+<td style="text-align:center">S_ISCHR()</td>
+<td style="text-align:center">字符特殊文件</td>
+</tr>
+<tr>
+<td style="text-align:center">S_ISBLK()</td>
+<td style="text-align:center">块特殊文件</td>
+</tr>
+<tr>
+<td style="text-align:center">S_ISFIFO()</td>
+<td style="text-align:center">管道</td>
+</tr>
+<tr>
+<td style="text-align:center">S_ISLNK()</td>
+<td style="text-align:center">符号连接</td>
+</tr>
+<tr>
+<td style="text-align:center">S_ISSOCK()</td>
+<td style="text-align:center">套接字</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="设置用户ID和组ID"><a href="#设置用户ID和组ID" class="headerlink" title="设置用户ID和组ID"></a>设置用户ID和组ID</h2><p>一个进程关联的ID有六个或更多。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>实际用户ID/实际组ID</th>
+<th>我们实际上是谁</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>有效用户ID/有效组ID/附属组ID</td>
+<td>用于文件访问权限检查</td>
+</tr>
+<tr>
+<td>保存的设置用户ID/保存的设置组ID</td>
+<td>由exec函数保存</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>通常有效用户ID等于实际用户ID，有效组ID等于实际组ID。所以者和所有者组由stat中st_uid和st_gid指定。</p>
+<p>实际用户ID和实际组ID表示我们究竟是谁.这两个字段在登录时取自口令文件的登录项(应该是由执行该文件的用户决定).</p>
+<p>当执行一个程序文件时,通常进程的有效用户ID就是实际用户ID,有效组ID通常是实际组ID. 但我们可以在文件模式字(st_mode)中设置一个标志,其含义是”当执行次文件时,将进程有有效用户ID设置为文件所有者的用户ID”,与次类似,在文件模式字中,可以设置另一位,它将执行文件的进程的有效组ID设置为文件所有者组ID.这两个位分别为设置用户ID位(set-user-id)和设置组ID位(set-group-ID).</p>
+<h2 id="文件访问权限"><a href="#文件访问权限" class="headerlink" title="文件访问权限"></a><a id="文件访问权限 ">文件访问权限</a></h2><p>st_mode值也包含了对文件的访问权限.这里的文件是指上述所有七种文件.</p>
+<p>每个文件有几个访问位权限,可以分为三类:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">st_mode屏蔽</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">S_IRUSER/S_IWUSER/S_IXUSE</td>
+<td style="text-align:center">用户读/写/执行</td>
+</tr>
+<tr>
+<td style="text-align:center">S_IRGRP/S_IWGRP/S_IXGRP</td>
+<td style="text-align:center">组读/写/执行</td>
+</tr>
+<tr>
+<td style="text-align:center">S_IROTH/S_IWORT/S_IXOTH</td>
+<td style="text-align:center">其他读/写/执行</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>用户指的是所有者.chomd命令用来修改这九个权限.该命令允许我们用u表示用户,用g表示组,用o表示其他.</p>
+<p>使用规则:</p>
+<h3 id="一"><a href="#一" class="headerlink" title="一"></a>一</h3><p>当我们使用名字打开一个文件时,我们对该名字中包含的每一个目录,包括它可能隐藏的当前的工作目录都应该具有执行权限.这也是为何对目录执行权限位通常被称为搜索位.</p>
+<p>注意:对于目录的读权限和执行权限的意义是不同的.读权限允许我们读目录,获得在该目录下所以文件名的列表.当一个目录是我们要访问文件路径名的一部分时,对该目录的执行权限使得我们可以通过该目录.</p>
+<h3 id="二"><a href="#二" class="headerlink" title="二"></a>二</h3><p>对于一个文件的读权限决定了我们能否打开文件进行读操作.</p>
+<h3 id="三"><a href="#三" class="headerlink" title="三"></a>三</h3><p>对于一个文件的写权限决定了我们能否打开文件进行写操作.</p>
+<h3 id="四"><a href="#四" class="headerlink" title="四"></a>四</h3><p>为了在open函数中对一个文件指定O_TRUNC标志,必须对该文件具有写权限.</p>
+<h3 id="五"><a href="#五" class="headerlink" title="五"></a>五</h3><p>为了在一个目录下创建一个新文件,需要对该目录具有写和执行权限.</p>
+<h3 id="六"><a href="#六" class="headerlink" title="六"></a>六</h3><p>为了删除一个文件,需要对该文件所在目录具有写和执行权限而不必对文件本身具有相应权限.</p>
+<h3 id="七"><a href="#七" class="headerlink" title="七"></a>七</h3><p>如果使用七个exec函数执行某个文件,需要对该文件具有执行权限.</p>
+<p>进程每次<font color="red">打开,创建,删除</font>一个文件时,内核就会进行文件访问权限测试,而这种测试可能涉及文件所有者(st_uid和st_gid),进程的有效ID(有效用户ID和有效组ID)已经进程的附属组ID.<font color="red">两个所有者ID是文件的性质,而两个有效ID和附属ID则是进程的性质</font>. 内核测试具体如下:</p>
+<ol>
+<li>若进程有效ID是0(超级用户),则允许访问.</li>
+<li>若进程的有效用户ID等于文件所有者ID(即进程拥有此文件),则判断所有者是否具有进程将要操作的权限,如果没有则拒绝.</li>
+<li>若进程的有效组ID或进程的附属组ID之一等于文件的组ID,那么组适当的权限被置位则允许访问.</li>
+<li>若其他用户适当的访问权限被置位,则允许访问.</li>
+</ol>
+<p>按顺序执行这四步.需要注意,这四步是截断的,即一个条件被满足就不会继续向下进行.</p>
+<h2 id="新文件和目录的所有权"><a href="#新文件和目录的所有权" class="headerlink" title="新文件和目录的所有权"></a>新文件和目录的所有权</h2><p>新文件的用户ID设置为进程的有效用户ID,新文件的组ID可以是进程的有效组ID,也可以是它所在目录的组ID.</p>
+<h2 id="函数access和faccess"><a href="#函数access和faccess" class="headerlink" title="函数access和faccess"></a>函数access和faccess</h2><p>access和faccess是按照进程实际用户ID和实际组ID进行权限测试的.</p>
+<p>函数原型:</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.d&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">access</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *pathname, <span class="keyword">int</span> mode)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">faccessat</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">const</span> <span class="keyword">char</span> *pathname, <span class="keyword">int</span> mode, <span class="keyword">int</span> flag)</span></span>;</span><br><span class="line"><span class="comment">//成功返回0，失败返回-1</span></span><br></pre></td></tr></table></figure>
-
-当要测试文件是否存在时,mode是F_OK,否则mode是下面常量按位或.
-
-| mode |              |
-| :--: | :----------: |
-| R_OK |  测试读权限  |
-| W_OK |  测试写权限  |
-| X_OK | 测试执行权限 |
-
-当pathname是绝对路径和当fd是AT_FDCWD而pathname是相对路径时,faccessat与acess是相同的.
-
-flag参数可以用于改变faccessat行为,如果flag设置为AT_ACCESS访问检测用的是有效用户ID和有效进程ID.
-
-## 例:acess.cpp
-
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"apue.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(argc!=<span class="number">2</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        err_quit(<span class="string">"usage: a.out&lt;pathname&gt;"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(access(argv[<span class="number">1</span>], R_OK)&lt;<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        err_ret(<span class="string">"access error for%s"</span>,argv[<span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"read access ok\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(open(argv[<span class="number">1</span>], O_RDONLY)&lt;<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        err_ret(<span class="string">"open error for %s"</span>,argv[<span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"open for reading ok\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<p>当要测试文件是否存在时,mode是F_OK,否则mode是下面常量按位或.</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">mode</th>
+<th style="text-align:center"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">R_OK</td>
+<td style="text-align:center">测试读权限</td>
+</tr>
+<tr>
+<td style="text-align:center">W_OK</td>
+<td style="text-align:center">测试写权限</td>
+</tr>
+<tr>
+<td style="text-align:center">X_OK</td>
+<td style="text-align:center">测试执行权限</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>当pathname是绝对路径和当fd是AT_FDCWD而pathname是相对路径时,faccessat与acess是相同的.</p>
+<p>flag参数可以用于改变faccessat行为,如果flag设置为AT_ACCESS访问检测用的是有效用户ID和有效进程ID.</p>
+<h2 id="例-acess-cpp"><a href="#例-acess-cpp" class="headerlink" title="例:acess.cpp"></a>例:acess.cpp</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"apue.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(argc!=<span class="number">2</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        err_quit(<span class="string">"usage: a.out&lt;pathname&gt;"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(access(argv[<span class="number">1</span>], R_OK)&lt;<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        err_ret(<span class="string">"access error for%s"</span>,argv[<span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"read access ok\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(open(argv[<span class="number">1</span>], O_RDONLY)&lt;<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        err_ret(<span class="string">"open error for %s"</span>,argv[<span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"open for reading ok\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$g++ access.cpp -o access.o -lapue</span><br><span class="line">$ls -l access.o</span><br><span class="line">-rwxrwxr-x 1 chst chst 13328 Sep  8 15:40 access.o</span><br><span class="line">$./access.o access.cpp</span><br><span class="line">read access ok</span><br><span class="line">open for reading ok</span><br><span class="line">$ls -l /etc/shadow</span><br><span class="line">-rw-r----- 1 root shadow 1395 May  6 19:00 /etc/shadow</span><br><span class="line">$ ./access.o /etc/shadow</span><br><span class="line">access error for/etc/shadow: Permission denied</span><br><span class="line">open error for /etc/shadow: Permission denied</span><br><span class="line">$ sudo chown root access.o   //更改文件用户为超级用户</span><br><span class="line">[sudo] password for chst: </span><br><span class="line">$ sudo chmod u+s access.o //打开设置用户位,即使得进程的有效ID等于文件的用户ID,即超级用户.</span><br><span class="line">$ ls -l access.o</span><br><span class="line">-rwsrwxr-x 1 root chst 13328 Sep  8 15:40 access.o //这里s表示设置用户位被置位</span><br><span class="line">$exit //退出超级用户</span><br><span class="line">$ ./access.o /etc/shadow</span><br><span class="line">access error for/etc/shadow: Permission denied</span><br><span class="line">open for reading ok</span><br></pre></td></tr></table></figure>
-
-这里解释一下最后的输出,在执行access.o时,我们是以普通用户进行的,此时进程的实际ID即为普通用户ID,但由于设置用户位被置位,此时进程的有效用户ID为超级用户ID,因为在打开文件时,是使用有效用户来进行判断的,因此此时可以打开文件,但是我们实际用户ID是普通用户,因此使用access进行检查时,会显示权限错误,因此尽管我们可以打开文件,但可以确定实际用户不能正常读指定文件.但该程序现在是可以正常读取指定文件的.
-
-## 函数umask(文件模式创建屏蔽字)
-
-umask函数为进程设置文件模式创建屏蔽字,并返回之前的值.
-
-函数原型:
-
+<p>这里解释一下最后的输出,在执行access.o时,我们是以普通用户进行的,此时进程的实际ID即为普通用户ID,但由于设置用户位被置位,此时进程的有效用户ID为超级用户ID,因为在打开文件时,是使用有效用户来进行判断的,因此此时可以打开文件,但是我们实际用户ID是普通用户,因此使用access进行检查时,会显示权限错误,因此尽管我们可以打开文件,但可以确定实际用户不能正常读指定文件.但该程序现在是可以正常读取指定文件的.</p>
+<h2 id="函数umask-文件模式创建屏蔽字"><a href="#函数umask-文件模式创建屏蔽字" class="headerlink" title="函数umask(文件模式创建屏蔽字)"></a>函数umask(文件模式创建屏蔽字)</h2><p>umask函数为进程设置文件模式创建屏蔽字,并返回之前的值.</p>
+<p>函数原型:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;sys/stat.h&gt;</span><br><span class="line">mode_t umask(mode_t cmask);</span><br></pre></td></tr></table></figure>
-
-其中cmask为之前<a href="#文件访问权限 ">表格</a>里面的9个常量或的结果.在进程创建一个新文件和新目录时,就一定会使用文件模式创建屏蔽字.(open和creat函数都有参数mode,其就是用来指定新文件的访问权限).
-
-例:
-
+<p>其中cmask为之前<a href="#文件访问权限 ">表格</a>里面的9个常量或的结果.在进程创建一个新文件和新目录时,就一定会使用文件模式创建屏蔽字.(open和creat函数都有参数mode,其就是用来指定新文件的访问权限).</p>
+<p>例:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#include&quot;apue.h&quot;</span><br><span class="line">#include&lt;fcntl.h&gt;</span><br><span class="line">#define RWRWRW (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH)</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    umask(0);</span><br><span class="line">    if(creat(&quot;foo&quot;, RWRWRW)&lt;0)</span><br><span class="line">    &#123;</span><br><span class="line">        err_sys(&quot;creat foo error!\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    umask(S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);</span><br><span class="line">    if((creat(&quot;bar&quot;, RWRWRW)&lt;0))</span><br><span class="line">    &#123;</span><br><span class="line">        err_sys(&quot;creat bar error!\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    exit(0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-执行
-
+<p>执行</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">chst@wyk-GL63:~/study_file/unix编程$ umask //查看当前屏蔽字, 0002表示只有其他写被屏蔽</span><br><span class="line">0002</span><br><span class="line">$ ./umask.o</span><br><span class="line">$ ls -l foo bar</span><br><span class="line">-rw------- 1 chst chst 0 Sep  8 17:34 bar</span><br><span class="line">-rw-rw-rw- 1 chst chst 0 Sep  8 17:34 foo</span><br></pre></td></tr></table></figure>
-
-更改环境文件创建屏蔽字:
-
+<p>更改环境文件创建屏蔽字:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$umask -S //打印符号格式</span><br><span class="line">u=rwx,g=rwx,o=rx</span><br><span class="line">$umask 0027 //更改屏蔽字,屏蔽用户组读和其他的所以权限</span><br><span class="line">$umask -S</span><br><span class="line">u=rwx,g=rx,o=</span><br></pre></td></tr></table></figure>
-
-## 函数chmod,fchmod和fchmodat
-
-这三个函数使得我们可以更改现有文件的访问权限.
-
-函数原型:
-
+<h2 id="函数chmod-fchmod和fchmodat"><a href="#函数chmod-fchmod和fchmodat" class="headerlink" title="函数chmod,fchmod和fchmodat"></a>函数chmod,fchmod和fchmodat</h2><p>这三个函数使得我们可以更改现有文件的访问权限.</p>
+<p>函数原型:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;sys/stat.h&gt;</span><br><span class="line">int chmod(const char *pathname, mode_t mode);</span><br><span class="line">int fchmod(int fd, mode_t mode);</span><br><span class="line">int fchmodat(int fd, const char *pathname, mode_t mode, int flag)</span><br></pre></td></tr></table></figure>
-
-chmod操作指定文件,fchmod操作打开的文件, 当pathname为绝对路径或fd参数为AT_FDCWD而pathname为相对路径时,fchmodat与chmod一样. flag参数用来改变fchmodat行为,当设置了AT_SYMLIN_NOFOLLOW标志时,fchmodat不会跟随符号链接.
-
-为了改变一个文件的权限位,进程的有效用户ID必须等于文件所有者ID,或者进程拥有超级用户权限.参数mode是如下常量取与或:
-
-|  mode   |        说明        |
-| :-----: | :----------------: |
-| S_ISUID |  执行时设置用户ID  |
-| S_ISGID | 执行时设置用户组ID |
-| S_ISVTX |                    |
-
-| S_IRWXU | 用户(所有者)读写和执行 |
-| :-----: | :--------------------: |
-| S_IRUSR |         用户读         |
-| S_IWUSR |         用户写         |
-| S_IXUSR |        用户执行        |
-
-| S_IRWXG | 用户组读写和执行 |
-| :-----: | :--------------: |
-| S_IRGRP |     用户组读     |
-| S_IWGRP |     用户组写     |
-| S_IXGRP |    用户组执行    |
-
-| S_IRWXO | 其他读写和执行 |
-| :-----: | :------------: |
-| S_IROTH |     其他读     |
-| S_IWOTH |     其他写     |
-| S_IXOTH |    其他执行    |
-
-命令行添加设置用户ID和设置组ID方式为:
-
+<p>chmod操作指定文件,fchmod操作打开的文件, 当pathname为绝对路径或fd参数为AT_FDCWD而pathname为相对路径时,fchmodat与chmod一样. flag参数用来改变fchmodat行为,当设置了AT_SYMLIN_NOFOLLOW标志时,fchmodat不会跟随符号链接.</p>
+<p>为了改变一个文件的权限位,进程的有效用户ID必须等于文件所有者ID,或者进程拥有超级用户权限.参数mode是如下常量取与或:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">mode</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">S_ISUID</td>
+<td style="text-align:center">执行时设置用户ID</td>
+</tr>
+<tr>
+<td style="text-align:center">S_ISGID</td>
+<td style="text-align:center">执行时设置用户组ID</td>
+</tr>
+<tr>
+<td style="text-align:center">S_ISVTX</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">S_IRWXU</th>
+<th style="text-align:center">用户(所有者)读写和执行</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">S_IRUSR</td>
+<td style="text-align:center">用户读</td>
+</tr>
+<tr>
+<td style="text-align:center">S_IWUSR</td>
+<td style="text-align:center">用户写</td>
+</tr>
+<tr>
+<td style="text-align:center">S_IXUSR</td>
+<td style="text-align:center">用户执行</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">S_IRWXG</th>
+<th style="text-align:center">用户组读写和执行</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">S_IRGRP</td>
+<td style="text-align:center">用户组读</td>
+</tr>
+<tr>
+<td style="text-align:center">S_IWGRP</td>
+<td style="text-align:center">用户组写</td>
+</tr>
+<tr>
+<td style="text-align:center">S_IXGRP</td>
+<td style="text-align:center">用户组执行</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">S_IRWXO</th>
+<th style="text-align:center">其他读写和执行</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">S_IROTH</td>
+<td style="text-align:center">其他读</td>
+</tr>
+<tr>
+<td style="text-align:center">S_IWOTH</td>
+<td style="text-align:center">其他写</td>
+</tr>
+<tr>
+<td style="text-align:center">S_IXOTH</td>
+<td style="text-align:center">其他执行</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>命令行添加设置用户ID和设置组ID方式为:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$chmod u+s filename</span><br><span class="line">$chmod g+s filename</span><br><span class="line">-rwSrwSrw- //这里S表示设置ID开启.</span><br></pre></td></tr></table></figure>
-
-## 函数chown,fchown,fchownat和lchown
-
-这几个函数是用来更改文件用户ID和组ID的.函数原型:
-
+<h2 id="函数chown-fchown-fchownat和lchown"><a href="#函数chown-fchown-fchownat和lchown" class="headerlink" title="函数chown,fchown,fchownat和lchown"></a>函数chown,fchown,fchownat和lchown</h2><p>这几个函数是用来更改文件用户ID和组ID的.函数原型:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;unistd.h&gt;</span><br><span class="line">int chown(const char *pathname, uid_t owner, gid_t group);</span><br><span class="line">int fchown(int fd, uid_t owner, gid_t group);</span><br><span class="line">int fchownat(int fd, const char *pathname, uid_t owner, gid_t group, int flag);</span><br><span class="line">int lchown(const char *pathname, uid_t owner, gid_t group);</span><br></pre></td></tr></table></figure>
-
-当owner或group任意一个是-1,则对应的ID不变.
-
-除了所引用的文件是符号链接以外,这4个函数操作类似.在符号连接下,lchown与fchownat(设置了AT_SYMLINK_NOFOLLOW)更改符号链接本身而不是连接指向的文件.
-
-当pathname为绝对路径或fd参数为AT_FDCWD而pathname为相对路径时,fchownat与chmod一样. flag参数用来改变fchmodat行为,当设置了AT_SYMLIN_NOFOLLOW标志时,fchmodat不会跟随符号链接.
-
-## 文件系统
-
-在说明文件链接前先介绍一下文件系统,这里主要介绍的是UFS系统.
-
-我们把一个磁盘分成一个或多个分区,每个分区都包含一个文件系统.细节见下图:
-
-![文件系统](https://s2.ax1x.com/2019/09/09/ntqGge.png)
-
-仔细观察柱面`i`节点和数据块的部分,会存在下图的关系:
-
-![i节点](https://s2.ax1x.com/2019/09/09/ntqJjH.png)
-
-注意细节:
-
-1. 图中有两个目录项指向同一个`i`节点.每个`i`节点都有一个连接计数,其值是指向该`i`节点的<font color="red">目录项数</font>.只有当链接计数等于0的时候才可以删除文件(释放该文件所占用的数据块).在stat中,链接计数包含在st_nlink中,基本数据类型是nlink_t.这种链接为硬链接.
-2. 还有一种链接为符号链接.符号链接链接文件的实际内容(在数据块中)包含了该符号链接所执向的文件的名字.
-3. i节点包含了文件的所以信息:文件类型,访问权限,文件长度和指向文件数据块的指针等. stat中大多数内容取自i节点,只有文件名和i节点编号放在目录项中.
-4. 当在不更换文件系统的情况下为一个文件重命名时,该文件实际内容并未移动,只需要构造一个指向当前i节点的新目录项,并删除老目录项即可,连接计数不会改变.
-
-目录文件的计数说明:
-
-使用`mkdir testdir`创建一个新目录时,结果如下:
-
-![创建目录](https://s2.ax1x.com/2019/09/09/ntLpxe.png)
-
-该图显示的展现出了`.`和`..`.
-
-任何一个叶目录(不包含目录的目录)连接计数均为2.数值2来自于命名该目录的目录项和在该目录中的`.`.编号为1267的i节点,链接计数大于等于3.这是由于,一个是命名它的目录项,一个是自己目录下的`.`,还有则是新建的目录testdir中的`..`(目录下的目录中的`..`都是对父目录的硬链接,会增加i节点计数).
-
-## 函数link, linkat, unlink和remove
-
-使用link和linkat函数创建一个指向当前文件的链接.函数原型:
-
+<p>当owner或group任意一个是-1,则对应的ID不变.</p>
+<p>除了所引用的文件是符号链接以外,这4个函数操作类似.在符号连接下,lchown与fchownat(设置了AT_SYMLINK_NOFOLLOW)更改符号链接本身而不是连接指向的文件.</p>
+<p>当pathname为绝对路径或fd参数为AT_FDCWD而pathname为相对路径时,fchownat与chmod一样. flag参数用来改变fchmodat行为,当设置了AT_SYMLIN_NOFOLLOW标志时,fchmodat不会跟随符号链接.</p>
+<h2 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h2><p>在说明文件链接前先介绍一下文件系统,这里主要介绍的是UFS系统.</p>
+<p>我们把一个磁盘分成一个或多个分区,每个分区都包含一个文件系统.细节见下图:</p>
+<p><img src="https://s2.ax1x.com/2019/09/09/ntqGge.png" alt="文件系统"></p>
+<p>仔细观察柱面<code>i</code>节点和数据块的部分,会存在下图的关系:</p>
+<p><img src="https://s2.ax1x.com/2019/09/09/ntqJjH.png" alt="i节点"></p>
+<p>注意细节:</p>
+<ol>
+<li>图中有两个目录项指向同一个<code>i</code>节点.每个<code>i</code>节点都有一个连接计数,其值是指向该<code>i</code>节点的<font color="red">目录项数</font>.只有当链接计数等于0的时候才可以删除文件(释放该文件所占用的数据块).在stat中,链接计数包含在st_nlink中,基本数据类型是nlink_t.这种链接为硬链接.</li>
+<li>还有一种链接为符号链接.符号链接链接文件的实际内容(在数据块中)包含了该符号链接所执向的文件的名字.</li>
+<li>i节点包含了文件的所以信息:文件类型,访问权限,文件长度和指向文件数据块的指针等. stat中大多数内容取自i节点,只有文件名和i节点编号放在目录项中.</li>
+<li>当在不更换文件系统的情况下为一个文件重命名时,该文件实际内容并未移动,只需要构造一个指向当前i节点的新目录项,并删除老目录项即可,连接计数不会改变.</li>
+</ol>
+<p>目录文件的计数说明:</p>
+<p>使用<code>mkdir testdir</code>创建一个新目录时,结果如下:</p>
+<p><img src="https://s2.ax1x.com/2019/09/09/ntLpxe.png" alt="创建目录"></p>
+<p>该图显示的展现出了<code>.</code>和<code>..</code>.</p>
+<p>任何一个叶目录(不包含目录的目录)连接计数均为2.数值2来自于命名该目录的目录项和在该目录中的<code>.</code>.编号为1267的i节点,链接计数大于等于3.这是由于,一个是命名它的目录项,一个是自己目录下的<code>.</code>,还有则是新建的目录testdir中的<code>..</code>(目录下的目录中的<code>..</code>都是对父目录的硬链接,会增加i节点计数).</p>
+<h2 id="函数link-linkat-unlink和remove"><a href="#函数link-linkat-unlink和remove" class="headerlink" title="函数link, linkat, unlink和remove"></a>函数link, linkat, unlink和remove</h2><p>使用link和linkat函数创建一个指向当前文件的链接.函数原型:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;unistd.h&gt;</span><br><span class="line">int link(const char *existingpath, const char *newpath);</span><br><span class="line">int linkat(int efd, const char *existingpath, int nfg, const char *newpath, int flag);</span><br><span class="line">// 函数返回值0正常,-1出错.</span><br></pre></td></tr></table></figure>
-
-两个函数创建一个新目录项newpath,它引用现有文件existingpath. 创建新目录项和增加链接计数应该是原子操作.
-
-为了删除一个现在的目录项, 可以使用unlink和unlinkat函数:
-
+<p>两个函数创建一个新目录项newpath,它引用现有文件existingpath. 创建新目录项和增加链接计数应该是原子操作.</p>
+<p>为了删除一个现在的目录项, 可以使用unlink和unlinkat函数:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;unistd.h&gt;</span><br><span class="line">int unlink(const char *pathname);</span><br><span class="line">int unlink(int fd, const char *pathname, int flag);</span><br></pre></td></tr></table></figure>
-
-两个函数删除目录项,并将有pathname所引用文件的链接计数减一.为了解除对文件的链接,我们必须对该目录具有写和执行权限.只有当链接计数达到0的时候该文件内容才会被删除.
-
+<p>两个函数删除目录项,并将有pathname所引用文件的链接计数减一.为了解除对文件的链接,我们必须对该目录具有写和执行权限.只有当链接计数达到0的时候该文件内容才会被删除.</p>
 <font color="red," size="8">注意:</font> 只要有进程打开了该文件,其内容也不会被删除.关闭一个文件时,内核首先检测打开该文件的进程数目,如果这个数值等于0,再去查看链接计数,如果链接计数也达到0,才删除文件.利用该特性,unlink常常被用来确保在程序崩溃的情况下删除临时创建的文件.进程使用open或creat创建一个文件,然后立即调用unlink,由于该文件仍旧是打开的,因此不会被立即删除,只有当进程终止时,文件才会被删除.
 
 fd和pathname用来确定路径的.flag给出一种方式,当AT_REMOVEDIR被设置时,unlinkat函数类似与rmdir一样删除目录.
@@ -5008,7 +5028,7 @@ options参数是下列标志的位运算：
 <p>分别编译客户端和服务端生成openClient和openService。执行：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 窗口1</span><br><span class="line">$./openService -d</span><br><span class="line"></span><br><span class="line">// 窗口2</span><br><span class="line">$./openClient</span><br><span class="line">/home/work/test.txt</span><br><span class="line">hello ...</span><br><span class="line">...</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p>由于daemonize函数在之前的实现中，会关闭套接字的原因，因此如果不使用-d参数，使用守护进程，客户端会无法进行连接。</p>
-</-1></netdb.h></netdb.h></netdb.h></netdb.h></shadow.h></grp.h></pwd.h></grp.h></pwd.h></stdio.h></sys>
+</-1></netdb.h></netdb.h></netdb.h></netdb.h></shadow.h></grp.h></pwd.h></grp.h></pwd.h></stdio.h>
       
     </div>
     
@@ -5185,7 +5205,7 @@ options参数是下列标志的位运算：
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第一章-UNIX基础知识"><span class="nav-number">1.</span> <span class="nav-text">第一章 UNIX基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#UNIX体系结构"><span class="nav-number">1.1.</span> <span class="nav-text">UNIX体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#shell"><span class="nav-number">1.1.1.</span> <span class="nav-text">shell</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件和目录"><span class="nav-number">1.2.</span> <span class="nav-text">文件和目录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#工作目录"><span class="nav-number">1.2.1.</span> <span class="nav-text">工作目录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输入和输出"><span class="nav-number">1.3.</span> <span class="nav-text">输入和输出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件描述符"><span class="nav-number">1.3.1.</span> <span class="nav-text">文件描述符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标准输入-标准输出和标准错误"><span class="nav-number">1.3.2.</span> <span class="nav-text">标准输入, 标准输出和标准错误</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不带缓冲的I-O"><span class="nav-number">1.3.3.</span> <span class="nav-text">不带缓冲的I/O</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序与进程"><span class="nav-number">1.4.</span> <span class="nav-text">程序与进程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#程序"><span class="nav-number">1.4.1.</span> <span class="nav-text">程序:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程与进程ID"><span class="nav-number">1.4.2.</span> <span class="nav-text">进程与进程ID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程管理"><span class="nav-number">1.4.3.</span> <span class="nav-text">进程管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#fork"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">fork</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#waitpid"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">waitpid</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程和线程ID"><span class="nav-number">1.4.4.</span> <span class="nav-text">线程和线程ID</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#出错处理"><span class="nav-number">1.5.</span> <span class="nav-text">出错处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#strerror"><span class="nav-number">1.5.1.</span> <span class="nav-text">strerror()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#perror"><span class="nav-number">1.5.2.</span> <span class="nav-text">perror()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户ID"><span class="nav-number">1.6.</span> <span class="nav-text">用户ID</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用户ID-1"><span class="nav-number">1.6.1.</span> <span class="nav-text">用户ID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#组ID"><span class="nav-number">1.6.2.</span> <span class="nav-text">组ID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#附属ID"><span class="nav-number">1.6.3.</span> <span class="nav-text">附属ID</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信号-signal"><span class="nav-number">1.7.</span> <span class="nav-text">信号(signal)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#时间值"><span class="nav-number">1.8.</span> <span class="nav-text">时间值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#日历时间"><span class="nav-number">1.8.1.</span> <span class="nav-text">日历时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程时间"><span class="nav-number">1.8.2.</span> <span class="nav-text">进程时间</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统调用和库函数"><span class="nav-number">1.9.</span> <span class="nav-text">系统调用和库函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第三章-文件I-O"><span class="nav-number">2.</span> <span class="nav-text">第三章 文件I/O</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#文件描述符-1"><span class="nav-number">2.1.</span> <span class="nav-text">文件描述符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数open和openat"><span class="nav-number">2.2.</span> <span class="nav-text">函数open和openat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数creat"><span class="nav-number">2.3.</span> <span class="nav-text">函数creat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数close"><span class="nav-number">2.4.</span> <span class="nav-text">函数close</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数lseek"><span class="nav-number">2.5.</span> <span class="nav-text">函数lseek</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数read"><span class="nav-number">2.6.</span> <span class="nav-text">函数read</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数write"><span class="nav-number">2.7.</span> <span class="nav-text">函数write</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件共享"><span class="nav-number">2.8.</span> <span class="nav-text">文件共享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令行参数"><span class="nav-number">2.9.</span> <span class="nav-text">命令行参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境表"><span class="nav-number">2.10.</span> <span class="nav-text">环境表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C程序存储空间分布"><span class="nav-number">2.11.</span> <span class="nav-text">C程序存储空间分布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#共享库"><span class="nav-number">2.12.</span> <span class="nav-text">共享库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存储空间分配"><span class="nav-number">2.13.</span> <span class="nav-text">存储空间分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境变量"><span class="nav-number">2.14.</span> <span class="nav-text">环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数setjmp和longjmp"><span class="nav-number">2.15.</span> <span class="nav-text">函数setjmp和longjmp</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自动变量、寄存器变量和易失变量"><span class="nav-number">2.15.1.</span> <span class="nav-text">自动变量、寄存器变量和易失变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自动变量的潜在问题"><span class="nav-number">2.15.2.</span> <span class="nav-text">自动变量的潜在问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数getrlimit和setrlimit"><span class="nav-number">2.16.</span> <span class="nav-text">函数getrlimit和setrlimit</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第八章-进程控制"><span class="nav-number">3.</span> <span class="nav-text">第八章 进程控制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程标识"><span class="nav-number">3.1.</span> <span class="nav-text">进程标识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数fork"><span class="nav-number">3.2.</span> <span class="nav-text">函数fork</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数exit"><span class="nav-number">3.3.</span> <span class="nav-text">函数exit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更改用户ID和更改组ID"><span class="nav-number">3.4.</span> <span class="nav-text">更改用户ID和更改组ID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解释器文件"><span class="nav-number">3.5.</span> <span class="nav-text">解释器文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数system"><span class="nav-number">3.6.</span> <span class="nav-text">函数system</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程标识-1"><span class="nav-number">3.7.</span> <span class="nav-text">进程标识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程调度"><span class="nav-number">3.8.</span> <span class="nav-text">进程调度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程时间-1"><span class="nav-number">3.9.</span> <span class="nav-text">进程时间</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第九章-进程关系"><span class="nav-number">4.</span> <span class="nav-text">第九章 进程关系</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#终端登录"><span class="nav-number">4.1.</span> <span class="nav-text">终端登录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络登录"><span class="nav-number">4.2.</span> <span class="nav-text">网络登录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程组"><span class="nav-number">4.3.</span> <span class="nav-text">进程组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数tcgetpgrp、tcsetpgrp和tcgetsid"><span class="nav-number">4.4.</span> <span class="nav-text">函数tcgetpgrp、tcsetpgrp和tcgetsid</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#作业控制"><span class="nav-number">4.5.</span> <span class="nav-text">作业控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shell执行程序"><span class="nav-number">4.6.</span> <span class="nav-text">shell执行程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#孤儿进程组"><span class="nav-number">4.7.</span> <span class="nav-text">孤儿进程组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FreeBSD实现"><span class="nav-number">4.8.</span> <span class="nav-text">FreeBSD实现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第十章-信号"><span class="nav-number">5.</span> <span class="nav-text">第十章 信号</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#信号概念"><span class="nav-number">5.1.</span> <span class="nav-text">信号概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数signal"><span class="nav-number">5.2.</span> <span class="nav-text">函数signal</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#程序启动"><span class="nav-number">5.2.1.</span> <span class="nav-text">程序启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程创建"><span class="nav-number">5.2.2.</span> <span class="nav-text">进程创建</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不可靠信号"><span class="nav-number">5.3.</span> <span class="nav-text">不可靠信号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#中断的系统调用"><span class="nav-number">5.4.</span> <span class="nav-text">中断的系统调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可重入信号"><span class="nav-number">5.5.</span> <span class="nav-text">可重入信号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SIGCLD语义"><span class="nav-number">5.6.</span> <span class="nav-text">SIGCLD语义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可靠信号术语和语义"><span class="nav-number">5.7.</span> <span class="nav-text">可靠信号术语和语义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数kill和raise"><span class="nav-number">5.8.</span> <span class="nav-text">函数kill和raise</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数alarm和pause"><span class="nav-number">5.9.</span> <span class="nav-text">函数alarm和pause</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数abort"><span class="nav-number">5.10.</span> <span class="nav-text">函数abort</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数system-1"><span class="nav-number">5.11.</span> <span class="nav-text">函数system</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数sleep、nanosleep和clock-nanosleep"><span class="nav-number">5.12.</span> <span class="nav-text">函数sleep、nanosleep和clock_nanosleep</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数sigqueue"><span class="nav-number">5.13.</span> <span class="nav-text">函数sigqueue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#作业控制信号"><span class="nav-number">5.14.</span> <span class="nav-text">作业控制信号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信号名和编号"><span class="nav-number">5.15.</span> <span class="nav-text">信号名和编号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#习题"><span class="nav-number">5.16.</span> <span class="nav-text">习题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第十一章-线程"><span class="nav-number">6.</span> <span class="nav-text">第十一章 线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程概念"><span class="nav-number">6.1.</span> <span class="nav-text">线程概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程标识"><span class="nav-number">6.2.</span> <span class="nav-text">线程标识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程创建"><span class="nav-number">6.3.</span> <span class="nav-text">线程创建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程终止"><span class="nav-number">6.4.</span> <span class="nav-text">线程终止</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程同步"><span class="nav-number">6.5.</span> <span class="nav-text">线程同步</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#互斥量"><span class="nav-number">6.5.1.</span> <span class="nav-text">互斥量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#避免死锁"><span class="nav-number">6.5.2.</span> <span class="nav-text">避免死锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数pthread-mutex-timedlock"><span class="nav-number">6.5.3.</span> <span class="nav-text">函数pthread_mutex_timedlock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读写锁"><span class="nav-number">6.5.4.</span> <span class="nav-text">读写锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#带有超时的读写锁"><span class="nav-number">6.5.5.</span> <span class="nav-text">带有超时的读写锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条件变量"><span class="nav-number">6.5.6.</span> <span class="nav-text">条件变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自旋锁"><span class="nav-number">6.5.7.</span> <span class="nav-text">自旋锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#屏障"><span class="nav-number">6.5.8.</span> <span class="nav-text">屏障</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十二章-线程控制"><span class="nav-number">7.</span> <span class="nav-text">十二章 线程控制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程限制"><span class="nav-number">7.1.</span> <span class="nav-text">线程限制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程属性"><span class="nav-number">7.2.</span> <span class="nav-text">线程属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同步属性"><span class="nav-number">7.3.</span> <span class="nav-text">同步属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#互斥量属性"><span class="nav-number">7.3.1.</span> <span class="nav-text">互斥量属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读写锁属性"><span class="nav-number">7.3.2.</span> <span class="nav-text">读写锁属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条件变量属性"><span class="nav-number">7.3.3.</span> <span class="nav-text">条件变量属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#屏障属性"><span class="nav-number">7.3.4.</span> <span class="nav-text">屏障属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重入"><span class="nav-number">7.4.</span> <span class="nav-text">重入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程特定数据"><span class="nav-number">7.5.</span> <span class="nav-text">线程特定数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#取消选项"><span class="nav-number">7.6.</span> <span class="nav-text">取消选项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程和信号"><span class="nav-number">7.7.</span> <span class="nav-text">线程和信号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程和fork"><span class="nav-number">7.8.</span> <span class="nav-text">线程和fork</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程和I-O"><span class="nav-number">7.9.</span> <span class="nav-text">线程和I/O</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第十三章-守护进程"><span class="nav-number">8.</span> <span class="nav-text">第十三章 守护进程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#守护进程特性"><span class="nav-number">8.1.</span> <span class="nav-text">守护进程特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编程规则"><span class="nav-number">8.2.</span> <span class="nav-text">编程规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#出错记录"><span class="nav-number">8.3.</span> <span class="nav-text">出错记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单实例守护进程"><span class="nav-number">8.4.</span> <span class="nav-text">单实例守护进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#守护进程"><span class="nav-number">8.5.</span> <span class="nav-text">守护进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户进程-服务进程模型"><span class="nav-number">8.6.</span> <span class="nav-text">客户进程-服务进程模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第十四章-高级I-O"><span class="nav-number">9.</span> <span class="nav-text">第十四章 高级I/O</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#非阻塞I-O"><span class="nav-number">9.1.</span> <span class="nav-text">非阻塞I/O</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#记录锁"><span class="nav-number">9.2.</span> <span class="nav-text">记录锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fcntl记录锁"><span class="nav-number">9.2.1.</span> <span class="nav-text">fcntl记录锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#锁的隐含继承和释放"><span class="nav-number">9.2.2.</span> <span class="nav-text">锁的隐含继承和释放</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FreeBSD实现-1"><span class="nav-number">9.2.3.</span> <span class="nav-text">FreeBSD实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在文件末尾加锁"><span class="nav-number">9.2.4.</span> <span class="nav-text">在文件末尾加锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建议性锁和强制性锁"><span class="nav-number">9.2.5.</span> <span class="nav-text">建议性锁和强制性锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#I-O多路转接"><span class="nav-number">9.3.</span> <span class="nav-text">I/O多路转接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#函数select和pselect"><span class="nav-number">9.3.1.</span> <span class="nav-text">函数select和pselect</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数poll"><span class="nav-number">9.3.2.</span> <span class="nav-text">函数poll</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异步I-O"><span class="nav-number">9.4.</span> <span class="nav-text">异步I/O</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数readv和writev"><span class="nav-number">9.5.</span> <span class="nav-text">函数readv和writev</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数readn和writen"><span class="nav-number">9.6.</span> <span class="nav-text">函数readn和writen</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存储映射I-O"><span class="nav-number">9.7.</span> <span class="nav-text">存储映射I/O</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第十五章-进程间通信（IPC）"><span class="nav-number">10.</span> <span class="nav-text">第十五章 进程间通信（IPC）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#管道"><span class="nav-number">10.1.</span> <span class="nav-text">管道</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数popen和pclose"><span class="nav-number">10.2.</span> <span class="nav-text">函数popen和pclose</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#协同进程"><span class="nav-number">10.3.</span> <span class="nav-text">协同进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FIFO"><span class="nav-number">10.4.</span> <span class="nav-text">FIFO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XSI-IPC"><span class="nav-number">10.5.</span> <span class="nav-text">XSI IPC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标识符和键"><span class="nav-number">10.5.1.</span> <span class="nav-text">标识符和键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#权限结构"><span class="nav-number">10.5.2.</span> <span class="nav-text">权限结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优点和缺点"><span class="nav-number">10.5.3.</span> <span class="nav-text">优点和缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息队列"><span class="nav-number">10.6.</span> <span class="nav-text">消息队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信号量"><span class="nav-number">10.7.</span> <span class="nav-text">信号量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#共享存储"><span class="nav-number">10.8.</span> <span class="nav-text">共享存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#POSIX信号量"><span class="nav-number">10.9.</span> <span class="nav-text">POSIX信号量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户进程-服务器进程属性"><span class="nav-number">10.10.</span> <span class="nav-text">客户进程-服务器进程属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部分习题代码"><span class="nav-number">10.11.</span> <span class="nav-text">部分习题代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第十六章-网络IPC：套接字"><span class="nav-number">11.</span> <span class="nav-text">第十六章 网络IPC：套接字</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#套接字描述符"><span class="nav-number">11.1.</span> <span class="nav-text">套接字描述符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#寻址"><span class="nav-number">11.2.</span> <span class="nav-text">寻址</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#字节序"><span class="nav-number">11.2.1.</span> <span class="nav-text">字节序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#地址格式"><span class="nav-number">11.2.2.</span> <span class="nav-text">地址格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#地址查询"><span class="nav-number">11.2.3.</span> <span class="nav-text">地址查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将套接字与地址关联"><span class="nav-number">11.2.4.</span> <span class="nav-text">将套接字与地址关联</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建立连接"><span class="nav-number">11.3.</span> <span class="nav-text">建立连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据传输"><span class="nav-number">11.4.</span> <span class="nav-text">数据传输</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#套接字选项"><span class="nav-number">11.5.</span> <span class="nav-text">套接字选项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#带外数据"><span class="nav-number">11.6.</span> <span class="nav-text">带外数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非阻塞和异步I-O"><span class="nav-number">11.7.</span> <span class="nav-text">非阻塞和异步I/O</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#习题16-6"><span class="nav-number">11.8.</span> <span class="nav-text">习题16.6</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第十七章-高级进程间通信"><span class="nav-number">12.</span> <span class="nav-text">第十七章 高级进程间通信</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#UNIX域套接字"><span class="nav-number">12.1.</span> <span class="nav-text">UNIX域套接字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#唯一连接"><span class="nav-number">12.2.</span> <span class="nav-text">唯一连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传送文件描述符"><span class="nav-number">12.3.</span> <span class="nav-text">传送文件描述符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#open服务"><span class="nav-number">12.4.</span> <span class="nav-text">open服务</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第一章-UNIX基础知识"><span class="nav-number">1.</span> <span class="nav-text">第一章 UNIX基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#UNIX体系结构"><span class="nav-number">1.1.</span> <span class="nav-text">UNIX体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#shell"><span class="nav-number">1.1.1.</span> <span class="nav-text">shell</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件和目录"><span class="nav-number">1.2.</span> <span class="nav-text">文件和目录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#工作目录"><span class="nav-number">1.2.1.</span> <span class="nav-text">工作目录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输入和输出"><span class="nav-number">1.3.</span> <span class="nav-text">输入和输出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件描述符"><span class="nav-number">1.3.1.</span> <span class="nav-text">文件描述符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标准输入-标准输出和标准错误"><span class="nav-number">1.3.2.</span> <span class="nav-text">标准输入, 标准输出和标准错误</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不带缓冲的I-O"><span class="nav-number">1.3.3.</span> <span class="nav-text">不带缓冲的I/O</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序与进程"><span class="nav-number">1.4.</span> <span class="nav-text">程序与进程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#程序"><span class="nav-number">1.4.1.</span> <span class="nav-text">程序:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程与进程ID"><span class="nav-number">1.4.2.</span> <span class="nav-text">进程与进程ID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程管理"><span class="nav-number">1.4.3.</span> <span class="nav-text">进程管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#fork"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">fork</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#waitpid"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">waitpid</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程和线程ID"><span class="nav-number">1.4.4.</span> <span class="nav-text">线程和线程ID</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#出错处理"><span class="nav-number">1.5.</span> <span class="nav-text">出错处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#strerror"><span class="nav-number">1.5.1.</span> <span class="nav-text">strerror()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#perror"><span class="nav-number">1.5.2.</span> <span class="nav-text">perror()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户ID"><span class="nav-number">1.6.</span> <span class="nav-text">用户ID</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用户ID-1"><span class="nav-number">1.6.1.</span> <span class="nav-text">用户ID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#组ID"><span class="nav-number">1.6.2.</span> <span class="nav-text">组ID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#附属ID"><span class="nav-number">1.6.3.</span> <span class="nav-text">附属ID</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信号-signal"><span class="nav-number">1.7.</span> <span class="nav-text">信号(signal)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#时间值"><span class="nav-number">1.8.</span> <span class="nav-text">时间值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#日历时间"><span class="nav-number">1.8.1.</span> <span class="nav-text">日历时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程时间"><span class="nav-number">1.8.2.</span> <span class="nav-text">进程时间</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统调用和库函数"><span class="nav-number">1.9.</span> <span class="nav-text">系统调用和库函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第三章-文件I-O"><span class="nav-number">2.</span> <span class="nav-text">第三章 文件I/O</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#文件描述符-1"><span class="nav-number">2.1.</span> <span class="nav-text">文件描述符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数open和openat"><span class="nav-number">2.2.</span> <span class="nav-text">函数open和openat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数creat"><span class="nav-number">2.3.</span> <span class="nav-text">函数creat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数close"><span class="nav-number">2.4.</span> <span class="nav-text">函数close</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数lseek"><span class="nav-number">2.5.</span> <span class="nav-text">函数lseek</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数read"><span class="nav-number">2.6.</span> <span class="nav-text">函数read</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数write"><span class="nav-number">2.7.</span> <span class="nav-text">函数write</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件共享"><span class="nav-number">2.8.</span> <span class="nav-text">文件共享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原子操作"><span class="nav-number">2.9.</span> <span class="nav-text">原子操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数dup和dup2"><span class="nav-number">2.10.</span> <span class="nav-text">函数dup和dup2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数sync-fsync-fdatasync"><span class="nav-number">2.11.</span> <span class="nav-text">函数sync, fsync, fdatasync</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数fcntl"><span class="nav-number">2.12.</span> <span class="nav-text">函数fcntl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数ioctl"><span class="nav-number">2.13.</span> <span class="nav-text">函数ioctl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dev-fd"><span class="nav-number">2.14.</span> <span class="nav-text">/dev/fd</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第四章-文件和目录"><span class="nav-number">3.</span> <span class="nav-text">第四章 文件和目录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#函数stat-fstat-fstatat和lstat"><span class="nav-number">3.1.</span> <span class="nav-text">函数stat, fstat, fstatat和lstat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件类型"><span class="nav-number">3.2.</span> <span class="nav-text">文件类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置用户ID和组ID"><span class="nav-number">3.3.</span> <span class="nav-text">设置用户ID和组ID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件访问权限"><span class="nav-number">3.4.</span> <span class="nav-text">文件访问权限</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一"><span class="nav-number">3.4.1.</span> <span class="nav-text">一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二"><span class="nav-number">3.4.2.</span> <span class="nav-text">二</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三"><span class="nav-number">3.4.3.</span> <span class="nav-text">三</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四"><span class="nav-number">3.4.4.</span> <span class="nav-text">四</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五"><span class="nav-number">3.4.5.</span> <span class="nav-text">五</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六"><span class="nav-number">3.4.6.</span> <span class="nav-text">六</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七"><span class="nav-number">3.4.7.</span> <span class="nav-text">七</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新文件和目录的所有权"><span class="nav-number">3.5.</span> <span class="nav-text">新文件和目录的所有权</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数access和faccess"><span class="nav-number">3.6.</span> <span class="nav-text">函数access和faccess</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例-acess-cpp"><span class="nav-number">3.7.</span> <span class="nav-text">例:acess.cpp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数umask-文件模式创建屏蔽字"><span class="nav-number">3.8.</span> <span class="nav-text">函数umask(文件模式创建屏蔽字)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数chmod-fchmod和fchmodat"><span class="nav-number">3.9.</span> <span class="nav-text">函数chmod,fchmod和fchmodat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数chown-fchown-fchownat和lchown"><span class="nav-number">3.10.</span> <span class="nav-text">函数chown,fchown,fchownat和lchown</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件系统"><span class="nav-number">3.11.</span> <span class="nav-text">文件系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数link-linkat-unlink和remove"><span class="nav-number">3.12.</span> <span class="nav-text">函数link, linkat, unlink和remove</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令行参数"><span class="nav-number">3.13.</span> <span class="nav-text">命令行参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境表"><span class="nav-number">3.14.</span> <span class="nav-text">环境表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C程序存储空间分布"><span class="nav-number">3.15.</span> <span class="nav-text">C程序存储空间分布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#共享库"><span class="nav-number">3.16.</span> <span class="nav-text">共享库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存储空间分配"><span class="nav-number">3.17.</span> <span class="nav-text">存储空间分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境变量"><span class="nav-number">3.18.</span> <span class="nav-text">环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数setjmp和longjmp"><span class="nav-number">3.19.</span> <span class="nav-text">函数setjmp和longjmp</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自动变量、寄存器变量和易失变量"><span class="nav-number">3.19.1.</span> <span class="nav-text">自动变量、寄存器变量和易失变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自动变量的潜在问题"><span class="nav-number">3.19.2.</span> <span class="nav-text">自动变量的潜在问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数getrlimit和setrlimit"><span class="nav-number">3.20.</span> <span class="nav-text">函数getrlimit和setrlimit</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第八章-进程控制"><span class="nav-number">4.</span> <span class="nav-text">第八章 进程控制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程标识"><span class="nav-number">4.1.</span> <span class="nav-text">进程标识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数fork"><span class="nav-number">4.2.</span> <span class="nav-text">函数fork</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数exit"><span class="nav-number">4.3.</span> <span class="nav-text">函数exit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更改用户ID和更改组ID"><span class="nav-number">4.4.</span> <span class="nav-text">更改用户ID和更改组ID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解释器文件"><span class="nav-number">4.5.</span> <span class="nav-text">解释器文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数system"><span class="nav-number">4.6.</span> <span class="nav-text">函数system</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程标识-1"><span class="nav-number">4.7.</span> <span class="nav-text">进程标识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程调度"><span class="nav-number">4.8.</span> <span class="nav-text">进程调度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程时间-1"><span class="nav-number">4.9.</span> <span class="nav-text">进程时间</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第九章-进程关系"><span class="nav-number">5.</span> <span class="nav-text">第九章 进程关系</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#终端登录"><span class="nav-number">5.1.</span> <span class="nav-text">终端登录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络登录"><span class="nav-number">5.2.</span> <span class="nav-text">网络登录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程组"><span class="nav-number">5.3.</span> <span class="nav-text">进程组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数tcgetpgrp、tcsetpgrp和tcgetsid"><span class="nav-number">5.4.</span> <span class="nav-text">函数tcgetpgrp、tcsetpgrp和tcgetsid</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#作业控制"><span class="nav-number">5.5.</span> <span class="nav-text">作业控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shell执行程序"><span class="nav-number">5.6.</span> <span class="nav-text">shell执行程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#孤儿进程组"><span class="nav-number">5.7.</span> <span class="nav-text">孤儿进程组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FreeBSD实现"><span class="nav-number">5.8.</span> <span class="nav-text">FreeBSD实现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第十章-信号"><span class="nav-number">6.</span> <span class="nav-text">第十章 信号</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#信号概念"><span class="nav-number">6.1.</span> <span class="nav-text">信号概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数signal"><span class="nav-number">6.2.</span> <span class="nav-text">函数signal</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#程序启动"><span class="nav-number">6.2.1.</span> <span class="nav-text">程序启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程创建"><span class="nav-number">6.2.2.</span> <span class="nav-text">进程创建</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不可靠信号"><span class="nav-number">6.3.</span> <span class="nav-text">不可靠信号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#中断的系统调用"><span class="nav-number">6.4.</span> <span class="nav-text">中断的系统调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可重入信号"><span class="nav-number">6.5.</span> <span class="nav-text">可重入信号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SIGCLD语义"><span class="nav-number">6.6.</span> <span class="nav-text">SIGCLD语义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可靠信号术语和语义"><span class="nav-number">6.7.</span> <span class="nav-text">可靠信号术语和语义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数kill和raise"><span class="nav-number">6.8.</span> <span class="nav-text">函数kill和raise</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数alarm和pause"><span class="nav-number">6.9.</span> <span class="nav-text">函数alarm和pause</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数abort"><span class="nav-number">6.10.</span> <span class="nav-text">函数abort</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数system-1"><span class="nav-number">6.11.</span> <span class="nav-text">函数system</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数sleep、nanosleep和clock-nanosleep"><span class="nav-number">6.12.</span> <span class="nav-text">函数sleep、nanosleep和clock_nanosleep</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数sigqueue"><span class="nav-number">6.13.</span> <span class="nav-text">函数sigqueue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#作业控制信号"><span class="nav-number">6.14.</span> <span class="nav-text">作业控制信号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信号名和编号"><span class="nav-number">6.15.</span> <span class="nav-text">信号名和编号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#习题"><span class="nav-number">6.16.</span> <span class="nav-text">习题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第十一章-线程"><span class="nav-number">7.</span> <span class="nav-text">第十一章 线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程概念"><span class="nav-number">7.1.</span> <span class="nav-text">线程概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程标识"><span class="nav-number">7.2.</span> <span class="nav-text">线程标识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程创建"><span class="nav-number">7.3.</span> <span class="nav-text">线程创建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程终止"><span class="nav-number">7.4.</span> <span class="nav-text">线程终止</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程同步"><span class="nav-number">7.5.</span> <span class="nav-text">线程同步</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#互斥量"><span class="nav-number">7.5.1.</span> <span class="nav-text">互斥量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#避免死锁"><span class="nav-number">7.5.2.</span> <span class="nav-text">避免死锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数pthread-mutex-timedlock"><span class="nav-number">7.5.3.</span> <span class="nav-text">函数pthread_mutex_timedlock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读写锁"><span class="nav-number">7.5.4.</span> <span class="nav-text">读写锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#带有超时的读写锁"><span class="nav-number">7.5.5.</span> <span class="nav-text">带有超时的读写锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条件变量"><span class="nav-number">7.5.6.</span> <span class="nav-text">条件变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自旋锁"><span class="nav-number">7.5.7.</span> <span class="nav-text">自旋锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#屏障"><span class="nav-number">7.5.8.</span> <span class="nav-text">屏障</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十二章-线程控制"><span class="nav-number">8.</span> <span class="nav-text">十二章 线程控制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程限制"><span class="nav-number">8.1.</span> <span class="nav-text">线程限制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程属性"><span class="nav-number">8.2.</span> <span class="nav-text">线程属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同步属性"><span class="nav-number">8.3.</span> <span class="nav-text">同步属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#互斥量属性"><span class="nav-number">8.3.1.</span> <span class="nav-text">互斥量属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读写锁属性"><span class="nav-number">8.3.2.</span> <span class="nav-text">读写锁属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条件变量属性"><span class="nav-number">8.3.3.</span> <span class="nav-text">条件变量属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#屏障属性"><span class="nav-number">8.3.4.</span> <span class="nav-text">屏障属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重入"><span class="nav-number">8.4.</span> <span class="nav-text">重入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程特定数据"><span class="nav-number">8.5.</span> <span class="nav-text">线程特定数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#取消选项"><span class="nav-number">8.6.</span> <span class="nav-text">取消选项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程和信号"><span class="nav-number">8.7.</span> <span class="nav-text">线程和信号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程和fork"><span class="nav-number">8.8.</span> <span class="nav-text">线程和fork</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程和I-O"><span class="nav-number">8.9.</span> <span class="nav-text">线程和I/O</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第十三章-守护进程"><span class="nav-number">9.</span> <span class="nav-text">第十三章 守护进程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#守护进程特性"><span class="nav-number">9.1.</span> <span class="nav-text">守护进程特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编程规则"><span class="nav-number">9.2.</span> <span class="nav-text">编程规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#出错记录"><span class="nav-number">9.3.</span> <span class="nav-text">出错记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单实例守护进程"><span class="nav-number">9.4.</span> <span class="nav-text">单实例守护进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#守护进程"><span class="nav-number">9.5.</span> <span class="nav-text">守护进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户进程-服务进程模型"><span class="nav-number">9.6.</span> <span class="nav-text">客户进程-服务进程模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第十四章-高级I-O"><span class="nav-number">10.</span> <span class="nav-text">第十四章 高级I/O</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#非阻塞I-O"><span class="nav-number">10.1.</span> <span class="nav-text">非阻塞I/O</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#记录锁"><span class="nav-number">10.2.</span> <span class="nav-text">记录锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fcntl记录锁"><span class="nav-number">10.2.1.</span> <span class="nav-text">fcntl记录锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#锁的隐含继承和释放"><span class="nav-number">10.2.2.</span> <span class="nav-text">锁的隐含继承和释放</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FreeBSD实现-1"><span class="nav-number">10.2.3.</span> <span class="nav-text">FreeBSD实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在文件末尾加锁"><span class="nav-number">10.2.4.</span> <span class="nav-text">在文件末尾加锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建议性锁和强制性锁"><span class="nav-number">10.2.5.</span> <span class="nav-text">建议性锁和强制性锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#I-O多路转接"><span class="nav-number">10.3.</span> <span class="nav-text">I/O多路转接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#函数select和pselect"><span class="nav-number">10.3.1.</span> <span class="nav-text">函数select和pselect</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数poll"><span class="nav-number">10.3.2.</span> <span class="nav-text">函数poll</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异步I-O"><span class="nav-number">10.4.</span> <span class="nav-text">异步I/O</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数readv和writev"><span class="nav-number">10.5.</span> <span class="nav-text">函数readv和writev</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数readn和writen"><span class="nav-number">10.6.</span> <span class="nav-text">函数readn和writen</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存储映射I-O"><span class="nav-number">10.7.</span> <span class="nav-text">存储映射I/O</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第十五章-进程间通信（IPC）"><span class="nav-number">11.</span> <span class="nav-text">第十五章 进程间通信（IPC）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#管道"><span class="nav-number">11.1.</span> <span class="nav-text">管道</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数popen和pclose"><span class="nav-number">11.2.</span> <span class="nav-text">函数popen和pclose</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#协同进程"><span class="nav-number">11.3.</span> <span class="nav-text">协同进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FIFO"><span class="nav-number">11.4.</span> <span class="nav-text">FIFO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XSI-IPC"><span class="nav-number">11.5.</span> <span class="nav-text">XSI IPC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标识符和键"><span class="nav-number">11.5.1.</span> <span class="nav-text">标识符和键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#权限结构"><span class="nav-number">11.5.2.</span> <span class="nav-text">权限结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优点和缺点"><span class="nav-number">11.5.3.</span> <span class="nav-text">优点和缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息队列"><span class="nav-number">11.6.</span> <span class="nav-text">消息队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信号量"><span class="nav-number">11.7.</span> <span class="nav-text">信号量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#共享存储"><span class="nav-number">11.8.</span> <span class="nav-text">共享存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#POSIX信号量"><span class="nav-number">11.9.</span> <span class="nav-text">POSIX信号量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户进程-服务器进程属性"><span class="nav-number">11.10.</span> <span class="nav-text">客户进程-服务器进程属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部分习题代码"><span class="nav-number">11.11.</span> <span class="nav-text">部分习题代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第十六章-网络IPC：套接字"><span class="nav-number">12.</span> <span class="nav-text">第十六章 网络IPC：套接字</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#套接字描述符"><span class="nav-number">12.1.</span> <span class="nav-text">套接字描述符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#寻址"><span class="nav-number">12.2.</span> <span class="nav-text">寻址</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#字节序"><span class="nav-number">12.2.1.</span> <span class="nav-text">字节序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#地址格式"><span class="nav-number">12.2.2.</span> <span class="nav-text">地址格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#地址查询"><span class="nav-number">12.2.3.</span> <span class="nav-text">地址查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将套接字与地址关联"><span class="nav-number">12.2.4.</span> <span class="nav-text">将套接字与地址关联</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建立连接"><span class="nav-number">12.3.</span> <span class="nav-text">建立连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据传输"><span class="nav-number">12.4.</span> <span class="nav-text">数据传输</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#套接字选项"><span class="nav-number">12.5.</span> <span class="nav-text">套接字选项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#带外数据"><span class="nav-number">12.6.</span> <span class="nav-text">带外数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非阻塞和异步I-O"><span class="nav-number">12.7.</span> <span class="nav-text">非阻塞和异步I/O</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#习题16-6"><span class="nav-number">12.8.</span> <span class="nav-text">习题16.6</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第十七章-高级进程间通信"><span class="nav-number">13.</span> <span class="nav-text">第十七章 高级进程间通信</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#UNIX域套接字"><span class="nav-number">13.1.</span> <span class="nav-text">UNIX域套接字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#唯一连接"><span class="nav-number">13.2.</span> <span class="nav-text">唯一连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传送文件描述符"><span class="nav-number">13.3.</span> <span class="nav-text">传送文件描述符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#open服务"><span class="nav-number">13.4.</span> <span class="nav-text">open服务</span></a></li></ol></li></ol></div>
             
 
           </div>
