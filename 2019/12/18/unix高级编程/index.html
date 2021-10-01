@@ -135,7 +135,7 @@
 <meta property="og:image" content="https://s2.ax1x.com/2020/02/18/3FcYtA.png">
 <meta property="og:image" content="https://s2.ax1x.com/2020/02/21/3nHyJH.png">
 <meta property="og:image" content="https://s2.ax1x.com/2020/02/25/3YHjQP.png">
-<meta property="og:updated_time" content="2021-10-01T13:35:38.081Z">
+<meta property="og:updated_time" content="2021-10-01T13:37:16.368Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="unix高级编程">
 <meta name="twitter:description" content="UNIX下高级编程，目前正在学习中，不断更新。">
@@ -548,7 +548,7 @@
 <p><img src="https://s2.ax1x.com/2019/06/24/ZA0K9s.png" alt="结构"></p>
 <p>如果两个独立进程各自打开同一文件, 则有下图关系:</p>
 <p><img src="https://s2.ax1x.com/2019/06/24/ZA0M3n.png" alt="打开同一文件"></p>
-<p>可能有多个文件描述符项指向同一文件表项.这会在dup或fork函数后产生. 注意: 文件描述符标志与文件状态标志在作用范围上的区别: 前者只用于一个进程的一个描述符, 而后者则应用与指向该文件表项的任意进程中的所有描述符.(有点类型指针和底层存储的区别)</p>
+<p>注意：<font color="red">可能有多个文件描述符项指向同一文件表项</font>.这会在dup或fork函数后产生. 注意: 文件描述符标志与文件状态标志在作用范围上的区别: 前者只用于一个进程的一个描述符, 而后者则应用与指向该文件表项的任意进程中的所有描述符.(有点类型指针和底层存储的区别)</p>
 <h2 id="原子操作"><a href="#原子操作" class="headerlink" title="原子操作"></a>原子操作</h2><p>原子操作指的是由多步组成的一个操作. 如果该操作原子的执行, 则要么执行完所有的步骤, 要么一步也不执行, 不可能只执行所以步骤中的一个子集. 任何要求多于一个函数调用的操作都不是原子操作, 因为在两个函数调用之间, 内核有可能会临时挂起进程.</p>
 <h2 id="函数dup和dup2"><a href="#函数dup和dup2" class="headerlink" title="函数dup和dup2"></a>函数dup和dup2</h2><p>dup和dup2都用来赋值一个现有的文件描述符. 原型:</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dup</span><span class="params">(<span class="keyword">int</span> fd)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dup2</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">int</span> fd2)</span></span>;</span><br><span class="line"><span class="comment">//函数返回值, 若成功返回新的文件描述符, 否则返回-1</span></span><br></pre></td></tr></table></figure>
