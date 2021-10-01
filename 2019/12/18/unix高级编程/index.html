@@ -135,7 +135,7 @@
 <meta property="og:image" content="https://s2.ax1x.com/2020/02/18/3FcYtA.png">
 <meta property="og:image" content="https://s2.ax1x.com/2020/02/21/3nHyJH.png">
 <meta property="og:image" content="https://s2.ax1x.com/2020/02/25/3YHjQP.png">
-<meta property="og:updated_time" content="2021-10-01T13:48:18.377Z">
+<meta property="og:updated_time" content="2021-10-01T13:50:22.037Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="unix高级编程">
 <meta name="twitter:description" content="UNIX下高级编程，目前正在学习中，不断更新。">
@@ -968,7 +968,7 @@ fd和pathname用来确定路径的.flag给出一种方式,当AT_REMOVEDIR被设�
 
 运行:
 
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">chst@wyk-GL63:~/study_file/unix编程$ ls -l temp.foo</span><br><span class="line">-rw-rw-r-- 1 chst chst 8 Sep 10 23:59 temp.foo</span><br><span class="line">chst@wyk-GL63:~/study_file/unix编程$ ./unlink.o &amp; //后台运行程序</span><br><span class="line">[1] 9597</span><br><span class="line">chst@wyk-GL63:~/study_file/unix编程$ file unlinked</span><br><span class="line">done</span><br><span class="line"> ls -l temp.foo</span><br><span class="line">ls: cannot access 'temp.foo': No such file or directory //目录项已被删除(数据块未被删除)</span><br><span class="line">[1]+  Done                    ./unlink.o</span><br><span class="line">chst@wyk-GL63:~/study_file/unix编程</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">chst@wyk-GL63:~/study_file/unix编程$ ls -l temp.foo</span><br><span class="line">-rw-rw-r-- 1 chst chst 8 Sep 10 23:59 temp.foo</span><br><span class="line">chst@wyk-GL63:~/study_file/unix编程$ ./unlink.o &amp; //后台运行程序</span><br><span class="line">[1] 9597</span><br><span class="line">chst@wyk-GL63:~/study_file/unix编程$ file unlinked</span><br><span class="line">done</span><br><span class="line"> ls -l temp.foo</span><br><span class="line">ls: cannot access 'temp.foo': No such file or directory //目录项已被删除(数据块未被删除)</span><br><span class="line">[1]+  Done                    ./unlink.o</span><br><span class="line">chst@wyk-GL63:~/study_file/unix编程$</span><br></pre></td></tr></table></figure>
 
 ## 函数rename和renameat
 
