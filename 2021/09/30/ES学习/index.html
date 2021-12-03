@@ -89,7 +89,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://midpf-material.cdn.bcebos.com/2b5d0fb2d6334a004943ef3f6177f113.png">
 <meta property="og:image" content="https://midpf-material.cdn.bcebos.com/9b903e083f778cbab124ebfe059e0cda.png">
-<meta property="og:updated_time" content="2021-10-01T02:52:21.163Z">
+<meta property="og:updated_time" content="2021-12-03T16:18:19.560Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ElasticSearch学习">
 <meta name="twitter:description" content="ElasticSearch是开源的实时的分布式搜索分析引擎。这里参考其官方文档对其使用进行简单介绍。">
@@ -411,7 +411,7 @@
       
 
       
-        <h1 id="基础入门"><a href="#基础入门" class="headerlink" title="基础入门"></a>基础入门</h1><p><em>Elasticsearch</em> 是一个实时的分布式搜索分析引擎。</p>
+        <h1 id="基础入门"><a href="#基础入门" class="headerlink" title="基础入门"></a>基础入门</h1><p><em>Elasticsearch</em> 是一个近实时的分布式搜索分析引擎。</p>
 <ul>
 <li>一个分布式的实时文档存储，<em>每个字段</em> 可以被索引与搜索</li>
 <li>一个分布式实时分析搜索引擎</li>
@@ -653,7 +653,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">PUT /index</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;index&quot;: &#123;</span><br><span class="line">      &quot;similarity&quot;: &#123;</span><br><span class="line">        &quot;default&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;boolean&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>如果想要更改一个索引的默认相似，需要先关闭节点，再更改。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">POST /index/_close</span><br><span class="line"></span><br><span class="line">PUT /index/_settings</span><br><span class="line">&#123;</span><br><span class="line">  &quot;index&quot;: &#123;</span><br><span class="line">    &quot;similarity&quot;: &#123;</span><br><span class="line">      &quot;default&quot;: &#123;</span><br><span class="line">        &quot;type&quot;: &quot;boolean&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">POST /index/_open</span><br></pre></td></tr></table></figure>
-<h2 id="事务日志"><a href="#事务日志" class="headerlink" title="事务日志"></a>事务日志</h2><p>由于向Lucence提交数据才能将数据持久化到磁盘上，但提交数据到Lucence代价是十分高昂的。因此ES是将一组数据一起提交（提交到Lucence前先放到内存里，可以用来搜索）。但为了防止未持久化的数据丢失，需要建立一个事务日志，将还未持久化的操作记录下来。</p>
+<h2 id="事务日志"><a href="#事务日志" class="headerlink" title="事务日志"></a>事务日志</h2><p>由于向Lucence提交数据才能将数据持久化到磁盘上，但提交数据到Lucence代价是十分高昂的。因此ES是将一组数据一起提交（提交到Lucence前先放到内存里，不可搜索，可以通过id获取）。但为了防止未持久化的数据丢失，需要建立一个事务日志，将还未持久化的操作记录下来。</p>
 <p><code>flush</code>就是将数据提交到<code>Lucence</code>，并生成一个新的事务日志。<code>flush</code>操作是自动为了防止事务日志过大。</p>
 <p>存在事务日志中的数据在被同步和提交后，会被持久化。如果在持久化前，操作系统出现故障，会导致存在内存中还未提交的更改丢失，此时重启分片，会先读取事务日志，保证数据正常。</p>
 <p>默认设置下<code>index.translog.durability</code>是<code>request</code>，即，每次的<code>index</code> <code>delete</code> <code>update</code> <code>bluk</code>请求都会在日志文件被同步并且提交到主分片和被分配的副分片后才返回。如果<code>index.translog.durability</code>是<code>async</code>，即是异步的，则事务日志被每<code>index.translog.sync_interval</code>提交。这可能导致节点错误后恢复，部分操作丢失。</p>
@@ -2079,7 +2079,7 @@
 <p><img src="https://midpf-material.cdn.bcebos.com/2b5d0fb2d6334a004943ef3f6177f113.png" alt="图1"></p>
 <p><img src="https://midpf-material.cdn.bcebos.com/9b903e083f778cbab124ebfe059e0cda.png" alt="图2"></p>
 <p>新的段首先被写到文件缓存（很廉价），之后被flush到磁盘（昂贵），在文件缓存时，文档即可开放和被读取，就想其他文件一样。</p>
-<p>Lucene允许编写和打开新的段，使包含的文档可见，无需执行完整的提交即可搜索。 与提交磁盘相比，此过程要轻松得多，并且可以经常执行而不会降低性能。</p>
+<p>Lucene允许编写和打开新的段，使包含的文档可见。 与提交磁盘相比，此过程要轻松得多，并且可以经常执行而不会降低性能。</p>
 <p>ES中写并且打开一个段落的操作被叫做refresh。一个refresh操作可以将一个分片上从上一次refresh到当前所以操作可在搜索中获得（生效）。可以使用如下操作实现refresh</p>
 <ol>
 <li>等待自动refresh</li>
