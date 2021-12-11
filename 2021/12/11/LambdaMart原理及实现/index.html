@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="排序,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="LambdaMart算法作为经典的搜索排序算法，至今依然被各大互联网公司使用，在工作中使用到该算法，这里进行详细学习。">
+<meta name="keywords" content="排序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LambdaMart算法原理与实现">
+<meta property="og:url" content="http://yoursite.com/2021/12/11/LambdaMart原理及实现/index.html">
+<meta property="og:site_name" content="chst&#39;s Blog">
+<meta property="og:description" content="LambdaMart算法作为经典的搜索排序算法，至今依然被各大互联网公司使用，在工作中使用到该算法，这里进行详细学习。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/24/5WQ0JI.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/24/5WNCo8.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/24/5fujCq.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/28/5qj7Z9.png">
+<meta property="og:updated_time" content="2021-12-11T12:59:44.241Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LambdaMart算法原理与实现">
+<meta name="twitter:description" content="LambdaMart算法作为经典的搜索排序算法，至今依然被各大互联网公司使用，在工作中使用到该算法，这里进行详细学习。">
+<meta name="twitter:image" content="https://z3.ax1x.com/2021/10/24/5WQ0JI.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/12/11/LambdaMart原理及实现/">
+
+
+
+
+
+  <title>LambdaMart算法原理与实现 | chst's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">chst's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">个人网站</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/12/11/LambdaMart原理及实现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="chst">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chst's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">LambdaMart算法原理与实现</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-12-11T16:31:59+08:00">
+                2021-12-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/12/11/LambdaMart原理及实现/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2021/12/11/LambdaMart原理及实现/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2021/12/11/LambdaMart原理及实现/" class="leancloud_visitors" data-flag-title="LambdaMart算法原理与实现">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  LambdaMart算法作为经典的搜索排序算法，至今依然被各大互联网公司使用，在工作中使用到该算法，这里进行详细学习。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="NDCG评估指标"><a href="#NDCG评估指标" class="headerlink" title="NDCG评估指标"></a>NDCG评估指标</h1><p>NDCG用于评估搜索返回的结果相关性指标。其由CG转换到DCG再发展出nDCG。下面依次介绍。</p>
+<h2 id="累计增益-CG"><a href="#累计增益-CG" class="headerlink" title="累计增益(CG)"></a>累计增益(CG)</h2><p>CG，cumulative gain，是DCG的前身，只考虑到了相关性的关联程度，没有考虑到位置的因素。它是一个搜素结果相关性分数的总和。指定位置P上的CG为：</p>
+<script type="math/tex; mode=display">
+CG_P=\sum_{i=1}^P rel_i</script><p>其中$rel_i$为第$i$个位置上的文档和query的相关性。</p>
+<p>该度量方法存在问题，因为其无法区分排序顺序，只能判断召回的数据是否相关，比如一个query应该召回三个文档$a,b,c$。其相关性依次降低，但如果召回的实际顺序是$c,b,a$时，该评估指标和最优情况下的指标值是一样的。</p>
+<p>为解决上述问题，引入了DCG。</p>
+<h2 id="折损累计增益-DCG"><a href="#折损累计增益-DCG" class="headerlink" title="折损累计增益(DCG)"></a>折损累计增益(DCG)</h2><p>相比于CG，DCG在CG的每一个结果上增加了一个折损值。目的就是为了让排名越靠前的结果越能影响最后的结果。假设排序越往后，价值越低。到第i个位置的时候，它的价值是 $\frac{1}{log_2{(i+1)}}$，那么第i个结果产生的效益就是 $rel_i * \frac{1}{log_2{(i+1)}}$，因此：</p>
+<script type="math/tex; mode=display">
+DCG_P\sum_i^P\frac{rel_i}{log_2{(i+1)}}</script><p>因为是乘以一个折损值，因此该值可以取别的函数，还有一个更加常用的公式，如下：</p>
+<script type="math/tex; mode=display">
+DCG_P\sum_i^P\frac{2^{rel_i}-1}{log_2{(i+1)}}</script><p>DCG解决了同一个query下排序的指标，但是对于不同query其召回的文档数量是不一致的，DCG采用的是累加的方式，这对应召回文档更多的query是更加友好的，但不符合实际使用，因此NDCG被提出以改进DCG。</p>
+<h2 id="归一化折损累计增益-NDCG"><a href="#归一化折损累计增益-NDCG" class="headerlink" title="归一化折损累计增益(NDCG)"></a>归一化折损累计增益(NDCG)</h2><p>由于DCG是一个累加值，无法对不同搜索结果进行比较，因此NDCC对每个query的结果进行了归一化操作，其方法是对DCG值除以IDCG(理想情况下最大DCG值)：</p>
+<script type="math/tex; mode=display">
+nDCG_P=\frac{DCG_p}{IDCG_p}</script><script type="math/tex; mode=display">
+IDCG_P = \sum_{i=1}^{\vert RET \vert}\frac{2^{rel_i}-1}{log_2{(i+1)}}</script><p>其中$\vert REL \vert$表示，结果按照相关性从大到小的顺序排序，取前P个结构组合成的集合，即按照最优的方式对结果进行排序是的DCG值。</p>
+<h1 id="排序学习LTR"><a href="#排序学习LTR" class="headerlink" title="排序学习LTR"></a>排序学习LTR</h1><p><strong>排序学习（Learning to Rank，LTR）</strong>，也称<strong>机器排序学习（Machine-learned Ranking，MLR)</strong> ，就是使用机器学习的技术解决排序问题。</p>
+<p>传统的检索模型所考虑的因素并不多，主要是利用词频、逆文档频率和文档长度、文档重要度这几个因子来人工拟合排序公式，且其中大多数模型都包含参数，也就需要通过不断的实验确定最佳的参数组合，以此来形成相关性打分。</p>
+<p>LTR 则是基于特征，通过机器学习算法训练来学习到最佳的拟合公式，相比传统的排序方法。</p>
+<p>排序学习的模型通常分为<strong>单点法（Pointwise Approach）</strong>、<strong>配对法（Pairwise Approach）</strong>和<strong>列表法（Listwise</strong> <strong>Approach）</strong>三大类，三种方法并不是特定的算法，而是排序学习模型的设计思路，主要区别体现在损失函数（Loss Function）、以及相应的标签标注方式和优化方法的不同。</p>
+<h2 id="单点法"><a href="#单点法" class="headerlink" title="单点法"></a>单点法</h2><p>单点法排序学习模型的每一个训练样本都仅仅是某一个查询关键字和某一个文档的配对。它们之间是否相关，与其他文档和其他查询关键字都没有关系。</p>
+<h2 id="配对法"><a href="#配对法" class="headerlink" title="配对法"></a>配对法</h2><p>配对法的基本思路是对样本进行两两比较，构建偏序文档对，从比较中学习排序，因为对于一个查询关键字来说，最重要的其实不是针对某一个文档的相关性是否估计得准确，而是要能够正确估计一组文档之间的 “相对关系”。</p>
+<h2 id="列表法"><a href="#列表法" class="headerlink" title="列表法"></a>列表法</h2><p>相对于尝试学习每一个样本是否相关或者两个文档的相对比较关系，列表法排序学习的基本思路是尝试直接优化像 NDCG（Normalized Discounted Cumulative Gain）这样的指标，从而能够学习到最佳排序结果。</p>
+<h1 id="LambdaMART算法"><a href="#LambdaMART算法" class="headerlink" title="LambdaMART算法"></a>LambdaMART算法</h1><p>LambdaMART 的提出先后经由 RankNet、LambdaRank 逐步演化而来。</p>
+<h2 id="RankNet"><a href="#RankNet" class="headerlink" title="RankNet"></a>RankNet</h2><p>RankNet 的核心是<strong>提出了一种概率损失函数来学习 Ranking Function</strong>，并应用 Ranking Function 对文档进行排序。</p>
+<p>RankNet网络将输入query的特征向量$x\in R^n$,映射为一个实数$f(x) \in R$。具体的，给定两个query下的两个文档$U_i$和$U_j$，其特征值分别为$x_i$，$x_j$，经过RankNet进行前向计算得到相应的对应分数$s_i = f(x_i) $,$s_j=f(x_j)$。使用$U_i \triangleright U_j$表示$U_i$比$U_j$排序更靠前（如对某个 query 来说，𝑈𝑖 被标记为 “good”，𝑈𝑗 被标记为 “bad”）。RankNet把排序问题转化成比较一个$(U_i,U_j)$文档对的排序问题，首先计算每个文档得分，定义使用下面的公式计算根据模型得分获取的$U_i$比$U_j$排序更靠前的概率：</p>
+<script type="math/tex; mode=display">
+P_{ij} \equiv P(U_i \triangleright U_j) \equiv \frac{1}{1+e^{-\sigma(s_i-s_j)}}</script><p>这个概率就是深度学习中常用的sigmoid函数，由于参数$\sigma$只影响函数形状，对最终结果影响不大，因此通常使用$\sigma=1$进行简化。</p>
+<p>可以看到RankNet预测的分数$s_i&gt;s_j$且差距越大时，$P_{ij}$越接近1，即$U_i$排序就应该在$U_j$前概率越大，反之则$U_j$在$U_i$之前概率越大。</p>
+<p>RankNet 证明了如果知道一个待排序文档的排列中相邻两个文档之间的排序概率，则通过推导可以算出每两个文档之间的排序概率。因此对于一个待排序文档序列，只需计算相邻文档之间的排序概率，不需要计算所有 pair，减少计算量。</p>
+<h3 id="真实的相关性概率"><a href="#真实的相关性概率" class="headerlink" title="真实的相关性概率"></a>真实的相关性概率</h3><p>对于特定query，定义$S_{ij} \in {0,\pm 1}$为文档$U_i$和文档$U_j$被标记的标签之间的关联，即：</p>
+<script type="math/tex; mode=display">
+S_{ij} =
+\begin{cases}
+1,\qquad U_i比U_j更相关 \\
+0,\qquad U_i和U_j相关性一致 \\
+-1,\qquad U_j比U_i更相关
+\end{cases}</script><p>因此可以定义文档$U_i$比文档$U_j$更相关的真实概率为：</p>
+<script type="math/tex; mode=display">
+\overline{P_{ij}} = \frac{1}{1+S_{ij}}</script><h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>对于一个排序，RankNet 从各个 doc 的相对关系来评价排序结果的好坏，排序的效果越好，那么有错误相对关系的 pair 就越少。所谓错误的相对关系即如果根据模型输出 𝑈𝑖 排在 𝑈𝑗 前面，但真实 label 为 𝑈𝑖 的相关性小于 𝑈𝑗，那么就记一个错误 pair，<strong>RankNet 本质上就是以错误的 pair 最少为优化目标，也就是说 RankNet 的目的是优化逆序对数。而在抽象成损失函数时，RankNet 实际上是引入了概率的思想：不是直接判断 𝑈𝑖 排在 𝑈𝑗 前面，而是说 𝑈𝑖 以一定的概率 P 排在 𝑈𝑗 前面，即是以预测概率与真实概率的差距最小作为优化目标。</strong>最后，<strong>RankNet 使用交叉熵（Cross Entropy）作为损失函数</strong>，来衡量 $P_{ij}$ 对 $\overline{P_{ij}}$ 的拟合程度：</p>
+<script type="math/tex; mode=display">
+L = - \overline{P_{ij}}logP_{ij} - (1-\overline{P_{ij}})log(1-P_{ij})</script><p>化简后：</p>
+<script type="math/tex; mode=display">
+L_{ij} = \frac{(1-S_{ij}) \sigma (s_i-s_j)}{2}+log(1+e^{-\sigma(s_i-s_j)})</script><p>当$S_{ij}=1$时：</p>
+<script type="math/tex; mode=display">
+L_{ij} = log(1+e^{-\sigma(s_i-s_j)})</script><p>当$S_{ij}=-1$时：</p>
+<script type="math/tex; mode=display">
+L_{ij} = \sigma (s_i-s_j) + log(1+e^{-\sigma(s_i-s_j)})  = log(1+e^{-\sigma(s_j-s_i)})</script><p>从损失函数可以看出，如果对文档$U_i$和$U_j$的打分可以正确拟合标签时，则$L_{ij}$趋于0，否则趋于线性函数。具体的，假如$S_{ij}$=1,则$U_i$应该比$U_j$排序高：</p>
+<p>如果$s_i &gt; s_j$则拟合的分数可以正确排序文档：</p>
+<script type="math/tex; mode=display">
+\underset{si-sj \rightarrow \infty}{lim} L_{ij}  =  \underset{si-sj \rightarrow \infty}{lim}log(1+e^{-\sigma(s_i-s_j)}) = log1=0</script><p>如果$s_i&lt;s_j$，则拟合的分数不能正确排序文档：</p>
+<script type="math/tex; mode=display">
+\underset{si-sj \rightarrow -\infty}{lim} L_{ij}  =  \underset{si-sj \rightarrow -\infty}{lim}log(1+e^{-\sigma(s_i-s_j)})=log(e^{-\sigma(s_i-s_j)}) = -\sigma(s_i-s_j)</script><p>下图展示了当$S_{ij}$分别取1，0，-1时，损失函数以$s_i-s_j$为变量的取值示意图：</p>
+<p><a href="https://imgtu.com/i/5WQ0JI" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/10/24/5WQ0JI.png" alt="5WQ0JI.png"></a></p>
+<p>该损失函数具有如下特点：</p>
+<ol>
+<li>当两个相关性不同的文档算出来的模型分数相同时，即 𝑠𝑖=𝑠𝑗，此时的损失函数的值为 log2，依然大于 0，仍会对这对 pair 做惩罚，使他们的排序位置区分开。</li>
+<li>损失函数是一个类线性函数，可以有效减少异常样本数据对模型的影响，因此具有鲁棒性。</li>
+</ol>
+<p>Ranknet 最终目标是训练出一个打分函数$s=f(x,w)$，使得所有 pair 的排序概率估计的损失最小，即：</p>
+<script type="math/tex; mode=display">
+L = \sum_{(i,j) \in I} L_{ij}</script><p>其中，𝐼 表示所有在同一 query 下，且具有不同相关性判断的 doc pair，每个 pair 有且仅有一次。</p>
+<p>通常该打分函数只要光滑可导即可。</p>
+<h3 id="参数更新"><a href="#参数更新" class="headerlink" title="参数更新"></a>参数更新</h3><p>RankNet 采用神经网络模型优化损失函数，也就是后向传播过程，采用梯度下降法求解并更新参数：</p>
+<script type="math/tex; mode=display">
+w_k = w_k - \eta \frac{\partial L} {\partial w_k}</script><p>其中$\eta$为学习率。RankNet 是一种方法框架，因此这里的 𝑤𝑘 可以是 NN、LR、GBDT 等算法的权重。</p>
+<p>对RankNet的梯度$\frac{\partial L} {\partial w_k}$进行因式分解，有：</p>
+<script type="math/tex; mode=display">
+\frac{\partial L} {\partial w_k} = \sum_{(i,j)\in I}\frac{\partial L_{ij}} {\partial w_k}=\sum_{(i,j)\in I}[\frac{\partial L_{ij}} {\partial s_i} \frac{\partial s_i}{\partial w_k} + \frac{\partial L_{ij}} {\partial s_j} \frac{\partial s_j}{\partial w_k}]</script><p>其中：</p>
+<script type="math/tex; mode=display">
+\frac{\partial L_{ij}} {\partial s_i} = \\ \frac{\partial \{ \frac{(1-S_{ij}) \sigma (s_i-s_j)}{2}+log(1+e^{-\sigma(s_i-s_j)})\}}{\partial s_i} = \\ \sigma[\frac{(1-S_{ij})}{2}-\frac 1 {1+e^{\sigma(s_i-s_j)}}] =\\ -\frac{\partial L_{ij}} {\partial s_j}</script><p>$s_i$和$s_j$对$w_k$的偏导数可以根据实际使用的模型求的。</p>
+<p>结果排序最终由模型得分$s_i$确定，其梯度很关键，定义：</p>
+<script type="math/tex; mode=display">
+\lambda_{ij} \overset{def}{=} \frac{\partial L_{ij}} {\partial s_i} = -\frac{\partial L_{ij}} {\partial s_j} =\\ \sigma[\frac{(1-S_{ij})}{2}-\frac 1 {1+e^{\sigma(s_i-s_j)}}]</script><p>对于有序对$(i,j)$,有$S_{ij}= 1$，于是化简：</p>
+<script type="math/tex; mode=display">
+\lambda_{ij} \overset{def}=-\frac 1 {1+e^{\sigma(s_i-s_j)}}</script><p>此时$\lambda_{ij}$始终为负数，使用梯度更新时，将会使$s_i$增大，因此，对于文档$U_i$来说，真实的相关性在其后的文档将促进其分数增加。即给其一个向上推的力。</p>
+<p>由于：</p>
+<script type="math/tex; mode=display">
+\frac{\partial L_{ij}} {\partial s_i}  = -\frac{\partial L_{ij}} {\partial s_j}</script><p>对于$s_j$来说，其导数均为正数，则在更新模型时使$s_j$变小，因此对应任意文档来说，真实的相关性在其前的文档都将促使其分数减小，即给其一个向下推的力。</p>
+<p>这个$lambda_{ij}$即为接下来介绍的LambdaRank 和 LambdaMART 中的 Lambda，称为 Lambda 梯度。</p>
+<h2 id="LambdaRank"><a href="#LambdaRank" class="headerlink" title="LambdaRank"></a>LambdaRank</h2><p>RankNet 本质上就是以错误的 pair 最少为优化目标，也就是说 RankNet 的直接目的就是优化逆序对数（pairwise error），这种方式一定程度上能够解决一些排序问题，但它并不完美。</p>
+<p>逆序对数（pairwise error）表示一个排列中，抽查任意两个 item，一共有 $C_2^n$ 种可能的组合，如果这两个 item 的之间的相对排序错误，逆序对数量增加 1。</p>
+<p><strong>逆序对数的实质就是插入排序过程中要移动元素的次数。直观理解为要想把某个元素移动到最优排序位置，需要移动多少次，两个元素就是二者移动次数的和。</strong></p>
+<p>例如，对某个 Query，和它相关的文章有两个，记为 (𝑄,[𝐷1,𝐷2]) 。</p>
+<ol>
+<li>如果模型 𝑓(⋅) 对此 Query 返回的 n 条结果中， 𝐷1,𝐷2 分别位于前两位，那么 pairwise error 就为 0；</li>
+<li>如果模型 𝑓(⋅) 对此 Query 返回的 n 条结果中， 𝐷1,𝐷2 分别位于第 1 位和第 n 位，那么 pairwise error 为 n-2；</li>
+<li>如果模型 𝑓(⋅) 对此 Query 返回的 n 条结果中， 𝐷1,𝐷2 分别位于第 2 和第 3 位，那么 pair-wise error 为 2；</li>
+</ol>
+<p>假设RankNet经过两轮迭代实现下图所示的顺序优化：</p>
+<p><a href="https://imgtu.com/i/5WNCo8" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/10/24/5WNCo8.png" alt="5WNCo8.png"></a></p>
+<p>第一轮的时候逆序对数为 13，第二轮为 3 + 8 = 11，逆序对数从 13 优化到 11，损失确实是减小了，如果用 AUC 作为评价指标，也可以获得指标的提升。但实际上，我们不难发现，优化逆序对数并没有考虑位置的权重，这与我们实际希望的排序目标不一致。下一轮迭代，RankNet 为了获得更大的逆序对数的减小，会按照黑色箭头那样的趋势，排名靠前的文档优化力度会减弱，更多的重心是把后一个文档往前排，这与我们搜索排序目标是不一致的，我们更希望出现红色箭头的趋势，优化的重点放在排名靠前的文档，尽可能地先让它排在最优位置。所以我们需要一个能够考虑位置权重的优化指标。</p>
+<p><strong>RankNet 以优化逆序对数为目标，并没有考虑位置的权重，这种优化方式对 AUC 这类评价指标比较友好，但实际的排序结果与现实的排序需求不一致，现实中的排序需求更加注重头部的相关度，排序评价指标选用 NDCG 这一类的指标才更加符合实际需求。而 RankNet 这种以优化逆序对数为目的的交叉熵损失，并不能直接或者间接优化 NDCG 这样的指标。</strong></p>
+<p><strong>对于绝大多数的优化过程来说，目标函数很多时候仅仅是为了推导梯度而存在的。而如果我们直接就得到了梯度，那自然就不需要目标函数了。</strong></p>
+<p>微软学者经过分析，就直接把 RankNet 最后得到的 Lambda 梯度拿来作为 LambdaRank 的梯度来用了，这也是 LambdaRank 中 Lambda 的含义。这样我们便知道了 LambdaRank 其实是一个经验算法，它不是通过显示定义损失函数再求梯度的方式对排序问题进行求解，而是分析排序问题需要的梯度的物理意义，直接定义梯度，即 Lambda 梯度。有了梯度，就不用关心损失函数是否连续、是否可微了，所以，微软学者直接把 NDCG 这个更完善的评价指标与 Lambda 梯度结合了起来，就形成了 LambdaRank。</p>
+<p>首先来分析一下lambda梯度的意义：LambdaRank 中的 Lambd 其实就是 RankNet 中的梯度 $\lambda_{ij}$， $\lambda_{ij}$可以看成是 𝑈𝑖 和 𝑈𝑗 中间的作用力，代表下一次迭代优化的方向和强度。如果 𝑈𝑖⊳𝑈𝑗，则 𝑈𝑗 会给予 𝑈𝑖 向上的大小为  $\lambda_{ij}$ 的推动力，而对应地 𝑈𝑖 会给予 𝑈𝑗 向下的大小为  $\lambda_{ij}$ 的推动力。对应上面的那张图，Lambda 的物理意义可以理解为图中箭头，即优化趋势。</p>
+<p>因此，直接使用$\vert \triangle_{NDCG} \vert $乘以$\lambda_{ij}$，就可以得到LambdaRank的Lambda，即：</p>
+<script type="math/tex; mode=display">
+\lambda_{i,j} \overset{def}=\frac{\partial L{(s_i-s_j)}}{\partial s_i} =-\frac 1 {1+e^{\sigma(s_i-s_j)}} \vert \triangle_{NDCG} \vert</script><p>其中$\vert \triangle_{NDCG} \vert $为$U_i$和$U_j$交换排序位置得到的NDCG差值的<strong>绝对值</strong>。通过前文的描述我们可以知道，NDCG指标考虑了排序位置的影响，$\vert \triangle_{NDCG} \vert $值为在全部召回队列中仅考虑i和j两个文档时，互换位置对最终DNCG分数的影响。</p>
+<p>对于$U_i \rhd U_j$来说，如果返回的分数排序后$U_i$对应$index_1$,$U_j$对应$index_j$。则：</p>
+<script type="math/tex; mode=display">
+ \triangle_{NDCG}   = \frac 1 {IDCG} [ (\sum_{k \in I, k \notin {i,j} } \frac{rel_k}{log_2(index_k+1)})+ \frac{rel_i}{log_2{(index_j+1)}}+\frac{rel_j}{log_2{(index_i+1)}} - \\ (\sum_{k \in I, k \notin {i,j} } \frac{rel_k}{log_2(index_k+1)})+ \frac{rel_i}{log_2{(index_j+1)}} - \frac{rel_i}{log_2{(index_i+1)}}-\frac{rel_j}{log_2{(index_j+1)}}]=\\
+\frac 1 {IDCG} (rel_i-rel_j)(\frac 1 {log(index_j+1)}-\frac 1 {log(index_i+1)})</script><p>从上试我们可以得知，大两个文档的真实分数差越大时，结果的$\vert \triangle_{NDCG} \vert $值越大，这样就起到了对于排名高并且相关性高的文档更快地向上推动，而排名低而且相关性较低的文档较慢地向上推动。</p>
+<p>对于特定$U_i$，累加其他所有排序项的影响，得到：</p>
+<script type="math/tex; mode=display">
+\lambda_i = \sum_{(i,j)\in I,i \rhd j}\lambda_{ij} + \sum_{(k,i)\in I,k \rhd i}\lambda_{ki}=\sum_{(i,j)\in I,i \rhd j}\lambda_{ij} - \sum_{(k,i)\in I,k \rhd i}\lambda_{ik}</script><p>即，对于每个文档，分别计算与排在其后的所有文档的$\lambda_{ij}$和与排在其前的所有文档的$\lambda_{ki}$,对这些值进行求和。</p>
+<p>从之前的分析我们知道，排在其后的文档给予当前文档一个向上推动的力，排在其后的文档给予其向下推动的力。因此为了保证相关性更高的文档排序更高(对相关性低的类似，让其排序更靠后)，因此我们直接拟合$\lambda_i$即可。</p>
+<p>如果将$\lambda_i$看做一个导数，那么我们可以推出其效用函数为：</p>
+<script type="math/tex; mode=display">
+C_{ij} = log(1+e^{-\sigma(si-sj)})\vert \triangle_{NDCG} \vert</script><h2 id="LambdaMART算法-1"><a href="#LambdaMART算法-1" class="headerlink" title="LambdaMART算法"></a>LambdaMART算法</h2><p>LambdaRank 重新定义了梯度，赋予了梯度新的物理意义，因此，所有可以使用梯度下降法求解的模型都可以使用这个梯度，基于决策树的 MART 就是其中一种，将梯度 Lambda 和 MART 结合就是大名鼎鼎的 LambdaMART。</p>
+<p>MART即为GBDT，LambdaMART 只是在 GBDT 的过程中做了一个很小的修改。原始 GBDT 的原理是直接在函数空间对函数进行求解模型，结果由许多棵树组成，每棵树的拟合目标是损失函数的梯度，而在 LambdaMART 中这个梯度就换成了 Lambda 梯度，这样就使得 GBDT 并不是直接优化二分分类问题，而是一个改装了的二分分类问题，也就是在优化的时候优先考虑能够进一步改进 NDCG 的方向。</p>
+<p>LambdaMART整体流程如下：</p>
+<p><a href="https://imgtu.com/i/5fujCq" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/10/24/5fujCq.png" alt="5fujCq.png"></a></p>
+<p>其执行逻辑如下：</p>
+<ol>
+<li><p>隐含步骤：使用当前模型$F(x)$的输出$s$计算效用函数$C$。这里实际并不会执行，因为我们已经直接找到了其梯度，不需要通过效用函数来计算梯度。这里是提醒读者，每轮循环优化的目标，依然是最小化效用函数。</p>
+</li>
+<li><p>每棵树的训练都会先遍历所有的数据，计算每个pair（同一个query下的）互换位置导致的指标变化$\vert \triangle_{NDCG} \vert $以及lambda值，即：</p>
+<script type="math/tex; mode=display">
+\lambda_{i,j} =-\frac 1 {1+e^{\sigma(s_i-s_j)}} \vert \triangle_{NDCG} \vert</script><p>之后计算每个文档的Lambda：</p>
+<script type="math/tex; mode=display">
+\lambda_i =\sum_{(i,j)\in I,i \rhd j}\lambda_{ij} - \sum_{(k,i)\in I,k \rhd i}\lambda_{ik}</script><p>通过lambda梯度我们推出效用函数为：</p>
+<script type="math/tex; mode=display">
+C(s_i-sj) = \sum_{i,j\in I}{log(1+e^{-\sigma(si-sj)})\vert \triangle_{NDCG} \vert}</script><p>由此可得：</p>
+<script type="math/tex; mode=display">
+\frac{\partial C} {\partial s_i} = \sum_{i,j \in I} \frac{-\sigma\vert \triangle_{NDCG} \vert }{1+e^{\sigma (s_i -s_j)}}</script><p>定义：</p>
+<script type="math/tex; mode=display">
+\rho_{ij} = \frac 1 {1+e^{\sigma (s_i -s_j)}}=\frac{-\lambda_{ij}}{\sigma\vert \triangle_{NDCG} \vert }</script><p>则：</p>
+<script type="math/tex; mode=display">
+y_i = \lambda_i =\frac{\partial C} {\partial s_i} = \sum_{i,j \in I} {-\sigma}\vert \triangle_{NDCG} \vert \rho_{ij}</script><p>计算每个$ y_i$对$\lambda_i$的倒数，用于后续使用牛顿法求解叶子节点的数值：</p>
+<script type="math/tex; mode=display">
+w_i =\frac{\partial y_i} {\partial s_i} = \frac{\partial^2 C} {\partial s_i^2} = \sum_{i,j\in I}\sigma^2 \vert \triangle_{NDCG} \vert \rho_{ij}(1-\rho_{ij}) = \sum_{i,j \in I} \sigma^2 (-\lambda_{ij}) (1+\frac{\lambda_{ij}}{\sigma \vert \triangle_{NDCG} \vert})</script></li>
+<li><p>使用$(X, \lambda)$,拟合一个决策回归树，作为本轮循环生成的弱分类器。<font color="red">注意，这里的$\lambda$是上一步的$-y_i$，即负梯度</font>。</p>
+</li>
+<li><p>对第二步生成的回归树，计算每个叶子节点的数值，采用牛顿迭代法求解。</p>
+<p>牛顿法是对于一个函数，使用泰勒展开，忽略高阶项的一个迭代优化方式。例如对于任意$f(X)$,在任意点$x_n$进行泰勒展示为：</p>
+<script type="math/tex; mode=display">
+f(x) = f(x_n) + \frac{f^{(1)}(x_n)}{1}(x-x_n) + \frac{f^{(2)}(x_n)}{2}(x-x_n)^2 + \sum_{k=3}^{\infty}\frac{f^{(k)}(x_n)}{k}(x-x_n)^k \approx \\ f(x_n) + \frac{f^{(1)}(x_n)}{1}(x-x_n) + \frac{f^{(2)}(x_n)}{2}(x-x_n)^2</script><p>牛顿法忽略高阶项，之后如果要使得函数$f(x)$最小，则找到$f(x)$梯度为0，即：</p>
+<script type="math/tex; mode=display">
+f^{(1)}(x_n) + f^{(2)}(x_n)(x-x_n) = 0 => \\
+x = x_n - \frac{f^{(1)}(x_n)}{f^{(2)}(x_n)}</script><p>GBDT对的每个叶节点的计算为： </p>
+<script type="math/tex; mode=display">
+c_{lk} = arg \ \underset{c}{min} \sum_{x_i \in R_{lk}}L(y_i, f_{t-1}(x_i)+c)</script></li>
+</ol>
+<p>   对应到lambdaMART算法，当前的$x_i$对应为输入$x_i$。函数$f_{t-1}(x)$对应于当前输出的$s_i$分数。$L$对应于效用函数$C$。这里$s_i$的实际是当前已经训练的弱模型的加和即:$s_i=F_{k-1}(x_i)$，其中$k$-1为当前训练的回归树数量。</p>
+<p>   利用牛顿法，获取最小化效用函数时输入为：</p>
+<script type="math/tex; mode=display">
+   f_{t-1}(x_i)+c = -\frac{\lambda_i}{w_i}</script><p>   此时$s_i-s_j = f_{t-1}(x_i)$，因此：</p>
+<script type="math/tex; mode=display">
+   c_{lk} = -\frac{\lambda_i}{w_i}</script><p>   对应上图$\gamma_{lk}$的计算：</p>
+<script type="math/tex; mode=display">
+   \gamma_{lk} = \frac{\sum_{x_i in R_{lK}} y_i}{\sum_{x_i \in R_{lk}}w_i} = \frac{\sum_{x_i in R_{lK}} \frac{\partial C} {\partial s_i}}{\sum_{x_i \in R_{lk}}\frac{\partial^{(2)} C} {\partial s_i^2}} = \frac{\sum_{x_i in R_{lK}} \lambda_i}{\sum_{x_i \in R_{lk}}w_i}</script><p>   这里缺失一个负号，我理解是上图有错误，在使用回归树拟合的时候，拟合的是负梯度，即$y_i = -\lambda_i$，对于二阶导，应该使用原$\lambda$的二阶导，这样相除就存在一个负号，这样求出的$\gamma_{lk}$才是上图中的形式。</p>
+<ol>
+<li><p>模型更新</p>
+<p>使用牛顿法更新模型，将第k颗树增加到模型中。模型更新如下：</p>
+<script type="math/tex; mode=display">
+F_k(x_i) = F_{k-1} + \eta \sum_l \gamma_{lk}I(x_i \in R_{lk})</script><p>其中$\eta$为学习率。</p>
+</li>
+</ol>
+<h1 id="程序执行逻辑"><a href="#程序执行逻辑" class="headerlink" title="程序执行逻辑"></a>程序执行逻辑</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train</span><span class="params">(train_data, valid_data, model_save_path)</span>:</span></span><br><span class="line">    <span class="keyword">with</span> open(train_data) <span class="keyword">as</span> trainfile, \</span><br><span class="line">            open(valid_data) <span class="keyword">as</span> valifile:</span><br><span class="line">        TX, Ty, sample_weight, Tqids, _ = pyltr.data.letor.read_dataset(trainfile, one_indexed=<span class="literal">True</span>, has_weight=<span class="literal">True</span>)</span><br><span class="line">        VX, Vy, _, Vqids, _ = pyltr.data.letor.read_dataset(valifile, one_indexed=<span class="literal">True</span>, has_weight=<span class="literal">False</span>)</span><br><span class="line">    <span class="comment"># old_k is 4 </span></span><br><span class="line">    metric_train = pyltr.metrics.NDCG(k=<span class="number">20</span>)</span><br><span class="line">    metric_valid = pyltr_note.metrics.NDCG(k=<span class="number">4</span>)</span><br><span class="line">    monitor = pyltr.models.monitors.ValidationMonitor(</span><br><span class="line">            VX, Vy, Vqids, metric=metric_valid, stop_after=<span class="number">250</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">print</span> <span class="string">"load data finished ....."</span></span><br><span class="line">    <span class="keyword">print</span> <span class="string">'begin to train ......'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#pjz</span></span><br><span class="line">    model = pyltr.models.LambdaMART(</span><br><span class="line">        metric=metric_train,</span><br><span class="line">        n_estimators=<span class="number">1000</span>,</span><br><span class="line">        learning_rate=<span class="number">0.01</span>,</span><br><span class="line">        max_features=<span class="number">0.5</span>,</span><br><span class="line">        query_subsample=<span class="number">0.75</span>,</span><br><span class="line">        max_leaf_nodes=<span class="number">20</span>,</span><br><span class="line">        min_samples_leaf=<span class="number">64</span>,</span><br><span class="line">        verbose=<span class="number">1</span>,</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    model.fit(TX, Ty, sample_weight, Tqids, monitor=monitor)</span><br><span class="line">    save_model(model, model_save_path)</span><br><span class="line"></span><br><span class="line">    gen_info(model.estimators_)</span><br><span class="line">    <span class="keyword">print</span> <span class="string">'output tree info at trees.info'</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">print</span> sum(model.feature_importances_)</span><br><span class="line">    <span class="keyword">print</span> model.feature_importances_</span><br><span class="line">    <span class="keyword">print</span> np.argsort(model.feature_importances_)</span><br><span class="line">    </span><br><span class="line">    id2featrue = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> open(<span class="string">'../dicts/featrue2id'</span>):</span><br><span class="line">        line = line.strip()</span><br><span class="line">        featrue,id = line.split()</span><br><span class="line">        id = int(id)</span><br><span class="line">        id2featrue[id] = featrue</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> np.argsort(model.feature_importances_):</span><br><span class="line">        <span class="keyword">print</span> id2featrue[i],model.feature_importances_[i]</span><br></pre></td></tr></table></figure>
+<h2 id="读取数据"><a href="#读取数据" class="headerlink" title="读取数据"></a>读取数据</h2><p><code>pyltr.data.letor.read_dataset</code>逻辑：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">source: string or iterable 可迭代读取的数据。可以是打开的文件描述符</span></span><br><span class="line"><span class="comment">has_targets: bool 是否存在y（即标签）,如果有的化，则必须放到每一行的第一个</span></span><br><span class="line"><span class="comment">one_indexed: bool 参数x是否是按照索引开始的（也就是是从1开始还是从0开始）</span></span><br><span class="line"><span class="comment">missing: float 某个纬度的数据缺失时的默认值</span></span><br><span class="line"><span class="comment">has_weight: bool 是否每个数据有不同的权重，如果有的话，权重必须在每行的第二个值</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line">def read_dataset(source, has_targets=True, one_indexed=True, missing=0.0, has_weight=False):</span><br><span class="line">    <span class="string">""</span><span class="string">"Parses a LETOR dataset from `source`.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters</span></span><br><span class="line"><span class="string">    ----------</span></span><br><span class="line"><span class="string">    source : string or iterable of lines</span></span><br><span class="line"><span class="string">        String, file, or other file-like object to parse.</span></span><br><span class="line"><span class="string">    has_targets : bool, optional</span></span><br><span class="line"><span class="string">        See `iter_lines`.</span></span><br><span class="line"><span class="string">    one_indexed : bool, optional</span></span><br><span class="line"><span class="string">        See `iter_lines`.</span></span><br><span class="line"><span class="string">    missing : float, optional</span></span><br><span class="line"><span class="string">        See `iter_lines`.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Returns</span></span><br><span class="line"><span class="string">    -------</span></span><br><span class="line"><span class="string">    X : array of arrays of floats</span></span><br><span class="line"><span class="string">        Feature matrix (see `iter_lines`).</span></span><br><span class="line"><span class="string">    y : array of floats</span></span><br><span class="line"><span class="string">        Target vector (see `iter_lines`).</span></span><br><span class="line"><span class="string">    qids : array of objects</span></span><br><span class="line"><span class="string">        Query id vector (see `iter_lines`).</span></span><br><span class="line"><span class="string">    comments : array of strs</span></span><br><span class="line"><span class="string">        Comment vector (see `iter_lines`).</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    "</span><span class="string">""</span></span><br><span class="line">    if isinstance(source, sklearn.externals.six.string_types):</span><br><span class="line">        source = source.splitlines()</span><br><span class="line"></span><br><span class="line">    max_width = <span class="number">0</span></span><br><span class="line">    xs, ys, weights, qids, comments = [], [], [], [], []</span><br><span class="line">    <span class="comment">// 处理数据</span></span><br><span class="line">    it = iter_lines(source, has_targets=has_targets,</span><br><span class="line">                    one_indexed=one_indexed, missing=missing, has_weight=has_weight)</span><br><span class="line">    # 添加每一行数据到各种数组中</span><br><span class="line">    <span class="keyword">for</span> x, y, weight, qid, comment in it:</span><br><span class="line">        xs.append(x)</span><br><span class="line">        ys.append(y)</span><br><span class="line">        weights.append(weight)</span><br><span class="line">        qids.append(qid)</span><br><span class="line">        comments.append(comment)</span><br><span class="line">        # 记录最大的x纬度</span><br><span class="line">        max_width = max(max_width, len(x))</span><br><span class="line">    # 根据最大的x纬度，对整体的x进行填充，保证所有x纬度一致</span><br><span class="line">    assert max_width &gt; <span class="number">0</span></span><br><span class="line">    X = np.ndarray((len(xs), max_width), dtype=np.float64)</span><br><span class="line">    X.fill(missing)</span><br><span class="line">    <span class="keyword">for</span> i, x in enumerate(xs):</span><br><span class="line">        X[i, :len(x)] = x</span><br><span class="line">    ys = np.<span class="built_in">array</span>(ys) <span class="keyword">if</span> has_targets <span class="keyword">else</span> None</span><br><span class="line">    qids = np.<span class="built_in">array</span>(qids)</span><br><span class="line">    comments = np.<span class="built_in">array</span>(comments)</span><br><span class="line">    weights = np.<span class="built_in">array</span>(weights)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (X, ys, weights, qids, comments)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 参数与上述的函数一致</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">iter_lines</span><span class="params">(lines, has_targets=True, one_indexed=True, missing=<span class="number">0.0</span>, has_weight=False)</span>:</span></span><br><span class="line">    <span class="string">"""Transforms an iterator of lines to an iterator of LETOR rows.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Each row is represented by a (x, y, qid, comment) tuple.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters</span></span><br><span class="line"><span class="string">    ----------</span></span><br><span class="line"><span class="string">    lines : iterable of lines</span></span><br><span class="line"><span class="string">        Lines to parse.</span></span><br><span class="line"><span class="string">    has_targets : bool, optional</span></span><br><span class="line"><span class="string">        Whether the file contains targets. If True, will expect the first token</span></span><br><span class="line"><span class="string">        of every line to be a real representing the sample's target (i.e.</span></span><br><span class="line"><span class="string">        score). If False, will use -1 as a placeholder for all targets.</span></span><br><span class="line"><span class="string">    one_indexed : bool, optional</span></span><br><span class="line"><span class="string">        Whether feature ids are one-indexed. If True, will subtract 1 from each</span></span><br><span class="line"><span class="string">        feature id.</span></span><br><span class="line"><span class="string">    missing : float, optional</span></span><br><span class="line"><span class="string">        Placeholder to use if a feature value is not provided for a sample.</span></span><br><span class="line"><span class="string">    has_weight : bool, optional</span></span><br><span class="line"><span class="string">        Whether has sample weight, If False, all samples' weight will be assigned 1.0, otherwise</span></span><br><span class="line"><span class="string">        use the value read from data</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Yields</span></span><br><span class="line"><span class="string">    ------</span></span><br><span class="line"><span class="string">    x : array of floats</span></span><br><span class="line"><span class="string">        Feature vector of the sample.</span></span><br><span class="line"><span class="string">    y : float</span></span><br><span class="line"><span class="string">        Target value (score) of the sample, or -1 if no target was parsed.</span></span><br><span class="line"><span class="string">    weight : float</span></span><br><span class="line"><span class="string">        sample  weight</span></span><br><span class="line"><span class="string">    qid : object</span></span><br><span class="line"><span class="string">        Query id of the sample. This is currently guaranteed to be a string.</span></span><br><span class="line"><span class="string">    comment : str</span></span><br><span class="line"><span class="string">        Comment accompanying the sample.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># 遍历每一行</span></span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> lines:</span><br><span class="line">        <span class="comment"># 去除末尾的空格，并按照#切割为两部分，data为要获取的数据，comment为注释，即数据对应的辅助信息</span></span><br><span class="line">        data, _, comment = line.rstrip().partition(<span class="string">'#'</span>)</span><br><span class="line">        <span class="comment"># 按照空格切割数据</span></span><br><span class="line">        toks = data.split()</span><br><span class="line"></span><br><span class="line">        num_features = <span class="number">0</span></span><br><span class="line">        <span class="comment"># 默认x存在8个纬度，先使用missing即缺失值进行填充</span></span><br><span class="line">        x = np.repeat(missing, <span class="number">8</span>)</span><br><span class="line">        y = <span class="number">-1.0</span></span><br><span class="line">        weight = <span class="number">1.0</span></span><br><span class="line">        <span class="comment"># 有标签y时，第一个值为权重</span></span><br><span class="line">        <span class="keyword">if</span> has_targets:</span><br><span class="line">            y = float(toks[<span class="number">0</span>])</span><br><span class="line">            toks = toks[<span class="number">1</span>:]</span><br><span class="line">        <span class="comment"># 有权重时，第二个值为权重</span></span><br><span class="line">        <span class="keyword">if</span> has_weight:</span><br><span class="line">            weight = float(toks[<span class="number">0</span>])</span><br><span class="line">            toks = toks[<span class="number">1</span>:]</span><br><span class="line">        <span class="comment"># 获取qid，使用qid:切割</span></span><br><span class="line">        qid = _parse_qid_tok(toks[<span class="number">0</span>])</span><br><span class="line">        <span class="comment"># 剩余的toks[1:]全部为x，变量每一个参数</span></span><br><span class="line">        <span class="keyword">for</span> tok <span class="keyword">in</span> toks[<span class="number">1</span>:]:</span><br><span class="line">            <span class="comment"># 获取对应的纬度和值</span></span><br><span class="line">            fid, _, val = tok.partition(<span class="string">':'</span>)</span><br><span class="line">            fid = int(fid)</span><br><span class="line">            val = float(val)</span><br><span class="line">            <span class="comment"># 如果使用索引开始，则需要将fid减去1（即文件中从1开始）</span></span><br><span class="line">            <span class="keyword">if</span> one_indexed:</span><br><span class="line">                fid -= <span class="number">1</span></span><br><span class="line">            <span class="keyword">assert</span> fid &gt;= <span class="number">0</span></span><br><span class="line">            <span class="comment"># 如果当前x长度小于其索引，则说明预分配的空间不足</span></span><br><span class="line">            <span class="keyword">while</span> len(x) &lt;= fid:</span><br><span class="line">                orig = len(x)</span><br><span class="line">                <span class="comment"># 将x扩大到两倍，扩大部分也使用missing填充</span></span><br><span class="line">                x.resize(len(x) * <span class="number">2</span>)</span><br><span class="line">                x[orig:orig * <span class="number">2</span>] = missing</span><br><span class="line">            <span class="comment"># 设置对应x向量值</span></span><br><span class="line">            x[fid] = val</span><br><span class="line">            <span class="comment"># 记录实际x的纬度</span></span><br><span class="line">            num_features = max(fid + <span class="number">1</span>, num_features)</span><br><span class="line">        <span class="comment"># 根据纬度对X进行resize</span></span><br><span class="line">        <span class="keyword">assert</span> num_features &gt; <span class="number">0</span></span><br><span class="line">        x.resize(num_features)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">yield</span> (x, y, weight, qid, comment)</span><br></pre></td></tr></table></figure>
+<p>根据上述代码，可以直到，pyltr读取数据的格式如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">y weight qid:value x_1:value_1 x_2:value_2 ... x_n:value_n<span class="meta">#commment</span></span><br></pre></td></tr></table></figure>
+<p>其中y和weight非必须（训练应该必须有y）qid的value用于划分pair，x_i为输入的x向量，如果某个向量没有，可以不在文件中存在，使用missing填充。comment是这条数据对应的额外信息，如query和对应的doc。</p>
+<p>注意qid必须要是同一个的连续存放。</p>
+<h1 id="lambdaMart"><a href="#lambdaMart" class="headerlink" title="lambdaMart"></a>lambdaMart</h1><h2 id="初始化参数"><a href="#初始化参数" class="headerlink" title="初始化参数"></a>初始化参数</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>含义</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>metric</td>
+<td>object</td>
+<td>模型要最大化的度量。</td>
+<td></td>
+</tr>
+<tr>
+<td>learning_rate</td>
+<td>float</td>
+<td>学习率</td>
+<td>0.1</td>
+</tr>
+<tr>
+<td>n_estimators</td>
+<td>int</td>
+<td>提升阶段数量，即简单模型的数量（决策树）</td>
+<td>100</td>
+</tr>
+<tr>
+<td>max_depth</td>
+<td>int</td>
+<td>单个回归估计器的最大深度。最大深度限制了树中节点数量，通过调整该参数来优化性能。如果<code>max_leaf_nodes</code>不为空则忽略该参数。</td>
+<td>3</td>
+</tr>
+<tr>
+<td>min_samples_split</td>
+<td>int</td>
+<td>拆分内部节点所需的最小样本数。</td>
+<td>2</td>
+</tr>
+<tr>
+<td>min_samples_leaf</td>
+<td>int</td>
+<td>叶节点所需的最小样本数。</td>
+<td>1</td>
+</tr>
+<tr>
+<td>subsample</td>
+<td>float</td>
+<td>用于拟合单个基础学习器的样本比例。</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>query_subsample</td>
+<td>float</td>
+<td>用于拟合单个基础学习器的查询比例。（即qid数量）</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>max_features</td>
+<td>int，float，string，none</td>
+<td>内部节点生成子节点时考虑的特征数量。（在存在大量特征时加速）。int时，表示要考虑的数量。float时，表示所有节点的百分比，auto时为sqrt(n_features)，sqrt和auto一样，log2为($log_2{n_features}$)，none时为所有特征均要考虑。选择“max_features &lt; n_features”会导致方差减少和偏差增加。注意：在找到至少一个节点样本的有效分区之前，分割的搜索不会停止，即使它检查已经超过 <code>max_features</code> 个特征。</td>
+<td>none</td>
+</tr>
+<tr>
+<td>max_leaf_nodes</td>
+<td>int/none</td>
+<td>生成树的最大叶节点数量。如果是none，则表示无限制。不为none时将忽略参数<code>max_depth</code></td>
+<td>none</td>
+</tr>
+<tr>
+<td>verbose</td>
+<td>int</td>
+<td>启用详细输出。 如果为 1，则它会不时打印进度和性能（树越多频率越低）。 如果大于 1，则它会打印每棵树的进度和性能。</td>
+<td>0</td>
+</tr>
+<tr>
+<td>warm_start</td>
+<td>bool</td>
+<td>当设置为 <code>True</code> 时，重用之前调用 fit 的集成模型并向集成添加更多估计量，否则，只需删除之前的解决方案。</td>
+<td>false</td>
+</tr>
+<tr>
+<td>random_state</td>
+<td>int，RandomState instance，none</td>
+<td>如果是 int，random_state 是随机数生成器使用的种子； 如果是 RandomState 实例，random_state 是随机数生成器； 如果没有，随机数生成器是 <code>np.random</code> 使用的 RandomState 实例。</td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>上述是初始化LambdaMART的参数，用于定义如下生成模型。除了这些参数以外，还包含如下的内部属性：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>feature_importances_</td>
+<td>n_features纬数组</td>
+<td>特征重要性（越高，特征越重要）。</td>
+</tr>
+<tr>
+<td>oob_improvement_</td>
+<td>n_estimators纬数组</td>
+<td>袋外样本相对于前一次迭代的损失（= 偏差）改进。<code>oob_improvement_[0]</code> 是对 <code>init</code> 估计器的第一阶段损失的改进。</td>
+</tr>
+<tr>
+<td>train_score_</td>
+<td>n_estimators纬数组</td>
+<td>第 i 个分数 <code>train_score_[i]</code> 是模型在迭代 <code>i</code> 时在袋内样本上的偏差（= 损失）。如果 <code>subsample == 1</code> 这就是训练数据的偏差。</td>
+</tr>
+<tr>
+<td>estimators_</td>
+<td>[n_estimators, 1]的ndarray存储训练完成的决策树集合</td>
+<td>拟合子估计量的集合。 对于二元分类，<code>loss_.K</code> 为 1，否则为 n_classes。</td>
+</tr>
+<tr>
+<td>estimators_fitted_</td>
+<td>int</td>
+<td>实际拟合的子估计量的数量。 这可能与 n_estimators 在提前停止、修剪等情况下不同。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="metric"><a href="#metric" class="headerlink" title="metric"></a>metric</h3><p>进行训练效果的度量，这里使用的是NDCG，其定义如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NDCG</span><span class="params">(Metric)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, k=<span class="number">10</span>, gain_type=<span class="string">'exp2'</span>)</span>:</span></span><br><span class="line">        super(NDCG, self).__init__()</span><br><span class="line">        self.k = k</span><br><span class="line">        self.gain_type = gain_type</span><br><span class="line">        self._dcg = DCG(k=k, gain_type=gain_type)</span><br><span class="line">        self._ideals = &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>其中k表示只计算排序前k的数据的NDCG。<code>gain_type</code>表示度量NDCG是，每个文档的加权值，可以选择：</p>
+<p>exp2表示使用的算分函数为：</p>
+<script type="math/tex; mode=display">
+DCG_P\sum_i^P\frac{2^{rel_i}-1}{log_2{(i+1)}}</script><p>identity表示使用的函数为：</p>
+<script type="math/tex; mode=display">
+DCG_P\sum_i^P\frac{x}{log_2{(i+1)}}</script><h2 id="执行fit（拟合）函数"><a href="#执行fit（拟合）函数" class="headerlink" title="执行fit（拟合）函数"></a>执行fit（拟合）函数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fit</span><span class="params">(self, X, y, sample_weight, qids, monitor=None)</span>:</span></span><br><span class="line">    <span class="string">"""Fit lambdamart onto a dataset.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters</span></span><br><span class="line"><span class="string">    ----------</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    X : array_like, shape = [n_samples, n_features]</span></span><br><span class="line"><span class="string">        Training vectors, where n_samples is the number of samples</span></span><br><span class="line"><span class="string">        and n_features is the number of features.</span></span><br><span class="line"><span class="string">    y : array_like, shape = [n_samples]</span></span><br><span class="line"><span class="string">        Target values (integers in classification, real numbers in</span></span><br><span class="line"><span class="string">        regression)</span></span><br><span class="line"><span class="string">        For classification, labels must correspond to classes.</span></span><br><span class="line"><span class="string">    sample_weight : array_like, shape = [n_samples]</span></span><br><span class="line"><span class="string">        The weight of the samples.</span></span><br><span class="line"><span class="string">    qids : array_like, shape = [n_samples]</span></span><br><span class="line"><span class="string">        Query ids for each sample. Samples must be grouped by query such</span></span><br><span class="line"><span class="string">        that all queries with the same qid appear in one contiguous block.</span></span><br><span class="line"><span class="string">    monitor : callable, optional</span></span><br><span class="line"><span class="string">        The monitor is called after each iteration with the current</span></span><br><span class="line"><span class="string">        iteration, a reference to the estimator and the local variables of</span></span><br><span class="line"><span class="string">        ``_fit_stages`` as keyword arguments ``callable(i, self,</span></span><br><span class="line"><span class="string">        locals())``. If the callable returns ``True`` the fitting procedure</span></span><br><span class="line"><span class="string">        is stopped. The monitor can be used for various things such as</span></span><br><span class="line"><span class="string">        computing held-out estimates, early stopping, model introspecting,</span></span><br><span class="line"><span class="string">        and snapshoting.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    // 如果初始化时参数warm_start为false，则将其之前可能存在的训练属性全部清空</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> self.warm_start:</span><br><span class="line">        self._clear_state()</span><br><span class="line">    </span><br><span class="line">    // 检验输入数据</span><br><span class="line">    X, y = sklearn.utils.check_X_y(X, y, dtype=sklearn.tree._tree.DTYPE)</span><br><span class="line">    n_samples, self.n_features = X.shape</span><br><span class="line"></span><br><span class="line">    sklearn.utils.check_consistent_length(X, y, qids)</span><br><span class="line">    <span class="keyword">if</span> y.dtype.kind == <span class="string">'O'</span>:</span><br><span class="line">        y = y.astype(np.float64)</span><br><span class="line"></span><br><span class="line">    random_state = sklearn.utils.check_random_state(self.random_state)</span><br><span class="line">    self._check_params()</span><br><span class="line">    </span><br><span class="line">    // 分配内部属性空间。</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> self._is_initialized():</span><br><span class="line">        self._init_state()</span><br><span class="line">        begin_at_stage = <span class="number">0</span></span><br><span class="line">        y_pred = np.zeros(y.shape[<span class="number">0</span>])</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">if</span> self.n_estimators &lt; self.estimators_.shape[<span class="number">0</span>]:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">'n_estimators=%d must be larger or equal to '</span></span><br><span class="line">                             <span class="string">'estimators_.shape[0]=%d when '</span></span><br><span class="line">                             <span class="string">'warm_start==True'</span></span><br><span class="line">                             % (self.n_estimators,</span><br><span class="line">                                self.estimators_.shape[<span class="number">0</span>]))</span><br><span class="line">        begin_at_stage = self.estimators_.shape[<span class="number">0</span>]</span><br><span class="line">        self.estimators_fitted_ = begin_at_stage</span><br><span class="line">        self.estimators_.resize((self.n_estimators, <span class="number">1</span>))</span><br><span class="line">        self.train_score_.resize(self.n_estimators)</span><br><span class="line">        <span class="keyword">if</span> self.query_subsample &lt; <span class="number">1.0</span>:</span><br><span class="line">            self.oob_improvement_.resize(self.n_estimators)</span><br><span class="line">        y_pred = self.predict(X)</span><br><span class="line">    </span><br><span class="line">    // 执行fit</span><br><span class="line">    n_stages = self._fit_stages(X, y, sample_weight, qids, y_pred,</span><br><span class="line">                                random_state, begin_at_stage, monitor)</span><br><span class="line"></span><br><span class="line">    // 如果实际生成的树数量小于初始化参数n_estimators，则将相应预分配的内部属性变更为实际大小</span><br><span class="line">    <span class="keyword">if</span> n_stages &lt; self.estimators_.shape[<span class="number">0</span>]:</span><br><span class="line">        self.trim(n_stages)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> self</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_fit_stages</span><span class="params">(self, X, y, sample_weight, qids, y_pred, random_state,</span></span></span><br><span class="line"><span class="function"><span class="params">                begin_at_stage=<span class="number">0</span>, monitor=None)</span>:</span></span><br><span class="line">    // 样本数量</span><br><span class="line">    n_samples = X.shape[<span class="number">0</span>]</span><br><span class="line">    // 每次训练是否使用全部样本</span><br><span class="line">    do_subsample = self.subsample &lt; <span class="number">1.0</span></span><br><span class="line">    <span class="comment">#sample_weight = np.ones(n_samples, dtype=np.float64)</span></span><br><span class="line">    // 获取qid数量（unique；多少个query）</span><br><span class="line">    n_queries = check_qids(qids)</span><br><span class="line">    // 根据qid生成query组，其中元素为qid，在样本中起始下标，末尾下标，下标列表</span><br><span class="line">    query_groups = np.array([(qid, a, b, np.arange(a, b))</span><br><span class="line">                             <span class="keyword">for</span> qid, a, b <span class="keyword">in</span> get_groups(qids)],</span><br><span class="line">                            dtype=np.object)</span><br><span class="line">    // 之前计算的qid数量应该和query组数量一致</span><br><span class="line">    <span class="keyword">assert</span> n_queries == len(query_groups)</span><br><span class="line">    // 每次训练是否使用全部query</span><br><span class="line">    do_query_oob = self.query_subsample &lt; <span class="number">1.0</span></span><br><span class="line">    // query的mask，当不使用全部query时，使用该数组和query_groups获取所有要参加训练的样本，初始化全部为<span class="number">1</span>，表示所有query均参与训练</span><br><span class="line">    query_mask = np.ones(n_queries, dtype=np.bool)</span><br><span class="line">    // query数组下标，在不使用全部quey时，需要进行打散，选择部分query组</span><br><span class="line">    query_idx = np.arange(n_queries)</span><br><span class="line">    // 选择全部query组中的比例</span><br><span class="line">    q_inbag = max(<span class="number">1</span>, int(self.query_subsample * n_queries))</span><br><span class="line"></span><br><span class="line">    // 初始化输出</span><br><span class="line">    <span class="keyword">if</span> self.verbose:</span><br><span class="line">        verbose_reporter = _VerboseReporter(self.verbose)</span><br><span class="line">        verbose_reporter.init(self, begin_at_stage)</span><br><span class="line">    </span><br><span class="line">    // 执行每一个基础训练</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(begin_at_stage, self.n_estimators):</span><br><span class="line">        // 如果不使用全部的query组</span><br><span class="line">        <span class="keyword">if</span> do_query_oob:</span><br><span class="line">            // 将索引随机化</span><br><span class="line">            random_state.shuffle(query_idx)</span><br><span class="line">            // 重新初始化query的mask</span><br><span class="line">            query_mask = np.zeros(n_queries, dtype=np.bool)</span><br><span class="line">            // 选择指定部分的query进行训练</span><br><span class="line">            query_mask[query_idx[:q_inbag]] = <span class="number">1</span></span><br><span class="line">        // 实际需要参与本轮训练的query组</span><br><span class="line">        query_groups_to_use = query_groups[query_mask]</span><br><span class="line">        // 实际需要参与训练的样本mask</span><br><span class="line">        sample_mask = np.zeros(n_samples, dtype=np.bool)</span><br><span class="line">        // 变量每一个query组</span><br><span class="line">        <span class="keyword">for</span> qid, a, b, sidx <span class="keyword">in</span> query_groups_to_use:</span><br><span class="line">            // 需要使用的样本下标</span><br><span class="line">            sidx_to_use = sidx</span><br><span class="line">            // 如果不使用全部样本，与query类似，对query组中的样本进行随机采样，但感觉这里有问题，因为取的最大值是b<span class="number">-1</span>乘以采样系数，但每个样本中样本数量应该是b-a，但是如果使用b-a，也无法保证训练使用的样本数量是指定的比例，因为还有可能只是使用了部分的query。</span><br><span class="line">            <span class="keyword">if</span> do_subsample:</span><br><span class="line">                query_samples_inbag = max(</span><br><span class="line">                    <span class="number">1</span>, int(self.subsample * (b - <span class="number">1</span>)))</span><br><span class="line">                random_state.shuffle(sidx)</span><br><span class="line">                sidx_to_use = sidx[:query_samples_inbag]</span><br><span class="line">            sample_mask[sidx_to_use] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        // 记录未参与训练的样本的当前训练分数</span><br><span class="line">        <span class="keyword">if</span> do_query_oob:</span><br><span class="line">            old_oob_total_score = <span class="number">0.0</span></span><br><span class="line">            <span class="keyword">for</span> qid, a, b, _ <span class="keyword">in</span> query_groups[~query_mask]:</span><br><span class="line">                old_oob_total_score += self.metric.evaluate_preds(</span><br><span class="line">                    qid, y[a:b], y_pred[a:b])</span><br><span class="line"></span><br><span class="line">        // 进行训练，并获取新的样本预估</span><br><span class="line">        y_pred = self._fit_stage(i, X, y, qids, y_pred, sample_weight,</span><br><span class="line">                                 sample_mask, query_groups_to_use,</span><br><span class="line">                                 random_state)</span><br><span class="line">        </span><br><span class="line">        // 计算参与训练后，训练样本评分和未参与训练样本评分</span><br><span class="line">        train_total_score, oob_total_score = <span class="number">0.0</span>, <span class="number">0.0</span></span><br><span class="line">        <span class="keyword">for</span> qidx, (qid, a, b, _) <span class="keyword">in</span> enumerate(query_groups):</span><br><span class="line">            score = self.metric.evaluate_preds(</span><br><span class="line">                qid, y[a:b], y_pred[a:b])</span><br><span class="line">            <span class="keyword">if</span> query_mask[qidx]:</span><br><span class="line">                train_total_score += score</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                oob_total_score += score</span><br><span class="line">        // 记录当前循环的参与训练的样本的分数</span><br><span class="line">        self.train_score_[i] = train_total_score / q_inbag</span><br><span class="line">        // 如果不是使用全部样本进行训练，则记录本轮训练对未参与训练样本的分数提升</span><br><span class="line">        <span class="keyword">if</span> do_query_oob:</span><br><span class="line">            <span class="keyword">if</span> q_inbag &lt; n_queries:</span><br><span class="line">                self.oob_improvement_[i] = \</span><br><span class="line">                    ((oob_total_score - old_oob_total_score) /</span><br><span class="line">                     (n_queries - q_inbag))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 判断是否终止训练</span></span><br><span class="line">        early_stop = <span class="literal">False</span></span><br><span class="line">        monitor_output = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">if</span> monitor <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            monitor_output = monitor(i, self, locals())</span><br><span class="line">            <span class="keyword">if</span> monitor_output <span class="keyword">is</span> <span class="literal">True</span>:</span><br><span class="line">                early_stop = <span class="literal">True</span></span><br><span class="line">        <span class="comment"># 输出当前训练进度日志`	1qnm  Zxdsdwertyul;xcv</span></span><br><span class="line">        <span class="keyword">if</span> self.verbose &gt; <span class="number">0</span>:</span><br><span class="line">            verbose_reporter.update(i, self, monitor_output)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> early_stop:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> i + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>执行的训练函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_fit_stage</span><span class="params">(self, i, X, y, qids, y_pred, sample_weight, sample_mask,</span></span></span><br><span class="line"><span class="function"><span class="params">                   query_groups, random_state)</span>:</span></span><br><span class="line">        <span class="string">"""Fit another tree to the boosting model."""</span></span><br><span class="line">        <span class="keyword">assert</span> sample_mask.dtype == np.bool</span><br><span class="line"></span><br><span class="line">        n_samples = X.shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">        all_lambdas = np.zeros(n_samples)</span><br><span class="line">        all_deltas = np.zeros(n_samples)</span><br><span class="line">        <span class="comment">#根据query组计算lambda和lambda对模型的梯度</span></span><br><span class="line">        <span class="keyword">for</span> qid, a, b, _ <span class="keyword">in</span> query_groups:</span><br><span class="line">            lambdas, deltas = self._calc_lambdas_deltas(qid, y[a:b],</span><br><span class="line">                                                        y_pred[a:b])</span><br><span class="line">            all_lambdas[a:b] = lambdas</span><br><span class="line">            all_deltas[a:b] = deltas</span><br><span class="line"> </span><br><span class="line">        <span class="comment"># 构建回归决策树</span></span><br><span class="line">        tree = sklearn.tree.DecisionTreeRegressor(</span><br><span class="line">            criterion=<span class="string">'friedman_mse'</span>,</span><br><span class="line">            splitter=<span class="string">'best'</span>,</span><br><span class="line">            presort=<span class="literal">True</span>,</span><br><span class="line">            max_depth=self.max_depth,</span><br><span class="line">            min_samples_split=self.min_samples_split,</span><br><span class="line">            min_samples_leaf=self.min_samples_leaf,</span><br><span class="line">            min_weight_fraction_leaf=<span class="number">0.0</span>,</span><br><span class="line">            max_features=self.max_features,</span><br><span class="line">            max_leaf_nodes=self.max_leaf_nodes,</span><br><span class="line">            random_state=random_state)</span><br><span class="line">        <span class="comment"># 根据采样，确定模型权重，对于权重为0的数据，相当于没有参与训练</span></span><br><span class="line">        <span class="keyword">if</span> self.subsample &lt; <span class="number">1.0</span> <span class="keyword">or</span> self.query_subsample &lt; <span class="number">1.0</span>:</span><br><span class="line">            sample_weight = sample_weight * sample_mask.astype(np.float64)</span><br><span class="line">        <span class="comment"># 回归树训练，拟合新的lambda</span></span><br><span class="line">        tree.fit(X, all_lambdas, sample_weight=sample_weight,</span><br><span class="line">                 check_input=<span class="literal">False</span>)</span><br><span class="line">        <span class="comment"># 更新模型</span></span><br><span class="line">        self._update_terminal_regions(tree.tree_, X, y, all_lambdas,</span><br><span class="line">                                      all_deltas, y_pred, sample_mask)</span><br><span class="line">        self.estimators_[i, <span class="number">0</span>] = tree</span><br><span class="line">        self.estimators_fitted_ = i + <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#        print 'sample_weight:', sample_weight</span></span><br><span class="line">        <span class="keyword">return</span> y_pred</span><br></pre></td></tr></table></figure>
+<h2 id="获取lambda及相对于当前模型的梯度"><a href="#获取lambda及相对于当前模型的梯度" class="headerlink" title="获取lambda及相对于当前模型的梯度"></a>获取lambda及相对于当前模型的梯度</h2><p>这里计算算法介绍中的$\lambda_i$和$w_i$。</p>
+<p>其执行逻辑为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 输入为qid，y为样本真实label，y_pred为模型训练的输出label，y, y_pred均为一维数组</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_calc_lambdas_deltas</span><span class="params">(self, qid, y, y_pred)</span>:</span></span><br><span class="line">    ns = y.shape[<span class="number">0</span>]</span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    获取按照预估的分数每个文档的排名（从0开始）</span></span><br><span class="line"><span class="string">    def get_sorted_y_positions(y, y_pred, check=True):</span></span><br><span class="line"><span class="string">        if check:</span></span><br><span class="line"><span class="string">            y = sklearn.utils.validation.column_or_1d(y)</span></span><br><span class="line"><span class="string">            y_pred = sklearn.utils.validation.column_or_1d(y_pred)</span></span><br><span class="line"><span class="string">            sklearn.utils.validation.check_consistent_length(y, y_pred)</span></span><br><span class="line"><span class="string">        # 对索引按照二维数组排序，先按照-y_pred再按照y排序</span></span><br><span class="line"><span class="string">        return np.lexsort((y, -y_pred))</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    positions = get_sorted_y_positions(y, y_pred, check=<span class="literal">False</span>)</span><br><span class="line">    <span class="comment"># 按照预估的排序对样本真实的相关性进行重排</span></span><br><span class="line">    actual = y[positions]</span><br><span class="line">    <span class="comment"># 获取交换任意两个文档其 NDCG差值</span></span><br><span class="line">    swap_deltas = self.metric.calc_swap_deltas(qid, actual)</span><br><span class="line">    <span class="comment"># 获取模型关注的文档数量（即query召回的前k个）</span></span><br><span class="line">    max_k = self.metric.max_k()</span><br><span class="line">    <span class="comment"># 如果未设置数量，或者数量超过了query下召回的文档数量，则设置为召回文档数量</span></span><br><span class="line">    <span class="keyword">if</span> max_k <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> ns &lt; max_k:</span><br><span class="line">        max_k = ns</span><br><span class="line"></span><br><span class="line">    lambdas = np.zeros(ns)</span><br><span class="line">    deltas = np.zeros(ns)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 遍历每个需要考虑的排序前K个文档，计算与其他文档的lambda和梯度</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(max_k):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i + <span class="number">1</span>, ns):</span><br><span class="line">            <span class="comment"># 对于相关性一致则跳过</span></span><br><span class="line">            <span class="keyword">if</span> actual[i] == actual[j]:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="comment"># 获取文档位置互换的NDCG差值，这里并未取绝对值，需要后续判断</span></span><br><span class="line">            delta_metric = swap_deltas[i, j]</span><br><span class="line">            <span class="keyword">if</span> delta_metric == <span class="number">0.0</span>:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            // 获取文档在数据中实际位置</span><br><span class="line">            a, b = positions[i], positions[j]</span><br><span class="line">            <span class="comment"># invariant: y_pred[a] &gt;= y_pred[b]</span></span><br><span class="line">            <span class="comment"># 对于真实的相关性 i &lt; j处理</span></span><br><span class="line">            <span class="keyword">if</span> actual[i] &lt; actual[j]:</span><br><span class="line">                <span class="comment"># 这时delta_metric应该大于0</span></span><br><span class="line">                <span class="keyword">assert</span> delta_metric &gt; <span class="number">0.0</span></span><br><span class="line">                <span class="comment"># 计算 1/(1+e^(sj - si)),注意scipy.special.expit = 1/(1+exp(-x)),即本身存在一个负号，因此输入时是si-sj</span></span><br><span class="line">                logistic = scipy.special.expit(y_pred[a] - y_pred[b])</span><br><span class="line">                <span class="comment"># 计算 1/(1+e^(sj - si))* NDGC，因为delta_metric是正数，因此直接计算</span></span><br><span class="line">                l = logistic * delta_metric</span><br><span class="line">                <span class="comment"># 对于a来说，其是真实相关性较差的文档，因此减去lambda</span></span><br><span class="line">                lambdas[a] -= l</span><br><span class="line">                <span class="comment"># 对应b来说，其是真实相关性较好的文档，因此加上lambda</span></span><br><span class="line">                lambdas[b] += l</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">assert</span> delta_metric &lt; <span class="number">0.0</span></span><br><span class="line">                logistic = scipy.special.expit(y_pred[b] - y_pred[a])</span><br><span class="line">                l = logistic * -delta_metric</span><br><span class="line">                lambdas[a] += l</span><br><span class="line">                lambdas[b] -= l</span><br><span class="line">            <span class="comment"># 计算梯度</span></span><br><span class="line">            gradient = (<span class="number">1</span> - logistic) * l</span><br><span class="line">            <span class="comment"># 更新梯度</span></span><br><span class="line">            deltas[a] += gradient</span><br><span class="line">            deltas[b] += gradient</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> lambdas, deltas</span><br></pre></td></tr></table></figure>
+<p>这里的lambda是负梯度，deltas是正常的lambda对$s_i$的导数。</p>
+<h2 id="计算互换位置后NDCG值"><a href="#计算互换位置后NDCG值" class="headerlink" title="计算互换位置后NDCG值"></a>计算互换位置后NDCG值</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">calc_swap_deltas</span><span class="params">(self, qid, targets)</span>:</span></span><br><span class="line">        <span class="comment"># 根据qid获取IDCG值</span></span><br><span class="line">        ideal = self._get_ideal(qid, targets)</span><br><span class="line">        <span class="keyword">if</span> ideal &lt; _EPS:</span><br><span class="line">            <span class="keyword">return</span> np.zeros((len(targets), len(targets)))</span><br><span class="line">        <span class="comment"># 计算替换后的NDCG差值</span></span><br><span class="line">        <span class="keyword">return</span> self._dcg.calc_swap_deltas(</span><br><span class="line">            qid, targets, coeff=<span class="number">1.0</span> / ideal)</span><br><span class="line">      </span><br><span class="line">      </span><br><span class="line">      <span class="function"><span class="keyword">def</span> <span class="title">_get_ideal</span><span class="params">(self, qid, targets)</span>:</span></span><br><span class="line">        <span class="comment"># 如果_ideals中已经存在则不用计算直接返回</span></span><br><span class="line">        ideal = self._ideals.get(qid)</span><br><span class="line">        <span class="keyword">if</span> ideal <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> ideal</span><br><span class="line">        <span class="comment"># 按照真实的文档相关性对文档进行排序（由大到小）</span></span><br><span class="line">        sorted_targets = np.sort(targets)[::<span class="number">-1</span>]</span><br><span class="line">        <span class="comment"># 计算IDCG值</span></span><br><span class="line">        ideal = self._dcg.evaluate(qid, sorted_targets)</span><br><span class="line">        <span class="comment"># 写入_ideals</span></span><br><span class="line">        self._ideals[qid] = ideal</span><br><span class="line">        <span class="keyword">return</span> ideal</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DCG</span><span class="params">(Metric)</span>:</span></span><br><span class="line">      <span class="function"><span class="keyword">def</span> <span class="title">evaluate</span><span class="params">(self, qid, targets)</span>:</span></span><br><span class="line">        <span class="comment"># 计算每个文档得分，相加</span></span><br><span class="line">        <span class="comment"># _gain_fn可选，直接使用x还是(2.0 ** x) - 1.0，通过初始化时指定gain_fn参数：identity：x；exp2：(2.0 ** x) - 1.0</span></span><br><span class="line">        <span class="comment"># _get_discount为对应位置的log(i+2)，位置从0开始</span></span><br><span class="line">        <span class="keyword">return</span> sum(self._gain_fn(t) * self._get_discount(i)</span><br><span class="line">                   <span class="keyword">for</span> i, t <span class="keyword">in</span> enumerate(targets) <span class="keyword">if</span> i &lt; self.k)</span><br><span class="line">      </span><br><span class="line">      <span class="function"><span class="keyword">def</span> <span class="title">_get_discount</span><span class="params">(self, i)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> i &gt;= self.k:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0.0</span></span><br><span class="line">        <span class="keyword">while</span> i &gt;= len(self._discounts):</span><br><span class="line">            self._grow_discounts()</span><br><span class="line">        <span class="keyword">return</span> self._discounts[i]</span><br><span class="line">      </span><br><span class="line">      <span class="function"><span class="keyword">def</span> <span class="title">_grow_discounts</span><span class="params">(self)</span>:</span></span><br><span class="line">        self._discounts = self._make_discounts(len(self._discounts) * <span class="number">2</span>)</span><br><span class="line">        </span><br><span class="line">      <span class="function"><span class="keyword">def</span> <span class="title">_make_discounts</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> np.array([<span class="number">1.0</span> / np.log2(i + <span class="number">2.0</span>) <span class="keyword">for</span> i <span class="keyword">in</span> range(n)])</span><br><span class="line">      </span><br><span class="line">      </span><br><span class="line">      <span class="function"><span class="keyword">def</span> <span class="title">calc_swap_deltas</span><span class="params">(self, qid, targets, coeff=<span class="number">1.0</span>)</span>:</span></span><br><span class="line">        n_targets = len(targets)</span><br><span class="line">        deltas = np.zeros((n_targets, n_targets))</span><br><span class="line">        <span class="comment"># 只查看关注的前k个文档与其他文档交换顺序的差值，使用上文介绍的方法来计算差值，这里并未取绝对值</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(min(n_targets, self.k)):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(i + <span class="number">1</span>, n_targets):</span><br><span class="line">                deltas[i, j] = coeff * \</span><br><span class="line">                    (self._gain_fn(targets[i]) - self._gain_fn(targets[j])) * \</span><br><span class="line">                    (self._get_discount(j) - self._get_discount(i))</span><br></pre></td></tr></table></figure>
+<h2 id="更新模型"><a href="#更新模型" class="headerlink" title="更新模型"></a>更新模型</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_update_terminal_regions</span><span class="params">(self, tree, X, y, lambdas, deltas, y_pred,</span></span></span><br><span class="line"><span class="function"><span class="params">                             sample_mask)</span>:</span></span><br><span class="line">    <span class="comment"># 获取每个样本进过前向算法最终输出的叶子节点</span></span><br><span class="line">    terminal_regions = tree.apply(X)</span><br><span class="line">    masked_terminal_regions = terminal_regions.copy()</span><br><span class="line">    <span class="comment"># 对于未参与训练的样本，设置其输出的叶子节点为-1，即剔除</span></span><br><span class="line">    masked_terminal_regions[~sample_mask] = <span class="number">-1</span></span><br><span class="line">    <span class="comment"># 遍历模型的每个叶子节点</span></span><br><span class="line">    <span class="keyword">for</span> leaf <span class="keyword">in</span> np.where(tree.children_left ==</span><br><span class="line">                         sklearn.tree._tree.TREE_LEAF)[<span class="number">0</span>]:</span><br><span class="line">        <span class="comment"># 获取所有输出为该节点的样本</span></span><br><span class="line">        terminal_region = np.where(masked_terminal_regions == leaf)</span><br><span class="line">        <span class="comment"># 计算其lambda的和</span></span><br><span class="line">        suml = np.sum(lambdas[terminal_region])</span><br><span class="line">        <span class="comment"># 计算其梯度的和</span></span><br><span class="line">        sumd = np.sum(deltas[terminal_region])</span><br><span class="line">        <span class="comment"># 设置叶子节点的输出值</span></span><br><span class="line">        tree.value[leaf, <span class="number">0</span>, <span class="number">0</span>] = <span class="number">0.0</span> <span class="keyword">if</span> abs(sumd) &lt; <span class="number">1e-300</span> <span class="keyword">else</span> (suml / sumd)</span><br><span class="line">    <span class="comment"># 更新模型的预测结果</span></span><br><span class="line">    y_pred += tree.value[terminal_regions, <span class="number">0</span>, <span class="number">0</span>] * self.learning_rate</span><br></pre></td></tr></table></figure>
+<p>注意，这里</p>
+<h2 id="预测"><a href="#预测" class="headerlink" title="预测"></a>预测</h2><p>训练完成后，或者验证时，执行预测的函数如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(self, X)</span>:</span></span><br><span class="line">        <span class="comment"># 校验输入</span></span><br><span class="line">        X = sklearn.utils.validation.check_array(</span><br><span class="line">            X, dtype=sklearn.tree._tree.DTYPE, order=<span class="string">'C'</span>)</span><br><span class="line">        score = np.zeros((X.shape[<span class="number">0</span>], <span class="number">1</span>))</span><br><span class="line">        <span class="comment"># 确定实际回归树数量</span></span><br><span class="line">        estimators = self.estimators_</span><br><span class="line">        <span class="keyword">if</span> self.estimators_fitted_ &lt; len(estimators):</span><br><span class="line">            estimators = estimators[:self.estimators_fitted_]</span><br><span class="line">        <span class="comment"># 执行预测</span></span><br><span class="line">        sklearn.ensemble._gradient_boosting.predict_stages(</span><br><span class="line">            estimators, X, self.learning_rate, score)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> score.ravel()</span><br></pre></td></tr></table></figure>
+<h2 id="终止训练判断"><a href="#终止训练判断" class="headerlink" title="终止训练判断"></a>终止训练判断</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ValidationMonitor</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""Monitor for early stopping via validation set."""</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, X, y, qids, metric, stop_after=<span class="number">100</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                 trim_on_stop=True)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> len(X) == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">"A validation set can not be empty!"</span>)</span><br><span class="line">        self.X, self.y = sklearn.utils.check_X_y(</span><br><span class="line">            X, y, dtype=sklearn.tree._tree.DTYPE)</span><br><span class="line">        self.qids = qids</span><br><span class="line">        self.metric = metric</span><br><span class="line">        self.stop_after = stop_after</span><br><span class="line">        self.trim_on_stop = trim_on_stop</span><br><span class="line"></span><br><span class="line">        sklearn.utils.check_consistent_length(self.X, self.y, self.qids)</span><br><span class="line">        check_qids(qids)</span><br><span class="line"></span><br><span class="line">        self._query_groups = list(get_groups(self.qids))</span><br><span class="line">        self._y_pred = <span class="literal">None</span></span><br><span class="line">        self._prev_iter = <span class="number">-1</span></span><br><span class="line">        self._iter_scores = []</span><br><span class="line">        self._best_score = <span class="literal">None</span></span><br><span class="line">        self._best_score_i = <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+<p>其中参数<code>trim_on_stop</code>表示是否允许提前终止，<code>stop_after</code>表示当前训练的轮数，与效果最好的一轮之间差的轮数如果超过该值则停止训练（<code>trim_on_stop</code>为true时）。</p>
+<p>具体终止判断的逻辑如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 返回true表示终止训练</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, i, model, localvars)</span>:</span></span><br><span class="line">    <span class="string">"""Returns True if the model should stop early.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Otherwise, returns a status string.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># 当前轮数</span></span><br><span class="line">    <span class="keyword">assert</span> i == self._prev_iter + <span class="number">1</span></span><br><span class="line">    self._prev_iter = i</span><br><span class="line">    <span class="comment"># 如果是加法模型，则对预测值进行累加</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(model, AdditiveModel):</span><br><span class="line">        <span class="keyword">if</span> self._y_pred <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            self._y_pred = model.predict(self.X)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self._y_pred += model.iter_y_delta(i, self.X)</span><br><span class="line">        y_pred = self._y_pred</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        y_pred = model.predict(self.X)</span><br><span class="line">    <span class="comment"># 计算每个query下文档的NDCG值，并加和</span></span><br><span class="line">    score = <span class="number">0.0</span></span><br><span class="line">    <span class="keyword">for</span> qid, a, b <span class="keyword">in</span> self._query_groups:</span><br><span class="line">        sorted_y = get_sorted_y(self.y[a:b], y_pred[a:b])</span><br><span class="line">        score += self.metric.evaluate(qid, sorted_y)</span><br><span class="line">    <span class="comment"># 输出当前轮总的NDCG值</span></span><br><span class="line">    <span class="keyword">print</span> <span class="string">"monitor score: "</span>, score</span><br><span class="line">    <span class="comment"># 计算平均每个query的NDCG值</span></span><br><span class="line">    score /= len(self._query_groups)</span><br><span class="line">    <span class="comment"># 记录最好的轮次和其分数</span></span><br><span class="line">    <span class="keyword">if</span> self._best_score <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> score &gt; self._best_score:</span><br><span class="line">        self._best_score = score</span><br><span class="line">        self._best_score_i = i</span><br><span class="line">    <span class="comment"># 记录当前轮次与最好轮次之间差距</span></span><br><span class="line">    since = i - self._best_score_i</span><br><span class="line">    <span class="comment"># 如果允许提前终止，并且达到终止条件，则终止</span></span><br><span class="line">    <span class="keyword">if</span> self.trim_on_stop <span class="keyword">and</span> \</span><br><span class="line">            (since &gt;= self.stop_after <span class="keyword">or</span> i + <span class="number">1</span> == model.n_estimators):</span><br><span class="line">        <span class="comment"># 将模型按照实际回归树数量缩小</span></span><br><span class="line">        model.trim(self._best_score_i + <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="comment"># 如果未终止，则返回当前训练状态 C为query的平均NDCG，B为最好的分数，S为举例之前的最好分数的轮次</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'C:&#123;:12.4f&#125; B:&#123;:12.4f&#125; S:&#123;:3d&#125;'</span>.format(</span><br><span class="line">        score, self._best_score, since)</span><br></pre></td></tr></table></figure>
+<h2 id="日志输出"><a href="#日志输出" class="headerlink" title="日志输出"></a>日志输出</h2><p>日志输出类如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_VerboseReporter</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""Reports verbose output to stdout.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    If ``verbose==1`` output is printed once in a while (when iteration mod</span></span><br><span class="line"><span class="string">    verbose_mod is zero).; if larger than 1 then output is printed for</span></span><br><span class="line"><span class="string">    each update.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, verbose)</span>:</span></span><br><span class="line">        self.verbose = verbose</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">init</span><span class="params">(self, est, begin_at_stage=<span class="number">0</span>)</span>:</span></span><br><span class="line">        <span class="comment"># header fields and line format str</span></span><br><span class="line">        header_fields = [<span class="string">'Iter'</span>, <span class="string">'Train score'</span>]</span><br><span class="line">        verbose_fmt = [<span class="string">'&#123;iter:&gt;5d&#125;'</span>, <span class="string">'&#123;train_score:&gt;12.4f&#125;'</span>]</span><br><span class="line">        <span class="comment"># do oob?</span></span><br><span class="line">        <span class="keyword">if</span> est.query_subsample &lt; <span class="number">1</span>:</span><br><span class="line">            header_fields.append(<span class="string">'OOB Improve'</span>)</span><br><span class="line">            verbose_fmt.append(<span class="string">'&#123;oob_impr:&gt;12.4f&#125;'</span>)</span><br><span class="line">        header_fields.append(<span class="string">'Remaining'</span>)</span><br><span class="line">        verbose_fmt.append(<span class="string">'&#123;remaining_time:&gt;12s&#125;'</span>)</span><br><span class="line">        header_fields.append(<span class="string">'Monitor Output'</span>)</span><br><span class="line">        verbose_fmt.append(<span class="string">'&#123;monitor_output:&gt;40s&#125;'</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># print the header line</span></span><br><span class="line">        print((<span class="string">'%5s '</span> + <span class="string">'%12s '</span> *</span><br><span class="line">               (len(header_fields) - <span class="number">2</span>) + <span class="string">'%40s '</span>) % tuple(header_fields))</span><br><span class="line"></span><br><span class="line">        self.verbose_fmt = <span class="string">' '</span>.join(verbose_fmt)</span><br><span class="line">        <span class="comment"># plot verbose info each time i % verbose_mod == 0</span></span><br><span class="line">        self.verbose_mod = <span class="number">1</span></span><br><span class="line">        self.start_time = time.time()</span><br><span class="line">        self.begin_at_stage = begin_at_stage</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self, j, est, monitor_output)</span>:</span></span><br><span class="line">        <span class="string">"""Update reporter with new iteration. """</span></span><br><span class="line">        <span class="keyword">if</span> monitor_output <span class="keyword">is</span> <span class="literal">True</span>:</span><br><span class="line">            print(<span class="string">'Early termination at iteration '</span>, j)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        do_query_oob = est.query_subsample &lt; <span class="number">1</span></span><br><span class="line">        <span class="comment"># we need to take into account if we fit additional estimators.</span></span><br><span class="line">        i = j - self.begin_at_stage  <span class="comment"># iteration relative to the start iter</span></span><br><span class="line">        <span class="keyword">if</span> self.verbose &gt; <span class="number">1</span> <span class="keyword">or</span> (i + <span class="number">1</span>) % self.verbose_mod == <span class="number">0</span>:</span><br><span class="line">            oob_impr = est.oob_improvement_[j] <span class="keyword">if</span> do_query_oob <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">            remaining_time = ((est.n_estimators - (j + <span class="number">1</span>)) *</span><br><span class="line">                              (time.time() - self.start_time) / float(i + <span class="number">1</span>))</span><br><span class="line">            <span class="keyword">if</span> remaining_time &gt; <span class="number">60</span>:</span><br><span class="line">                remaining_time = <span class="string">'&#123;0:.2f&#125;m'</span>.format(remaining_time / <span class="number">60.0</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                remaining_time = <span class="string">'&#123;0:.2f&#125;s'</span>.format(remaining_time)</span><br><span class="line">            <span class="keyword">if</span> monitor_output <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                monitor_output = <span class="string">''</span></span><br><span class="line">            print(self.verbose_fmt.format(iter=j + <span class="number">1</span>,</span><br><span class="line">                                          train_score=est.train_score_[j],</span><br><span class="line">                                          oob_impr=oob_impr,</span><br><span class="line">                                          remaining_time=remaining_time,</span><br><span class="line">                                          monitor_output=monitor_output))</span><br><span class="line">            <span class="keyword">if</span> i + <span class="number">1</span> &gt;= <span class="number">10</span>:</span><br><span class="line">                self.verbose_mod = <span class="number">5</span></span><br><span class="line">            <span class="keyword">if</span> i + <span class="number">1</span> &gt;= <span class="number">50</span>:</span><br><span class="line">                self.verbose_mod = <span class="number">10</span></span><br><span class="line">            <span class="keyword">if</span> i + <span class="number">1</span> &gt;= <span class="number">100</span>:</span><br><span class="line">                self.verbose_mod = <span class="number">20</span></span><br><span class="line">            <span class="keyword">if</span> i + <span class="number">1</span> &gt;= <span class="number">500</span>:</span><br><span class="line">                self.verbose_mod = <span class="number">50</span></span><br><span class="line">            <span class="keyword">if</span> i + <span class="number">1</span> &gt;= <span class="number">1000</span>:</span><br><span class="line">                self.verbose_mod = <span class="number">100</span></span><br></pre></td></tr></table></figure>
+<p>输出信息如下：</p>
+<p><a href="https://imgtu.com/i/5qj7Z9" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/10/28/5qj7Z9.png" alt="5qj7Z9.png"></a></p>
+<p>其中输出的每个字段含义如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Iter</td>
+<td>迭代轮数</td>
+</tr>
+<tr>
+<td>train score</td>
+<td>平均的NDCG分数（越高约好）</td>
+</tr>
+<tr>
+<td>OOB Improve</td>
+<td>每次与上一步迭代提升的train_score，即delta train_score；</td>
+</tr>
+<tr>
+<td>Remaining</td>
+<td>根据当前训练轮数和花费时间预估训练完成时间</td>
+</tr>
+<tr>
+<td>C</td>
+<td>验证集的平均NDGC</td>
+</tr>
+<tr>
+<td>B</td>
+<td>历次迭代中验证集中最高的平均NDGC</td>
+</tr>
+<tr>
+<td>S</td>
+<td>迭达到当前步数，距离验证集最高的平均ndgc迭代步数的差(i-best_socre_i)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="存储模型并输出相关效果"><a href="#存储模型并输出相关效果" class="headerlink" title="存储模型并输出相关效果"></a>存储模型并输出相关效果</h1><p>使用pickle包存储模型。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_model</span><span class="params">(model, file)</span>:</span></span><br><span class="line">    save_file = open(file, <span class="string">"wb"</span>)</span><br><span class="line">    pickle.dump(model, save_file)</span><br><span class="line">    save_file.close()</span><br></pre></td></tr></table></figure>
+<p>输出每个因子的重要性。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">id2featrue = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> open(<span class="string">'../dicts/featrue2id'</span>):</span><br><span class="line">        line = line.strip()</span><br><span class="line">        featrue,id = line.split()</span><br><span class="line">        id = int(id)</span><br><span class="line">        id2featrue[id] = featrue</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> np.argsort(model.feature_importances_):</span><br><span class="line">        <span class="keyword">print</span> id2featrue[i],model.feature_importances_[i]</span><br></pre></td></tr></table></figure>
+<p>其中中存储了featureid到featurename的映射关系：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ctr_norm 0</span><br><span class="line">title_oral_tight_term_hit_count_norm 1</span><br><span class="line">cqr_norm 2</span><br><span class="line">pcqr 3</span><br><span class="line">likeRank 4</span><br><span class="line">title_oral_offset_value 5</span><br><span class="line">title_oral_boost_term_hit_count 6</span><br><span class="line">title_oral_offset_value_norm 7</span><br><span class="line">tag_match_score 8</span><br><span class="line">cqr_ 9</span><br><span class="line">title_oral_levenshtein_distance_norm 10</span><br></pre></td></tr></table></figure>
+<h1 id="模型转换"><a href="#模型转换" class="headerlink" title="模型转换"></a>模型转换</h1><p>gbrank只支持gbrank模型，因此需要将训练完成的lambdaMART模型进行一下转换。</p>
+<p>修改<code>notes/bin/trans_model_format.sh</code>中的输入和输出模型即可。</p>
+<p>执行对应脚本即获得可以直接在vsrank中使用的模型。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/排序/" rel="tag"># 排序</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/09/30/nginx架构及源码解读/" rel="next" title="nginx架构及源码阅读">
+                <i class="fa fa-chevron-left"></i> nginx架构及源码阅读
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">chst</p>
+              <p class="site-description motion-element" itemprop="description">人生苦酒,自酿自品</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NDCG评估指标"><span class="nav-number">1.</span> <span class="nav-text">NDCG评估指标</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#累计增益-CG"><span class="nav-number">1.1.</span> <span class="nav-text">累计增益(CG)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#折损累计增益-DCG"><span class="nav-number">1.2.</span> <span class="nav-text">折损累计增益(DCG)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#归一化折损累计增益-NDCG"><span class="nav-number">1.3.</span> <span class="nav-text">归一化折损累计增益(NDCG)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#排序学习LTR"><span class="nav-number">2.</span> <span class="nav-text">排序学习LTR</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#单点法"><span class="nav-number">2.1.</span> <span class="nav-text">单点法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配对法"><span class="nav-number">2.2.</span> <span class="nav-text">配对法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#列表法"><span class="nav-number">2.3.</span> <span class="nav-text">列表法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LambdaMART算法"><span class="nav-number">3.</span> <span class="nav-text">LambdaMART算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RankNet"><span class="nav-number">3.1.</span> <span class="nav-text">RankNet</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#真实的相关性概率"><span class="nav-number">3.1.1.</span> <span class="nav-text">真实的相关性概率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#损失函数"><span class="nav-number">3.1.2.</span> <span class="nav-text">损失函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数更新"><span class="nav-number">3.1.3.</span> <span class="nav-text">参数更新</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LambdaRank"><span class="nav-number">3.2.</span> <span class="nav-text">LambdaRank</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LambdaMART算法-1"><span class="nav-number">3.3.</span> <span class="nav-text">LambdaMART算法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#程序执行逻辑"><span class="nav-number">4.</span> <span class="nav-text">程序执行逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#读取数据"><span class="nav-number">4.1.</span> <span class="nav-text">读取数据</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lambdaMart"><span class="nav-number">5.</span> <span class="nav-text">lambdaMart</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化参数"><span class="nav-number">5.1.</span> <span class="nav-text">初始化参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#metric"><span class="nav-number">5.1.1.</span> <span class="nav-text">metric</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行fit（拟合）函数"><span class="nav-number">5.2.</span> <span class="nav-text">执行fit（拟合）函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取lambda及相对于当前模型的梯度"><span class="nav-number">5.3.</span> <span class="nav-text">获取lambda及相对于当前模型的梯度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算互换位置后NDCG值"><span class="nav-number">5.4.</span> <span class="nav-text">计算互换位置后NDCG值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新模型"><span class="nav-number">5.5.</span> <span class="nav-text">更新模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#预测"><span class="nav-number">5.6.</span> <span class="nav-text">预测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#终止训练判断"><span class="nav-number">5.7.</span> <span class="nav-text">终止训练判断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日志输出"><span class="nav-number">5.8.</span> <span class="nav-text">日志输出</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#存储模型并输出相关效果"><span class="nav-number">6.</span> <span class="nav-text">存储模型并输出相关效果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#模型转换"><span class="nav-number">7.</span> <span class="nav-text">模型转换</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">chst</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: '0j9TGrGA2Aq8e4SO1sUkgQCv-gzGzoHsz',
+        appKey: 'Q6jotQjlp43pwpkFCJhQ9s95',
+        placeholder: '请留下联系方式，我会尽快回复',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("0j9TGrGA2Aq8e4SO1sUkgQCv-gzGzoHsz", "Q6jotQjlp43pwpkFCJhQ9s95");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
