@@ -82,14 +82,14 @@
 <meta name="description" content="深入学习了一下folly的异步框架future和基于该异步框架实现的DAG调度，只是说是叹为观止，十分优雅。">
 <meta name="keywords" content="folly">
 <meta property="og:type" content="article">
-<meta property="og:title" content="架构">
+<meta property="og:title" content="folly中feature与DAG">
 <meta property="og:url" content="http://yoursite.com/2023/01/08/folly异步框架与DAG/index.html">
 <meta property="og:site_name" content="chst&#39;s Blog">
 <meta property="og:description" content="深入学习了一下folly的异步框架future和基于该异步框架实现的DAG调度，只是说是叹为观止，十分优雅。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2023-01-08T08:27:36.369Z">
+<meta property="og:updated_time" content="2023-01-08T09:11:04.436Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="架构">
+<meta name="twitter:title" content="folly中feature与DAG">
 <meta name="twitter:description" content="深入学习了一下folly的异步框架future和基于该异步框架实现的DAG调度，只是说是叹为观止，十分优雅。">
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <title>架构 | chst's Blog</title>
+  <title>folly中feature与DAG | chst's Blog</title>
   
 
 
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">架构</h1>
+          <h1 class="post-title" itemprop="name headline">folly中feature与DAG</h1>
         
 
         <div class="post-meta">
@@ -397,9 +397,7 @@
       
 
       
-        <center><font size="12">folly中feature与DAG<font></font></font></center>
-
-<h1 id="DAG设计"><a href="#DAG设计" class="headerlink" title="DAG设计"></a>DAG设计</h1><h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>DAG将执行流程构建一个单向无环图，其中每个点表示一个逻辑执行单元，有向边表示逻辑单元的依赖关系，其中入节点依赖出节点的执行结果。对于个人节点来说，所有执行其的节点（对该节点来说是入节点）执行完成后立即执行该节点。</p>
+        <h1 id="DAG设计"><a href="#DAG设计" class="headerlink" title="DAG设计"></a>DAG设计</h1><h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>DAG将执行流程构建一个单向无环图，其中每个点表示一个逻辑执行单元，有向边表示逻辑单元的依赖关系，其中入节点依赖出节点的执行结果。对于个人节点来说，所有执行其的节点（对该节点来说是入节点）执行完成后立即执行该节点。</p>
 <p>对于无依赖关系可以同步执行的节点来说，使用线程池来统一并发执行，通过图编排尽可能的保证执行的高效性。</p>
 <p>同时由于存再依赖关系，所已需要考虑某个节点其执行错误时，依赖其结果的所有节点处理逻辑，folly中使用的方式是当任意一个节点失败时，依赖其结果的节点都停止执行。</p>
 <h2 id="设计"><a href="#设计" class="headerlink" title="设计"></a>设计</h2><p>对于所有依赖节点执行完成才能执行当前节点的实现首先想到的是屏障或者条件变量，但是folly都未使用，而是使用了更为优雅的方式：智能指针（原子变量），通过依赖的节点每个持有一个智能指针的拷贝，当依赖节点执行完成时会释放该智能指针，当所以智能指针都被释放时将执行析构函数，在析构函数中将执行当前节点（并非立即执行，而是放到线程池中）。</p>
