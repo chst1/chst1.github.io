@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="folly,">
 
 
 
@@ -79,17 +79,18 @@
 
 
 
-<meta name="description" content="123456789title: folly协程Task学习date: 2023-09-24 17:59:18tags:    follycategories:    coromathjax:    truedescription: 听说Facebook目前已经将内部的future替换成协程coro了，恰巧工作中有相关协程使用的讨论，于是看一下folly中基于C++20协程封装的框架。 C++协程之">
+<meta name="description" content="听说Facebook目前已经将内部的future替换成协程coro了，恰巧工作中有相关协程使用的讨论，于是看一下folly中基于C++20协程封装的框架。">
+<meta name="keywords" content="folly">
 <meta property="og:type" content="article">
-<meta property="og:title" content="chst&#39;s Blog">
+<meta property="og:title" content="folly协程Task学习">
 <meta property="og:url" content="http://yoursite.com/2023/09/24/Folly coro学习/index.html">
 <meta property="og:site_name" content="chst&#39;s Blog">
-<meta property="og:description" content="123456789title: folly协程Task学习date: 2023-09-24 17:59:18tags:    follycategories:    coromathjax:    truedescription: 听说Facebook目前已经将内部的future替换成协程coro了，恰巧工作中有相关协程使用的讨论，于是看一下folly中基于C++20协程封装的框架。 C++协程之">
+<meta property="og:description" content="听说Facebook目前已经将内部的future替换成协程coro了，恰巧工作中有相关协程使用的讨论，于是看一下folly中基于C++20协程封装的框架。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2023-09-24T10:00:39.518Z">
+<meta property="og:updated_time" content="2023-09-24T10:40:41.548Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="chst&#39;s Blog">
-<meta name="twitter:description" content="123456789title: folly协程Task学习date: 2023-09-24 17:59:18tags:    follycategories:    coromathjax:    truedescription: 听说Facebook目前已经将内部的future替换成协程coro了，恰巧工作中有相关协程使用的讨论，于是看一下folly中基于C++20协程封装的框架。 C++协程之">
+<meta name="twitter:title" content="folly协程Task学习">
+<meta name="twitter:description" content="听说Facebook目前已经将内部的future替换成协程coro了，恰巧工作中有相关协程使用的讨论，于是看一下folly中基于C++20协程封装的框架。">
 
 
 
@@ -125,7 +126,7 @@
 
 
 
-  <title> | chst's Blog</title>
+  <title>folly协程Task学习 | chst's Blog</title>
   
 
 
@@ -279,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline"></h1>
+          <h1 class="post-title" itemprop="name headline">folly协程Task学习</h1>
         
 
         <div class="post-meta">
@@ -291,7 +292,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2023-09-24T17:56:07+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2023-09-24T17:59:18+08:00">
                 2023-09-24
               </time>
             
@@ -301,6 +302,28 @@
             
           </span>
 
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/coro/" itemprop="url" rel="index">
+                    <span itemprop="name">coro</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -356,6 +379,10 @@
           
 
           
+              <div class="post-description">
+                  听说Facebook目前已经将内部的future替换成协程coro了，恰巧工作中有相关协程使用的讨论，于是看一下folly中基于C++20协程封装的框架。
+              </div>
+          
 
         </div>
       </header>
@@ -370,8 +397,7 @@
       
 
       
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">title: folly协程Task学习</span><br><span class="line">date: 2023-09-24 17:59:18</span><br><span class="line">tags:</span><br><span class="line">    folly</span><br><span class="line">categories:</span><br><span class="line">    coro</span><br><span class="line">mathjax:</span><br><span class="line">    true</span><br><span class="line">description: 听说Facebook目前已经将内部的future替换成协程coro了，恰巧工作中有相关协程使用的讨论，于是看一下folly中基于C++20协程封装的框架。</span><br></pre></td></tr></table></figure>
-<center><font size="8">C++协程之folly coro</font></center>
+        <center><font size="8">C++协程之folly coro</font></center>
 
 <p>之前，介绍了<a href="https://www.yinkuiwang.cn/2023/01/08/folly%E5%BC%82%E6%AD%A5%E6%A1%86%E6%9E%B6%E4%B8%8EDAG/" target="_blank" rel="noopener">folly的异步框架</a>，其调度中实际执行任务时由线程池完成。听说Facebook目前已经将内部的<code>future</code>替换成协程<code>coro</code>了，恰巧工作中有相关协程使用的讨论，于是看一下folly中基于C++20协程封装的框架。这里不介绍C++20协程的基本使用方式，想要了解可以看下面两个文档。</p>
 <p><a href="https://en.cppreference.com/w/cpp/language/coroutines" target="_blank" rel="noopener">C++20协程官方文档</a></p>
@@ -662,6 +688,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/folly/" rel="tag"># folly</a>
+          
+        </div>
+      
 
       
       
@@ -770,7 +802,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -1065,6 +1097,26 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
   
 
 
